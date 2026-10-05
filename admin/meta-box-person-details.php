@@ -24,6 +24,8 @@ $get_meta = static function ( string $key ) use ( $post ): string {
 	return \is_string( $value ) ? $value : '';
 };
 
+$orbis_id = $get_meta( '_orbis_person_id' );
+
 $job_title    = $get_meta( '_orbis_title' );
 $organization = $get_meta( '_orbis_organization' );
 $department   = $get_meta( '_orbis_department' );
@@ -50,6 +52,14 @@ $linkedin = $get_meta( '_orbis_linkedin' );
 ?>
 <table class="form-table">
 	<tbody>
+		<tr valign="top">
+			<th scope="row">
+				<label for="orbis_person_id"><?php \esc_html_e( 'Orbis ID', 'orbis-persons' ); ?></label>
+			</th>
+			<td>
+				<input id="orbis_person_id" name="_orbis_person_id" value="<?php echo \esc_attr( $orbis_id ); ?>" type="text" class="regular-text" readonly="readonly" />
+			</td>
+		</tr>
 		<tr valign="top">
 			<th scope="row">
 				<label for="orbis_person_organization"><?php \esc_html_e( 'Organization', 'orbis-persons' ); ?></label>

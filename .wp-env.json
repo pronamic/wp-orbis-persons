@@ -10,10 +10,11 @@
 		"solvebeam/solvebeam-quick-login-for-wp-env",
 		"https://downloads.wordpress.org/plugin/plugin-check.zip",
 		"https://downloads.wordpress.org/plugin/posts-to-posts.zip",
+		"https://downloads.wordpress.org/plugin/pronamic-client.zip",
 		"https://downloads.wordpress.org/plugin/query-monitor.zip"
 	],
 	"mappings": {
-		"wp-content/plugins/orbis-contacts": "https://github.com/pronamic/wp-orbis-contacts/releases/download/v1.0.0-rc.1/orbis-contacts.1.0.0.zip",
+		"wp-content/plugins/orbis-contacts": "https://github.com/pronamic/wp-orbis-contacts/releases/download/v1.0.0-rc.2/orbis-contacts.1.0.0.zip",
 		"wp-content/plugins/orbis-organizations": "https://github.com/pronamic/wp-orbis-organizations/releases/download/v1.0.0-rc.1/orbis-organizations.1.0.0.zip",
 		"wp-content/plugins/orbis-persons-dev": "./",
 		"wp-content/plugins/orbis-persons": "./build/orbis-persons/"

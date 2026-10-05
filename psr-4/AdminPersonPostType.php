@@ -30,6 +30,7 @@ final class AdminPersonPostType {
 		\add_action( 'add_meta_boxes', $this->add_meta_boxes( ... ), 20 );
 
 		\add_action( 'save_post_orbis_person', $this->save_person( ... ) );
+		\add_action( 'save_post_orbis_person', $this->save_person_sync( ... ), 500, 2 );
 	}
 
 	/**
@@ -219,5 +220,80 @@ final class AdminPersonPostType {
 
 		\update_post_meta( $post_id, '_orbis_birth_date', $date->format( 'Y-m-d' ) );
 		\update_post_meta( $post_id, '_orbis_birth_date_timestamp', $date->getTimestamp() );
+	}
+
+	/**
+	 * Sync person with Orbis tables.
+	 *
+	 * @param int     $post_id Post ID.
+	 * @param WP_Post $post    Post.
+	 * @return void
+	 */
+	private function save_person_sync( int $post_id, WP_Post $post ): void {
+		global $wpdb;
+
+		/**
+		 * WordPress database abstraction object.
+		 *
+		 * @var \wpdb $wpdb
+		 */
+
+		if ( \defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		if ( \wp_is_post_revision( $post_id ) ) {
+			return;
+		}
+
+		if ( 'publish' !== $post->post_status ) {
+			return;
+		}
+
+		$email = $this->get_meta( $post_id, '_orbis_email' );
+
+		$email = '' === $email ? null : $email;
+
+		$orbis_id = \get_post_meta( $post_id, '_orbis_person_id', true );
+
+		$now = \current_time( 'mysql', true );
+
+		if ( ! empty( $orbis_id ) ) {
+			$wpdb->update(
+				$wpdb->prefix . 'orbis_persons',
+				[
+					'name'       => $post->post_title,
+					'email'      => $email,
+					'updated_at' => $now,
+				],
+				[ 'id' => $orbis_id ],
+				[ '%s', '%s', '%s' ],
+				[ '%d' ]
+			);
+
+			return;
+		}
+
+		$result = $wpdb->insert(
+			$wpdb->prefix . 'orbis_persons',
+			[
+				'post_id'    => $post_id,
+				'name'       => $post->post_title,
+				'email'      => $email,
+				'created_at' => $now,
+				'updated_at' => $now,
+			],
+			[
+				'%d',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+			]
+		);
+
+		if ( false !== $result ) {
+			\update_post_meta( $post_id, '_orbis_person_id', $wpdb->insert_id );
+		}
 	}
 }

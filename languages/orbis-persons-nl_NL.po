@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Orbis Persons 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/orbis-persons\n"
+"POT-Creation-Date: 2026-10-05T10:14:46+00:00\n"
+"PO-Revision-Date: 2026-10-05 16:00+0200\n"
 "Last-Translator: Remco Tolsma <info@remcotolsma.nl>\n"
 "Language-Team: Pronamic <info@pronamic.nl>\n"
+"Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-05T10:14:46+00:00\n"
-"PO-Revision-Date: 2026-10-05T13:00:46+00:00\n"
-"Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.9\n"
 "X-Domain: orbis-persons\n"
@@ -39,120 +39,120 @@ msgstr "Pronamic"
 msgid "https://www.pronamic.eu/"
 msgstr "https://www.pronamic.nl/"
 
-#: admin/meta-box-person-details.php:55
-#: psr-4/AdminPersonPostType.php:44
+#: admin/meta-box-person-details.php:57
+msgid "Orbis ID"
+msgstr "Orbis ID"
+
+#: admin/meta-box-person-details.php:65 psr-4/AdminPersonPostType.php:45
 msgid "Organization"
 msgstr "Organisatie"
 
-#: admin/meta-box-person-details.php:58
+#: admin/meta-box-person-details.php:68
 msgctxt "person"
 msgid "Title"
 msgstr "Functie"
 
-#: admin/meta-box-person-details.php:60
+#: admin/meta-box-person-details.php:70
 msgctxt "person"
 msgid "Organization"
 msgstr "Organisatie"
 
-#: admin/meta-box-person-details.php:62
+#: admin/meta-box-person-details.php:72
 msgctxt "person"
 msgid "Department"
 msgstr "Afdeling"
 
-#: admin/meta-box-person-details.php:67
+#: admin/meta-box-person-details.php:77
 msgid "Gender"
 msgstr "Geslacht"
 
-#: admin/meta-box-person-details.php:80
+#: admin/meta-box-person-details.php:90
 msgid "— Select Gender —"
 msgstr "— Selecteer geslacht —"
 
-#: admin/meta-box-person-details.php:92
+#: admin/meta-box-person-details.php:102
 msgid "Email Address"
 msgstr "E-mailadres"
 
-#: admin/meta-box-person-details.php:100
+#: admin/meta-box-person-details.php:110
 msgid "Phone Number"
 msgstr "Telefoonnummer"
 
-#: admin/meta-box-person-details.php:108
+#: admin/meta-box-person-details.php:118
 msgid "Mobile Number"
 msgstr "Mobiel nummer"
 
-#: admin/meta-box-person-details.php:116
-#: admin/meta-box-person-details.php:119
+#: admin/meta-box-person-details.php:126 admin/meta-box-person-details.php:129
 msgid "Address"
 msgstr "Adres"
 
-#: admin/meta-box-person-details.php:121
+#: admin/meta-box-person-details.php:131
 msgid "Postcode"
 msgstr "Postcode"
 
-#: admin/meta-box-person-details.php:122
+#: admin/meta-box-person-details.php:132
 msgid "City"
 msgstr "Plaats"
 
-#: admin/meta-box-person-details.php:124
+#: admin/meta-box-person-details.php:134
 msgid "Country"
 msgstr "Land"
 
-#: admin/meta-box-person-details.php:129
+#: admin/meta-box-person-details.php:139
 msgid "Birth Date"
 msgstr "Geboortedatum"
 
-#: admin/meta-box-person-details.php:132
+#: admin/meta-box-person-details.php:142
 msgctxt "birth date format"
 msgid "dd-mm-yyyy"
 msgstr "dd-mm-jjjj"
 
-#: admin/meta-box-person-details.php:137
+#: admin/meta-box-person-details.php:147
 msgid "IBAN"
 msgstr "IBAN"
 
-#: admin/meta-box-person-details.php:145
+#: admin/meta-box-person-details.php:155
 msgid "Twitter Username"
 msgstr "Twitter-gebruikersnaam"
 
-#: admin/meta-box-person-details.php:153
+#: admin/meta-box-person-details.php:163
 msgid "Facebook URL"
 msgstr "Facebook-URL"
 
-#: admin/meta-box-person-details.php:161
+#: admin/meta-box-person-details.php:171
 msgid "LinkedIn URL"
 msgstr "LinkedIn-URL"
 
-#: psr-4/AdminPersonPostType.php:43
+#: psr-4/AdminPersonPostType.php:44
 msgid "Title"
 msgstr "Titel"
 
-#: psr-4/AdminPersonPostType.php:45
+#: psr-4/AdminPersonPostType.php:46
 msgid "Contact"
 msgstr "Contact"
 
-#: psr-4/AdminPersonPostType.php:46
+#: psr-4/AdminPersonPostType.php:47
 msgid "Author"
 msgstr "Auteur"
 
-#: psr-4/AdminPersonPostType.php:47
+#: psr-4/AdminPersonPostType.php:48
 msgid "Comments"
 msgstr "Reacties"
 
-#: psr-4/AdminPersonPostType.php:48
+#: psr-4/AdminPersonPostType.php:49
 msgid "Date"
 msgstr "Datum"
 
-#: psr-4/AdminPersonPostType.php:130
+#: psr-4/AdminPersonPostType.php:131
 msgid "Person Details"
 msgstr "Persoonsgegevens"
 
-#: psr-4/ContentTypes.php:39
-#: psr-4/ContentTypes.php:41
+#: psr-4/ContentTypes.php:39 psr-4/ContentTypes.php:41
 #: psr-4/ContentTypes.php:62
 msgid "Persons"
 msgstr "Personen"
 
-#: psr-4/ContentTypes.php:42
-#: psr-4/ContentTypes.php:75
+#: psr-4/ContentTypes.php:42 psr-4/ContentTypes.php:75
 msgid "Person"
 msgstr "Persoon"
 
