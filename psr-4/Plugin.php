@@ -48,8 +48,6 @@ final class Plugin {
 	) {
 		\register_activation_hook( $this->plugin_file, $this->activate( ... ) );
 
-		\add_action( 'init', $this->init( ... ), 0 );
-
 		new ContentTypes();
 
 		if ( \is_admin() ) {
@@ -64,14 +62,5 @@ final class Plugin {
 	 */
 	private function activate(): void {
 		\delete_option( 'rewrite_rules' );
-	}
-
-	/**
-	 * Initialize.
-	 *
-	 * @return void
-	 */
-	private function init(): void {
-		\load_plugin_textdomain( 'orbis-persons', false, \dirname( \plugin_basename( $this->plugin_file ) ) . '/languages' );
 	}
 }

@@ -5,7 +5,7 @@ WordPress plugin for Orbis that adds persons, with personal details such as birt
 ## Requirements
 
 - PHP 8.3+
-- WordPress 6.7+
+- WordPress 7.1+
 - [Orbis Contacts](https://github.com/pronamic/wp-orbis-contacts)
 - Composer
 - Node.js / npm

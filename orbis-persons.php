@@ -12,7 +12,7 @@
  * Plugin URI:        https://wp.pronamic.directory/plugins/orbis-persons/
  * Description:       WordPress plugin for Orbis that adds persons, with personal details such as birth date and gender, built on top of Orbis Contacts.
  * Version:           1.0.0
- * Requires at least: 6.7
+ * Requires at least: 7.1
  * Requires PHP:      8.3
  * Requires Plugins:  orbis-contacts
  * Author:            Pronamic
