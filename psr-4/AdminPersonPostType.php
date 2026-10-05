@@ -23,10 +23,6 @@ final class AdminPersonPostType {
 	 * Construct.
 	 */
 	public function __construct() {
-		\add_action( 'admin_menu', $this->admin_menu( ... ) );
-
-		\add_filter( 'parent_file', $this->parent_file( ... ) );
-
 		\add_filter( 'manage_edit-orbis_person_columns', $this->edit_columns( ... ) );
 
 		\add_action( 'manage_orbis_person_posts_custom_column', $this->custom_columns( ... ), 10, 2 );
@@ -34,48 +30,6 @@ final class AdminPersonPostType {
 		\add_action( 'add_meta_boxes', $this->add_meta_boxes( ... ), 20 );
 
 		\add_action( 'save_post_orbis_person', $this->save_person( ... ) );
-	}
-
-	/**
-	 * Admin menu.
-	 *
-	 * WordPress only adds taxonomy submenus for post types with a top-level
-	 * menu, persons are shown in the Orbis Contacts menu.
-	 *
-	 * @return void
-	 */
-	private function admin_menu(): void {
-		\add_submenu_page(
-			'edit.php?post_type=orbis_contact',
-			\__( 'Person Categories', 'orbis-persons' ),
-			\__( 'Person Categories', 'orbis-persons' ),
-			'manage_categories',
-			'edit-tags.php?taxonomy=orbis_person_category&post_type=orbis_person'
-		);
-
-		\add_submenu_page(
-			'edit.php?post_type=orbis_contact',
-			\__( 'Genders', 'orbis-persons' ),
-			\__( 'Genders', 'orbis-persons' ),
-			'manage_categories',
-			'edit-tags.php?taxonomy=orbis_gender&post_type=orbis_person'
-		);
-	}
-
-	/**
-	 * Parent file, highlight the Orbis Contacts menu on the person taxonomy screens.
-	 *
-	 * @param string $parent_file Parent file.
-	 * @return string
-	 */
-	private function parent_file( string $parent_file ): string {
-		$screen = \get_current_screen();
-
-		if ( null !== $screen && 'orbis_person' === $screen->post_type && \in_array( $screen->taxonomy, [ 'orbis_person_category', 'orbis_gender' ], true ) ) {
-			return 'edit.php?post_type=orbis_contact';
-		}
-
-		return $parent_file;
 	}
 
 	/**

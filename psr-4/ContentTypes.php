@@ -36,8 +36,8 @@ final class ContentTypes {
 		\register_post_type(
 			'orbis_person',
 			[
-				'label'        => \__( 'Persons', 'orbis-persons' ),
-				'labels'       => [
+				'label'         => \__( 'Persons', 'orbis-persons' ),
+				'labels'        => [
 					'name'               => \__( 'Persons', 'orbis-persons' ),
 					'singular_name'      => \__( 'Person', 'orbis-persons' ),
 					'add_new'            => \_x( 'Add New', 'orbis_person', 'orbis-persons' ),
@@ -53,10 +53,10 @@ final class ContentTypes {
 					'menu_name'          => \__( 'Persons', 'orbis-persons' ),
 					'name_admin_bar'     => \__( 'Person', 'orbis-persons' ),
 				],
-				'public'       => true,
-				'show_in_menu' => 'edit.php?post_type=orbis_contact',
-				'menu_icon'    => 'dashicons-businessman',
-				'supports'     => [
+				'public'        => true,
+				'menu_position' => 30,
+				'menu_icon'     => 'dashicons-businessman',
+				'supports'      => [
 					'title',
 					'editor',
 					'author',
@@ -66,10 +66,10 @@ final class ContentTypes {
 					'revisions',
 					'orbis_contact',
 				],
-				'has_archive'  => true,
-				'show_in_rest' => true,
-				'rest_base'    => 'orbis/persons',
-				'rewrite'      => [
+				'has_archive'   => true,
+				'show_in_rest'  => true,
+				'rest_base'     => 'orbis/persons',
+				'rewrite'       => [
 					'slug' => \_x( 'persons', 'slug', 'orbis-persons' ),
 				],
 			]
