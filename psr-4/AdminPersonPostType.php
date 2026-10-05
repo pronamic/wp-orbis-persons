@@ -118,14 +118,9 @@ final class AdminPersonPostType {
 	/**
 	 * Add meta boxes.
 	 *
-	 * Removes the contact information meta box that Orbis core still adds
-	 * for the `orbis_person` post type.
-	 *
 	 * @return void
 	 */
 	private function add_meta_boxes(): void {
-		\remove_meta_box( 'orbis_person', 'orbis_person', 'normal' );
-
 		\add_meta_box(
 			'orbis_person_details',
 			\__( 'Person Details', 'orbis-persons' ),

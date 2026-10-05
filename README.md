@@ -72,7 +72,7 @@ composer run qa
 
 ## Orbis core
 
-The `orbis_person` post type is still registered by [Orbis](https://github.com/pronamic/wp-orbis). This plugin registers it again on `init` priority 20 (with the `persons` slug, `orbis_contact` support and the Orbis Contacts menu) and replaces the Orbis core contact information meta box. The post type, taxonomy and meta keys are the same, so existing persons keep working without migration.
+The `orbis_person` post type used to be registered by [Orbis](https://github.com/pronamic/wp-orbis) core and is now registered by this plugin (with the `persons` slug, `orbis_contact` support and the Orbis Contacts menu). The post type, taxonomy and meta keys are the same, so existing persons keep working without migration.
 
 ## Templates
 

@@ -18,13 +18,9 @@ namespace Pronamic\Orbis\Persons;
 final class ContentTypes {
 	/**
 	 * Construct.
-	 *
-	 * Orbis core still registers the `orbis_person` post type on `init`
-	 * priority 10, this plugin registers it again on priority 20 so that
-	 * this registration wins.
 	 */
 	public function __construct() {
-		\add_action( 'init', $this->init( ... ), 20 );
+		\add_action( 'init', $this->init( ... ) );
 	}
 
 	/**
