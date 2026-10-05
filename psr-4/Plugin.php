@@ -52,6 +52,7 @@ final class Plugin {
 		\add_action( 'wp_after_insert_post', $this->sync_contact_id( ... ), 20, 2 );
 
 		new ContentTypes();
+		new TemplateController();
 
 		if ( \is_admin() ) {
 			new AdminPersonPostType();

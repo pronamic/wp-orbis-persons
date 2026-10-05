@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-05T14:00:35+00:00\n"
+"POT-Creation-Date: 2026-10-05T17:49:35+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: orbis-persons\n"
@@ -45,6 +45,8 @@ msgstr ""
 
 #: admin/meta-box-person-details.php:65
 #: psr-4/AdminPersonPostType.php:45
+#: templates/archive-orbis_person.php:39
+#: templates/person-details.php:60
 msgid "Organization"
 msgstr ""
 
@@ -64,6 +66,7 @@ msgid "Department"
 msgstr ""
 
 #: admin/meta-box-person-details.php:77
+#: templates/person-details.php:94
 msgid "Gender"
 msgstr ""
 
@@ -72,19 +75,24 @@ msgid "— Select Gender —"
 msgstr ""
 
 #: admin/meta-box-person-details.php:102
+#: templates/person-details.php:85
 msgid "Email Address"
 msgstr ""
 
 #: admin/meta-box-person-details.php:110
+#: templates/person-details.php:67
 msgid "Phone Number"
 msgstr ""
 
 #: admin/meta-box-person-details.php:118
+#: templates/person-details.php:76
 msgid "Mobile Number"
 msgstr ""
 
 #: admin/meta-box-person-details.php:126
 #: admin/meta-box-person-details.php:129
+#: templates/archive-orbis_person.php:40
+#: templates/person-details.php:101
 msgid "Address"
 msgstr ""
 
@@ -101,6 +109,7 @@ msgid "Country"
 msgstr ""
 
 #: admin/meta-box-person-details.php:139
+#: templates/person-details.php:119
 msgid "Birth Date"
 msgstr ""
 
@@ -110,6 +119,7 @@ msgid "dd-mm-yyyy"
 msgstr ""
 
 #: admin/meta-box-person-details.php:147
+#: templates/person-details.php:112
 msgid "IBAN"
 msgstr ""
 
@@ -134,6 +144,7 @@ msgid "Contact"
 msgstr ""
 
 #: psr-4/AdminPersonPostType.php:47
+#: templates/archive-orbis_person.php:41
 msgid "Author"
 msgstr ""
 
@@ -345,4 +356,74 @@ msgstr ""
 #: psr-4/ContentTypes.php:128
 msgctxt "slug"
 msgid "genders"
+msgstr ""
+
+#: templates/archive-orbis_person.php:37
+msgid "Photo"
+msgstr ""
+
+#: templates/archive-orbis_person.php:38
+msgid "Name"
+msgstr ""
+
+#: templates/archive-orbis_person.php:42
+#: templates/single-orbis_person.php:73
+msgid "Actions"
+msgstr ""
+
+#: templates/person-details.php:69
+#: templates/person-details.php:78
+msgid "Call this number"
+msgstr ""
+
+#: templates/person-details.php:120
+msgid "j F Y"
+msgstr ""
+
+#: templates/person-details.php:122
+msgid "Age"
+msgstr ""
+
+#: templates/person-details.php:129
+msgid "vCard"
+msgstr ""
+
+#: templates/person-details.php:131
+msgid "Download vCard"
+msgstr ""
+
+#: templates/person-details.php:138
+msgid "Social Media"
+msgstr ""
+
+#: templates/person-details.php:147
+msgid "Twitter"
+msgstr ""
+
+#: templates/person-details.php:159
+msgid "Facebook"
+msgstr ""
+
+#: templates/person-details.php:171
+msgid "LinkedIn"
+msgstr ""
+
+#: templates/single-orbis_person.php:29
+msgid "About this person"
+msgstr ""
+
+#: templates/single-orbis_person.php:61
+msgid "Additional Information"
+msgstr ""
+
+#: templates/single-orbis_person.php:65
+msgid "Posted on"
+msgstr ""
+
+#: templates/single-orbis_person.php:68
+msgid "Posted by"
+msgstr ""
+
+#: templates/single-orbis_person.php:74
+msgid "Edit"
 msgstr ""

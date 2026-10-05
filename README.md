@@ -74,6 +74,18 @@ composer run qa
 
 The `orbis_person` post type is still registered by [Orbis](https://github.com/pronamic/wp-orbis). This plugin registers it again on `init` priority 20 (with the `persons` slug, `orbis_contact` support and the Orbis Contacts menu) and replaces the Orbis core contact information meta box. The post type, taxonomy and meta keys are the same, so existing persons keep working without migration.
 
+## Templates
+
+The plugin ships a single and an archive person template, modelled after `single-orbis_person.php` and `archive-orbis_person.php` of the Orbis 5 theme. They are used unless the theme has its own `single-orbis_person.php` or `archive-orbis_person.php`.
+
+| Template | Shown on | Content |
+|---|---|---|
+| `templates/archive-orbis_person.php` | Persons archive | Table with photo, name, e-mail, phone number, organization, address and author |
+| `templates/single-orbis_person.php` | Single person | Layout with photo, description, details, comments and additional information |
+| `templates/person-details.php` | Single person | Organization, phone numbers, e-mail, gender, address, IBAN, birth date, age, vCard and social media |
+
+Other plugins can add content to the single template with the `orbis_before_main_content`, `orbis_after_main_content`, `orbis_before_side_content` and `orbis_after_side_content` actions, for example the connected organizations of [Orbis Organizations](https://github.com/pronamic/wp-orbis-organizations).
+
 ## License
 
 GPL-2.0-or-later
