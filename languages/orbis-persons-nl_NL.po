@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Orbis Persons 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/orbis-persons\n"
-"POT-Creation-Date: 2026-10-05T10:14:46+00:00\n"
-"PO-Revision-Date: 2026-10-05 12:39+0200\n"
 "Last-Translator: Remco Tolsma <info@remcotolsma.nl>\n"
 "Language-Team: Pronamic <info@pronamic.nl>\n"
-"Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-10-05T10:14:46+00:00\n"
+"PO-Revision-Date: 2026-10-05T13:00:46+00:00\n"
+"Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.9\n"
 "X-Domain: orbis-persons\n"
@@ -39,7 +39,8 @@ msgstr "Pronamic"
 msgid "https://www.pronamic.eu/"
 msgstr "https://www.pronamic.nl/"
 
-#: admin/meta-box-person-details.php:55 psr-4/AdminPersonPostType.php:90
+#: admin/meta-box-person-details.php:55
+#: psr-4/AdminPersonPostType.php:44
 msgid "Organization"
 msgstr "Organisatie"
 
@@ -78,7 +79,8 @@ msgstr "Telefoonnummer"
 msgid "Mobile Number"
 msgstr "Mobiel nummer"
 
-#: admin/meta-box-person-details.php:116 admin/meta-box-person-details.php:119
+#: admin/meta-box-person-details.php:116
+#: admin/meta-box-person-details.php:119
 msgid "Address"
 msgstr "Adres"
 
@@ -119,45 +121,38 @@ msgstr "Facebook-URL"
 msgid "LinkedIn URL"
 msgstr "LinkedIn-URL"
 
-#: psr-4/AdminPersonPostType.php:50 psr-4/AdminPersonPostType.php:51
-msgid "Person Categories"
-msgstr "Persoonscategorieën"
-
-#: psr-4/AdminPersonPostType.php:58 psr-4/AdminPersonPostType.php:59
-#: psr-4/ContentTypes.php:94
-msgid "Genders"
-msgstr "Geslachten"
-
-#: psr-4/AdminPersonPostType.php:89
+#: psr-4/AdminPersonPostType.php:43
 msgid "Title"
 msgstr "Titel"
 
-#: psr-4/AdminPersonPostType.php:91
+#: psr-4/AdminPersonPostType.php:45
 msgid "Contact"
 msgstr "Contact"
 
-#: psr-4/AdminPersonPostType.php:92
+#: psr-4/AdminPersonPostType.php:46
 msgid "Author"
 msgstr "Auteur"
 
-#: psr-4/AdminPersonPostType.php:93
+#: psr-4/AdminPersonPostType.php:47
 msgid "Comments"
 msgstr "Reacties"
 
-#: psr-4/AdminPersonPostType.php:94
+#: psr-4/AdminPersonPostType.php:48
 msgid "Date"
 msgstr "Datum"
 
-#: psr-4/AdminPersonPostType.php:176
+#: psr-4/AdminPersonPostType.php:130
 msgid "Person Details"
 msgstr "Persoonsgegevens"
 
-#: psr-4/ContentTypes.php:39 psr-4/ContentTypes.php:41
-#: psr-4/ContentTypes.php:53
+#: psr-4/ContentTypes.php:39
+#: psr-4/ContentTypes.php:41
+#: psr-4/ContentTypes.php:62
 msgid "Persons"
 msgstr "Personen"
 
-#: psr-4/ContentTypes.php:42 psr-4/ContentTypes.php:54
+#: psr-4/ContentTypes.php:42
+#: psr-4/ContentTypes.php:75
 msgid "Person"
 msgstr "Persoon"
 
@@ -179,12 +174,12 @@ msgid "New Person"
 msgstr "Nieuwe persoon"
 
 #: psr-4/ContentTypes.php:47
-msgid "All Persons"
-msgstr "Alle personen"
-
-#: psr-4/ContentTypes.php:48
 msgid "View Person"
 msgstr "Persoon bekijken"
+
+#: psr-4/ContentTypes.php:48
+msgid "View Persons"
+msgstr "Personen bekijken"
 
 #: psr-4/ContentTypes.php:49
 msgid "Search Persons"
@@ -202,105 +197,148 @@ msgstr "Geen personen gevonden in de prullenbak."
 msgid "Parent Person:"
 msgstr "Hoofdpersoon:"
 
+#: psr-4/ContentTypes.php:53
+msgid "All Persons"
+msgstr "Alle personen"
+
+#: psr-4/ContentTypes.php:54
+msgid "Person Archives"
+msgstr "Personenarchief"
+
+#: psr-4/ContentTypes.php:55
+msgid "Person Attributes"
+msgstr "Persoonsattributen"
+
+#: psr-4/ContentTypes.php:56
+msgid "Insert into person"
+msgstr "Invoegen in persoon"
+
+#: psr-4/ContentTypes.php:57
+msgid "Uploaded to this person"
+msgstr "Geüpload naar deze persoon"
+
+#: psr-4/ContentTypes.php:58
+msgid "Featured image"
+msgstr "Uitgelichte afbeelding"
+
+#: psr-4/ContentTypes.php:59
+msgid "Set featured image"
+msgstr "Uitgelichte afbeelding instellen"
+
+#: psr-4/ContentTypes.php:60
+msgid "Remove featured image"
+msgstr "Uitgelichte afbeelding verwijderen"
+
+#: psr-4/ContentTypes.php:61
+msgid "Use as featured image"
+msgstr "Gebruiken als uitgelichte afbeelding"
+
+#: psr-4/ContentTypes.php:63
+msgid "Filter persons list"
+msgstr "Personenlijst filteren"
+
+#: psr-4/ContentTypes.php:64
+msgid "Filter by date"
+msgstr "Filteren op datum"
+
+#: psr-4/ContentTypes.php:65
+msgid "Persons list navigation"
+msgstr "Navigatie personenlijst"
+
+#: psr-4/ContentTypes.php:66
+msgid "Persons list"
+msgstr "Personenlijst"
+
+#: psr-4/ContentTypes.php:67
+msgid "Person published."
+msgstr "Persoon gepubliceerd."
+
+#: psr-4/ContentTypes.php:68
+msgid "Person published privately."
+msgstr "Persoon privé gepubliceerd."
+
+#: psr-4/ContentTypes.php:69
+msgid "Person reverted to draft."
+msgstr "Persoon teruggezet naar concept."
+
+#: psr-4/ContentTypes.php:70
+msgid "Person trashed."
+msgstr "Persoon naar prullenbak verplaatst."
+
+#: psr-4/ContentTypes.php:71
+msgid "Person scheduled."
+msgstr "Persoon ingepland."
+
+#: psr-4/ContentTypes.php:72
+msgid "Person updated."
+msgstr "Persoon bijgewerkt."
+
 #: psr-4/ContentTypes.php:73
+msgctxt "navigation link block title"
+msgid "Person Link"
+msgstr "Persoonslink"
+
+#: psr-4/ContentTypes.php:74
+msgctxt "navigation link block description"
+msgid "A link to a person."
+msgstr "Een link naar een persoon."
+
+#: psr-4/ContentTypes.php:76
+msgid "Single item: Person"
+msgstr "Enkel item: Persoon"
+
+#: psr-4/ContentTypes.php:96
 msgctxt "slug"
 msgid "persons"
 msgstr "personen"
 
-#: psr-4/ContentTypes.php:84
+#: psr-4/ContentTypes.php:107
 msgctxt "taxonomy general name"
 msgid "Genders"
 msgstr "Geslachten"
 
-#: psr-4/ContentTypes.php:85
+#: psr-4/ContentTypes.php:108
 msgctxt "taxonomy singular name"
 msgid "Gender"
 msgstr "Geslacht"
 
-#: psr-4/ContentTypes.php:86
+#: psr-4/ContentTypes.php:109
 msgid "Search Genders"
 msgstr "Geslachten zoeken"
 
-#: psr-4/ContentTypes.php:87
+#: psr-4/ContentTypes.php:110
 msgid "All Genders"
 msgstr "Alle geslachten"
 
-#: psr-4/ContentTypes.php:88
+#: psr-4/ContentTypes.php:111
 msgid "Parent Gender"
 msgstr "Hoofdgeslacht"
 
-#: psr-4/ContentTypes.php:89
+#: psr-4/ContentTypes.php:112
 msgid "Parent Gender:"
 msgstr "Hoofdgeslacht:"
 
-#: psr-4/ContentTypes.php:90
+#: psr-4/ContentTypes.php:113
 msgid "Edit Gender"
 msgstr "Geslacht bewerken"
 
-#: psr-4/ContentTypes.php:91
+#: psr-4/ContentTypes.php:114
 msgid "Update Gender"
 msgstr "Geslacht bijwerken"
 
-#: psr-4/ContentTypes.php:92
+#: psr-4/ContentTypes.php:115
 msgid "Add New Gender"
 msgstr "Nieuw geslacht toevoegen"
 
-#: psr-4/ContentTypes.php:93
+#: psr-4/ContentTypes.php:116
 msgid "New Gender Name"
 msgstr "Nieuwe geslachtsnaam"
 
-#: psr-4/ContentTypes.php:105
+#: psr-4/ContentTypes.php:117
+msgid "Genders"
+msgstr "Geslachten"
+
+#: psr-4/ContentTypes.php:128
 msgctxt "slug"
 msgid "genders"
 msgstr "geslachten"
-
-#: psr-4/ContentTypes.php:116
-msgctxt "taxonomy general name"
-msgid "Categories"
-msgstr "Categorieën"
-
-#: psr-4/ContentTypes.php:117
-msgctxt "taxonomy singular name"
-msgid "Category"
-msgstr "Categorie"
-
-#: psr-4/ContentTypes.php:118
-msgid "Search Categories"
-msgstr "Categorieën zoeken"
-
-#: psr-4/ContentTypes.php:119
-msgid "All Categories"
-msgstr "Alle categorieën"
-
-#: psr-4/ContentTypes.php:120
-msgid "Parent Category"
-msgstr "Hoofdcategorie"
-
-#: psr-4/ContentTypes.php:121
-msgid "Parent Category:"
-msgstr "Hoofdcategorie:"
-
-#: psr-4/ContentTypes.php:122
-msgid "Edit Category"
-msgstr "Categorie bewerken"
-
-#: psr-4/ContentTypes.php:123
-msgid "Update Category"
-msgstr "Categorie bijwerken"
-
-#: psr-4/ContentTypes.php:124
-msgid "Add New Category"
-msgstr "Nieuwe categorie toevoegen"
-
-#: psr-4/ContentTypes.php:125
-msgid "New Category Name"
-msgstr "Nieuwe categorienaam"
-
-#: psr-4/ContentTypes.php:126
-msgid "Categories"
-msgstr "Categorieën"
-
-#: psr-4/ContentTypes.php:131
-msgctxt "slug"
-msgid "person-category"
-msgstr "persoonscategorie"

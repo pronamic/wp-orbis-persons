@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-05T10:39:19+00:00\n"
+"POT-Creation-Date: 2026-10-05T13:00:45+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: orbis-persons\n"
@@ -40,7 +40,7 @@ msgid "https://www.pronamic.eu/"
 msgstr ""
 
 #: admin/meta-box-person-details.php:55
-#: psr-4/AdminPersonPostType.php:90
+#: psr-4/AdminPersonPostType.php:44
 msgid "Organization"
 msgstr ""
 
@@ -121,49 +121,38 @@ msgstr ""
 msgid "LinkedIn URL"
 msgstr ""
 
-#: psr-4/AdminPersonPostType.php:50
-#: psr-4/AdminPersonPostType.php:51
-msgid "Person Categories"
-msgstr ""
-
-#: psr-4/AdminPersonPostType.php:58
-#: psr-4/AdminPersonPostType.php:59
-#: psr-4/ContentTypes.php:94
-msgid "Genders"
-msgstr ""
-
-#: psr-4/AdminPersonPostType.php:89
+#: psr-4/AdminPersonPostType.php:43
 msgid "Title"
 msgstr ""
 
-#: psr-4/AdminPersonPostType.php:91
+#: psr-4/AdminPersonPostType.php:45
 msgid "Contact"
 msgstr ""
 
-#: psr-4/AdminPersonPostType.php:92
+#: psr-4/AdminPersonPostType.php:46
 msgid "Author"
 msgstr ""
 
-#: psr-4/AdminPersonPostType.php:93
+#: psr-4/AdminPersonPostType.php:47
 msgid "Comments"
 msgstr ""
 
-#: psr-4/AdminPersonPostType.php:94
+#: psr-4/AdminPersonPostType.php:48
 msgid "Date"
 msgstr ""
 
-#: psr-4/AdminPersonPostType.php:176
+#: psr-4/AdminPersonPostType.php:130
 msgid "Person Details"
 msgstr ""
 
 #: psr-4/ContentTypes.php:39
 #: psr-4/ContentTypes.php:41
-#: psr-4/ContentTypes.php:53
+#: psr-4/ContentTypes.php:62
 msgid "Persons"
 msgstr ""
 
 #: psr-4/ContentTypes.php:42
-#: psr-4/ContentTypes.php:54
+#: psr-4/ContentTypes.php:75
 msgid "Person"
 msgstr ""
 
@@ -185,11 +174,11 @@ msgid "New Person"
 msgstr ""
 
 #: psr-4/ContentTypes.php:47
-msgid "All Persons"
+msgid "View Person"
 msgstr ""
 
 #: psr-4/ContentTypes.php:48
-msgid "View Person"
+msgid "View Persons"
 msgstr ""
 
 #: psr-4/ContentTypes.php:49
@@ -208,105 +197,148 @@ msgstr ""
 msgid "Parent Person:"
 msgstr ""
 
+#: psr-4/ContentTypes.php:53
+msgid "All Persons"
+msgstr ""
+
+#: psr-4/ContentTypes.php:54
+msgid "Person Archives"
+msgstr ""
+
+#: psr-4/ContentTypes.php:55
+msgid "Person Attributes"
+msgstr ""
+
+#: psr-4/ContentTypes.php:56
+msgid "Insert into person"
+msgstr ""
+
+#: psr-4/ContentTypes.php:57
+msgid "Uploaded to this person"
+msgstr ""
+
+#: psr-4/ContentTypes.php:58
+msgid "Featured image"
+msgstr ""
+
+#: psr-4/ContentTypes.php:59
+msgid "Set featured image"
+msgstr ""
+
+#: psr-4/ContentTypes.php:60
+msgid "Remove featured image"
+msgstr ""
+
+#: psr-4/ContentTypes.php:61
+msgid "Use as featured image"
+msgstr ""
+
+#: psr-4/ContentTypes.php:63
+msgid "Filter persons list"
+msgstr ""
+
+#: psr-4/ContentTypes.php:64
+msgid "Filter by date"
+msgstr ""
+
+#: psr-4/ContentTypes.php:65
+msgid "Persons list navigation"
+msgstr ""
+
+#: psr-4/ContentTypes.php:66
+msgid "Persons list"
+msgstr ""
+
+#: psr-4/ContentTypes.php:67
+msgid "Person published."
+msgstr ""
+
+#: psr-4/ContentTypes.php:68
+msgid "Person published privately."
+msgstr ""
+
+#: psr-4/ContentTypes.php:69
+msgid "Person reverted to draft."
+msgstr ""
+
+#: psr-4/ContentTypes.php:70
+msgid "Person trashed."
+msgstr ""
+
+#: psr-4/ContentTypes.php:71
+msgid "Person scheduled."
+msgstr ""
+
+#: psr-4/ContentTypes.php:72
+msgid "Person updated."
+msgstr ""
+
 #: psr-4/ContentTypes.php:73
+msgctxt "navigation link block title"
+msgid "Person Link"
+msgstr ""
+
+#: psr-4/ContentTypes.php:74
+msgctxt "navigation link block description"
+msgid "A link to a person."
+msgstr ""
+
+#: psr-4/ContentTypes.php:76
+msgid "Single item: Person"
+msgstr ""
+
+#: psr-4/ContentTypes.php:96
 msgctxt "slug"
 msgid "persons"
 msgstr ""
 
-#: psr-4/ContentTypes.php:84
+#: psr-4/ContentTypes.php:107
 msgctxt "taxonomy general name"
 msgid "Genders"
 msgstr ""
 
-#: psr-4/ContentTypes.php:85
+#: psr-4/ContentTypes.php:108
 msgctxt "taxonomy singular name"
 msgid "Gender"
 msgstr ""
 
-#: psr-4/ContentTypes.php:86
+#: psr-4/ContentTypes.php:109
 msgid "Search Genders"
 msgstr ""
 
-#: psr-4/ContentTypes.php:87
+#: psr-4/ContentTypes.php:110
 msgid "All Genders"
 msgstr ""
 
-#: psr-4/ContentTypes.php:88
+#: psr-4/ContentTypes.php:111
 msgid "Parent Gender"
 msgstr ""
 
-#: psr-4/ContentTypes.php:89
+#: psr-4/ContentTypes.php:112
 msgid "Parent Gender:"
 msgstr ""
 
-#: psr-4/ContentTypes.php:90
+#: psr-4/ContentTypes.php:113
 msgid "Edit Gender"
 msgstr ""
 
-#: psr-4/ContentTypes.php:91
+#: psr-4/ContentTypes.php:114
 msgid "Update Gender"
 msgstr ""
 
-#: psr-4/ContentTypes.php:92
+#: psr-4/ContentTypes.php:115
 msgid "Add New Gender"
 msgstr ""
 
-#: psr-4/ContentTypes.php:93
+#: psr-4/ContentTypes.php:116
 msgid "New Gender Name"
 msgstr ""
 
-#: psr-4/ContentTypes.php:105
+#: psr-4/ContentTypes.php:117
+msgid "Genders"
+msgstr ""
+
+#: psr-4/ContentTypes.php:128
 msgctxt "slug"
 msgid "genders"
-msgstr ""
-
-#: psr-4/ContentTypes.php:116
-msgctxt "taxonomy general name"
-msgid "Categories"
-msgstr ""
-
-#: psr-4/ContentTypes.php:117
-msgctxt "taxonomy singular name"
-msgid "Category"
-msgstr ""
-
-#: psr-4/ContentTypes.php:118
-msgid "Search Categories"
-msgstr ""
-
-#: psr-4/ContentTypes.php:119
-msgid "All Categories"
-msgstr ""
-
-#: psr-4/ContentTypes.php:120
-msgid "Parent Category"
-msgstr ""
-
-#: psr-4/ContentTypes.php:121
-msgid "Parent Category:"
-msgstr ""
-
-#: psr-4/ContentTypes.php:122
-msgid "Edit Category"
-msgstr ""
-
-#: psr-4/ContentTypes.php:123
-msgid "Update Category"
-msgstr ""
-
-#: psr-4/ContentTypes.php:124
-msgid "Add New Category"
-msgstr ""
-
-#: psr-4/ContentTypes.php:125
-msgid "New Category Name"
-msgstr ""
-
-#: psr-4/ContentTypes.php:126
-msgid "Categories"
-msgstr ""
-
-#: psr-4/ContentTypes.php:131
-msgctxt "slug"
-msgid "person-category"
 msgstr ""

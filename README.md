@@ -67,7 +67,7 @@ composer run qa
 | Type | Key |
 |---|---|
 | Post type | `orbis_person` (supports `orbis_contact`) |
-| Taxonomies | `orbis_gender`, `orbis_person_category` |
+| Taxonomies | `orbis_gender` |
 | Post meta | `_orbis_title`, `_orbis_organization`, `_orbis_department`, `_orbis_email`, `_orbis_phone_number`, `_orbis_mobile_number`, `_orbis_address`, `_orbis_postcode`, `_orbis_city`, `_orbis_country`, `_orbis_birth_date_string`, `_orbis_birth_date`, `_orbis_birth_date_timestamp`, `_orbis_iban`, `_orbis_twitter`, `_orbis_facebook`, `_orbis_linkedin` |
 
 ## Orbis core
