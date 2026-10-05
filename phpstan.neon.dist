@@ -1,0 +1,6 @@
+parameters:
+    level: max
+    paths:
+        - admin/
+        - psr-4/
+        - orbis-persons.php

@@ -1,0 +1,28 @@
+{
+	"name": "@pronamic/wp-orbis-persons",
+	"version": "1.0.0",
+	"description": "WordPress plugin for Orbis that adds persons, with personal details such as birth date and gender, built on top of Orbis Contacts.",
+	"author": "Pronamic",
+	"license": "GPL-2.0-or-later",
+	"keywords": [
+		"orbis",
+		"persons"
+	],
+	"homepage": "https://github.com/pronamic/wp-orbis-persons#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/pronamic/wp-orbis-persons.git"
+	},
+	"bugs": {
+		"url": "https://github.com/pronamic/wp-orbis-persons/issues"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@wordpress/env": "^11.15.0",
+		"@wordpress/scripts": "^35.0.0"
+	},
+	"prettier": "@wordpress/prettier-config",
+	"scripts": {
+		"lint:pkg-json": "wp-scripts lint-pkg-json"
+	}
+}

@@ -1,0 +1,314 @@
+# Copyright (C) 2026 Pronamic
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Orbis Persons 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/orbis-persons\n"
+"Last-Translator: Remco Tolsma <info@remcotolsma.nl>\n"
+"Language-Team: Pronamic <info@pronamic.nl>\n"
+"Language: nl_NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-10-05T10:14:46+00:00\n"
+"PO-Revision-Date: 2026-10-05T10:15:00+00:00\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: orbis-persons\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Plugin Name of the plugin
+#: orbis-persons.php:11
+msgid "Orbis Persons"
+msgstr "Orbis Persons"
+
+#. Plugin URI of the plugin
+#: orbis-persons.php:12
+msgid "https://wp.pronamic.directory/plugins/orbis-persons/"
+msgstr ""
+
+#. Description of the plugin
+#: orbis-persons.php:13
+msgid "WordPress plugin for Orbis that adds persons, with personal details such as birth date and gender, built on top of Orbis Contacts."
+msgstr "WordPress-plugin voor Orbis die personen toevoegt, met persoonlijke gegevens zoals geboortedatum en geslacht, gebouwd op Orbis Contacts."
+
+#. Author of the plugin
+#: orbis-persons.php:18
+msgid "Pronamic"
+msgstr ""
+
+#. Author URI of the plugin
+#: orbis-persons.php:19
+msgid "https://www.pronamic.eu/"
+msgstr ""
+
+#: admin/meta-box-person-details.php:55
+#: psr-4/AdminPersonPostType.php:90
+msgid "Organization"
+msgstr "Organisatie"
+
+#: admin/meta-box-person-details.php:58
+msgctxt "person"
+msgid "Title"
+msgstr "Functie"
+
+#: admin/meta-box-person-details.php:60
+msgctxt "person"
+msgid "Organization"
+msgstr "Organisatie"
+
+#: admin/meta-box-person-details.php:62
+msgctxt "person"
+msgid "Department"
+msgstr "Afdeling"
+
+#: admin/meta-box-person-details.php:67
+msgid "Gender"
+msgstr "Geslacht"
+
+#: admin/meta-box-person-details.php:80
+msgid "— Select Gender —"
+msgstr "— Selecteer geslacht —"
+
+#: admin/meta-box-person-details.php:92
+msgid "Email Address"
+msgstr "E-mailadres"
+
+#: admin/meta-box-person-details.php:100
+msgid "Phone Number"
+msgstr "Telefoonnummer"
+
+#: admin/meta-box-person-details.php:108
+msgid "Mobile Number"
+msgstr "Mobiel nummer"
+
+#: admin/meta-box-person-details.php:116
+#: admin/meta-box-person-details.php:119
+msgid "Address"
+msgstr "Adres"
+
+#: admin/meta-box-person-details.php:121
+msgid "Postcode"
+msgstr "Postcode"
+
+#: admin/meta-box-person-details.php:122
+msgid "City"
+msgstr "Plaats"
+
+#: admin/meta-box-person-details.php:124
+msgid "Country"
+msgstr "Land"
+
+#: admin/meta-box-person-details.php:129
+msgid "Birth Date"
+msgstr "Geboortedatum"
+
+#: admin/meta-box-person-details.php:132
+msgctxt "birth date format"
+msgid "dd-mm-yyyy"
+msgstr "dd-mm-jjjj"
+
+#: admin/meta-box-person-details.php:137
+msgid "IBAN"
+msgstr "IBAN"
+
+#: admin/meta-box-person-details.php:145
+msgid "Twitter Username"
+msgstr "Twitter-gebruikersnaam"
+
+#: admin/meta-box-person-details.php:153
+msgid "Facebook URL"
+msgstr "Facebook-URL"
+
+#: admin/meta-box-person-details.php:161
+msgid "LinkedIn URL"
+msgstr "LinkedIn-URL"
+
+#: psr-4/AdminPersonPostType.php:50
+#: psr-4/AdminPersonPostType.php:51
+msgid "Person Categories"
+msgstr "Persoonscategorieën"
+
+#: psr-4/AdminPersonPostType.php:58
+#: psr-4/AdminPersonPostType.php:59
+#: psr-4/ContentTypes.php:94
+msgid "Genders"
+msgstr "Geslachten"
+
+#: psr-4/AdminPersonPostType.php:89
+msgid "Title"
+msgstr "Titel"
+
+#: psr-4/AdminPersonPostType.php:91
+msgid "Contact"
+msgstr "Contact"
+
+#: psr-4/AdminPersonPostType.php:92
+msgid "Author"
+msgstr "Auteur"
+
+#: psr-4/AdminPersonPostType.php:93
+msgid "Comments"
+msgstr "Reacties"
+
+#: psr-4/AdminPersonPostType.php:94
+msgid "Date"
+msgstr "Datum"
+
+#: psr-4/AdminPersonPostType.php:176
+msgid "Person Details"
+msgstr "Persoonsgegevens"
+
+#: psr-4/ContentTypes.php:39
+#: psr-4/ContentTypes.php:41
+#: psr-4/ContentTypes.php:53
+msgid "Persons"
+msgstr "Personen"
+
+#: psr-4/ContentTypes.php:42
+#: psr-4/ContentTypes.php:54
+msgid "Person"
+msgstr "Persoon"
+
+#: psr-4/ContentTypes.php:43
+msgctxt "orbis_person"
+msgid "Add New"
+msgstr "Nieuwe toevoegen"
+
+#: psr-4/ContentTypes.php:44
+msgid "Add New Person"
+msgstr "Nieuwe persoon toevoegen"
+
+#: psr-4/ContentTypes.php:45
+msgid "Edit Person"
+msgstr "Persoon bewerken"
+
+#: psr-4/ContentTypes.php:46
+msgid "New Person"
+msgstr "Nieuwe persoon"
+
+#: psr-4/ContentTypes.php:47
+msgid "All Persons"
+msgstr "Alle personen"
+
+#: psr-4/ContentTypes.php:48
+msgid "View Person"
+msgstr "Persoon bekijken"
+
+#: psr-4/ContentTypes.php:49
+msgid "Search Persons"
+msgstr "Personen zoeken"
+
+#: psr-4/ContentTypes.php:50
+msgid "No persons found."
+msgstr "Geen personen gevonden."
+
+#: psr-4/ContentTypes.php:51
+msgid "No persons found in Trash."
+msgstr "Geen personen gevonden in de prullenbak."
+
+#: psr-4/ContentTypes.php:52
+msgid "Parent Person:"
+msgstr "Hoofdpersoon:"
+
+#: psr-4/ContentTypes.php:73
+msgctxt "slug"
+msgid "persons"
+msgstr "personen"
+
+#: psr-4/ContentTypes.php:84
+msgctxt "taxonomy general name"
+msgid "Genders"
+msgstr "Geslachten"
+
+#: psr-4/ContentTypes.php:85
+msgctxt "taxonomy singular name"
+msgid "Gender"
+msgstr "Geslacht"
+
+#: psr-4/ContentTypes.php:86
+msgid "Search Genders"
+msgstr "Geslachten zoeken"
+
+#: psr-4/ContentTypes.php:87
+msgid "All Genders"
+msgstr "Alle geslachten"
+
+#: psr-4/ContentTypes.php:88
+msgid "Parent Gender"
+msgstr "Hoofdgeslacht"
+
+#: psr-4/ContentTypes.php:89
+msgid "Parent Gender:"
+msgstr "Hoofdgeslacht:"
+
+#: psr-4/ContentTypes.php:90
+msgid "Edit Gender"
+msgstr "Geslacht bewerken"
+
+#: psr-4/ContentTypes.php:91
+msgid "Update Gender"
+msgstr "Geslacht bijwerken"
+
+#: psr-4/ContentTypes.php:92
+msgid "Add New Gender"
+msgstr "Nieuw geslacht toevoegen"
+
+#: psr-4/ContentTypes.php:93
+msgid "New Gender Name"
+msgstr "Nieuwe geslachtsnaam"
+
+#: psr-4/ContentTypes.php:105
+msgctxt "slug"
+msgid "genders"
+msgstr "geslachten"
+
+#: psr-4/ContentTypes.php:116
+msgctxt "taxonomy general name"
+msgid "Categories"
+msgstr "Categorieën"
+
+#: psr-4/ContentTypes.php:117
+msgctxt "taxonomy singular name"
+msgid "Category"
+msgstr "Categorie"
+
+#: psr-4/ContentTypes.php:118
+msgid "Search Categories"
+msgstr "Categorieën zoeken"
+
+#: psr-4/ContentTypes.php:119
+msgid "All Categories"
+msgstr "Alle categorieën"
+
+#: psr-4/ContentTypes.php:120
+msgid "Parent Category"
+msgstr "Hoofdcategorie"
+
+#: psr-4/ContentTypes.php:121
+msgid "Parent Category:"
+msgstr "Hoofdcategorie:"
+
+#: psr-4/ContentTypes.php:122
+msgid "Edit Category"
+msgstr "Categorie bewerken"
+
+#: psr-4/ContentTypes.php:123
+msgid "Update Category"
+msgstr "Categorie bijwerken"
+
+#: psr-4/ContentTypes.php:124
+msgid "Add New Category"
+msgstr "Nieuwe categorie toevoegen"
+
+#: psr-4/ContentTypes.php:125
+msgid "New Category Name"
+msgstr "Nieuwe categorienaam"
+
+#: psr-4/ContentTypes.php:126
+msgid "Categories"
+msgstr "Categorieën"
+
+#: psr-4/ContentTypes.php:131
+msgctxt "slug"
+msgid "person-category"
+msgstr "persoonscategorie"

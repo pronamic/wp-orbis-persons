@@ -1,0 +1,114 @@
+{
+	"name": "pronamic/wp-orbis-persons",
+	"description": "WordPress plugin for Orbis that adds persons, with personal details such as birth date and gender, built on top of Orbis Contacts.",
+	"type": "wordpress-plugin",
+	"license": "GPL-2.0-or-later",
+	"keywords": [
+		"orbis",
+		"persons",
+		"wordpress",
+		"plugin"
+	],
+	"homepage": "https://www.pronamic.eu/orbis/",
+	"autoload": {
+		"psr-4": {
+			"Pronamic\\Orbis\\Persons\\": "psr-4/"
+		}
+	},
+	"authors": [
+		{
+			"name": "Pronamic",
+			"email": "info@pronamic.eu",
+			"homepage": "https://www.pronamic.eu/",
+			"role": "Developer"
+		},
+		{
+			"name": "Remco Tolsma",
+			"email": "info@remcotolsma.nl",
+			"homepage": "https://www.remcotolsma.nl/",
+			"role": "Developer"
+		},
+		{
+			"name": "Karel-Jan Tolsma",
+			"email": "info@kareljantolsma.nl",
+			"homepage": "https://www.kareljantolsma.nl/",
+			"role": "Developer"
+		}
+	],
+	"support": {
+		"email": "support@pronamic.eu",
+		"issues": "https://github.com/pronamic/wp-orbis-persons/issues",
+		"source": "https://github.com/pronamic/wp-orbis-persons"
+	},
+	"config": {
+		"allow-plugins": {
+			"automattic/jetpack-autoloader": true,
+			"composer/installers": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"phpstan/extension-installer": true
+		},
+		"platform": {
+			"php": "8.3"
+		},
+		"platform-check": false,
+		"sort-packages": true
+	},
+	"require": {
+		"php": "^8.3",
+		"automattic/jetpack-autoloader": "^6.0",
+		"composer/installers": "^2.3"
+	},
+	"require-dev": {
+		"deployer/deployer": "^7.5",
+		"phpstan/extension-installer": "^1.4",
+		"phpstan/phpstan": "^2.2",
+		"pronamic/wp-coding-standards": "^2.5",
+		"rector/rector": "^2.6",
+		"roots/wordpress-no-content": "^7.1",
+		"szepeviktor/phpstan-wordpress": "^2.0",
+		"wp-cli/dist-archive-command": "*",
+		"wp-cli/wp-cli-bundle": "*"
+	},
+	"extra": {
+		"installer-paths": {
+			"packages/{$vendor}/{$name}": [
+				"vendor:pronamic",
+				"vendor:solvebeam",
+				"vendor:wp-pay",
+				"woocommerce/action-scheduler"
+			]
+		},
+		"wp-slug": "orbis-persons"
+	},
+	"scripts": {
+		"build": [
+			"rm -rf ./build/stage-1",
+			"rm -rf ./build/orbis-persons/*",
+			"rsync --recursive --verbose --exclude-from=.distignore --exclude=/vendor/ ./ ./build/stage-1/",
+			"composer install --no-dev --prefer-dist --optimize-autoloader --working-dir=./build/stage-1/",
+			"rsync --recursive --verbose --exclude-from=.distignore ./build/stage-1/ ./build/orbis-persons/",
+			"vendor/bin/wp i18n make-pot ./build/orbis-persons/ --slug=orbis-persons",
+			"vendor/bin/wp i18n make-mo ./build/orbis-persons/languages/",
+			"vendor/bin/wp dist-archive ./build/orbis-persons/ --plugin-dirname=orbis-persons --force"
+		],
+		"deploy": [
+			"Composer\\Config::disableProcessTimeout",
+			"DEPLOYER_IMPORT=${DEPLOYER_IMPORT:-$HOME/deployer-orbis.php} vendor/bin/dep deploy"
+		],
+		"dist-archive": "wp dist-archive . --plugin-dirname=orbis-persons",
+		"make-pot": [
+			"@build",
+			"rsync --recursive --delete --verbose ./build/orbis-persons/languages/ ./languages/",
+			"vendor/bin/wp i18n update-po ./languages/orbis-persons.pot"
+		],
+		"phpcs": "vendor/bin/phpcs",
+		"phpcbf": "vendor/bin/phpcbf",
+		"phpstan": "vendor/bin/phpstan analyse --memory-limit=-1",
+		"rector": "vendor/bin/rector process",
+		"qa": [
+			"@phpcs",
+			"@phpstan",
+			"vendor/bin/rector process --dry-run"
+		]
+	}
+}
