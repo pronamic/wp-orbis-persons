@@ -64,7 +64,7 @@ final class ContentTypes {
 					'thumbnail',
 					'custom-fields',
 					'revisions',
-					'orbis_contact',
+					'orbis-contact',
 				],
 				'has_archive'   => true,
 				'show_in_rest'  => true,
