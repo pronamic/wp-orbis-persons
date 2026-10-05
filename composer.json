@@ -83,10 +83,9 @@
 	"scripts": {
 		"build": [
 			"rm -rf ./build/stage-1",
-			"rm -rf ./build/orbis-persons/*",
 			"rsync --recursive --verbose --exclude-from=.distignore --exclude=/vendor/ ./ ./build/stage-1/",
 			"composer install --no-dev --prefer-dist --optimize-autoloader --working-dir=./build/stage-1/",
-			"rsync --recursive --verbose --exclude-from=.distignore ./build/stage-1/ ./build/orbis-persons/",
+			"rsync --recursive --delete --delete-excluded --verbose --exclude-from=.distignore ./build/stage-1/ ./build/orbis-persons/",
 			"vendor/bin/wp i18n make-pot ./build/orbis-persons/ --slug=orbis-persons",
 			"vendor/bin/wp i18n make-mo ./build/orbis-persons/languages/",
 			"vendor/bin/wp dist-archive ./build/orbis-persons/ --plugin-dirname=orbis-persons --force"
