@@ -168,7 +168,7 @@ $linkedin = $get_meta( '_orbis_linkedin' );
 		$days = (int) $today->diff( $next_birthday )->days;
 
 		$next_birthday_parts = [
-			0 === $days ? \__( 'Today!', 'orbis-persons' ) : \wp_date( \__( 'j F Y', 'orbis-persons' ), $next_birthday->getTimestamp() ),
+			0 === $days ? \__( 'Today!', 'orbis-persons' ) : \wp_date( \__( 'l j F Y', 'orbis-persons' ), $next_birthday->getTimestamp() ),
 		];
 
 		if ( 0 !== $days ) {

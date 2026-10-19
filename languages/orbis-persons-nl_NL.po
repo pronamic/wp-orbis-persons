@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2026-10-05T10:14:46+00:00\n"
-"PO-Revision-Date: 2026-10-19T18:00:31+00:00\n"
+"PO-Revision-Date: 2026-10-19T18:06:57+00:00\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: orbis-persons\n"
@@ -67,7 +67,7 @@ msgstr "Achternaam bij geboorte"
 
 #: admin/meta-box-person-details.php:95
 #: psr-4/AdminPersonPostType.php:119
-#: templates/archive-orbis_person.php:39
+#: templates/archive-orbis_person.php:43
 #: templates/person-details.php:100
 msgid "Organization"
 msgstr "Organisatie"
@@ -128,7 +128,7 @@ msgstr "Mobiel nummer"
 #: admin/meta-box-person-details.php:159
 #: psr-4/AbilitiesController.php:879
 #: psr-4/AdminPersonPostType.php:75
-#: templates/archive-orbis_person.php:40
+#: templates/archive-orbis_person.php:44
 #: templates/person-details.php:141
 msgid "Address"
 msgstr "Adres"
@@ -155,6 +155,7 @@ msgstr "Land"
 #: admin/meta-box-person-details.php:173
 #: psr-4/AbilitiesController.php:883
 #: psr-4/AdminPersonPostType.php:79
+#: templates/archive-orbis_person.php:45
 #: templates/person-details.php:159
 msgid "Birth Date"
 msgstr "Geboortedatum"
@@ -512,7 +513,7 @@ msgid "Contact"
 msgstr "Contact"
 
 #: psr-4/AdminPersonPostType.php:121
-#: templates/archive-orbis_person.php:41
+#: templates/archive-orbis_person.php:46
 msgid "Author"
 msgstr "Auteur"
 
@@ -784,18 +785,31 @@ msgstr "De geboortedatum (dag \"%1$s\", maand \"%2$s\", jaar \"%3$s\") is ongeld
 msgid "Gender \"%1$s\" not found. Available genders: %2$s."
 msgstr "Geslacht \"%1$s\" niet gevonden. Beschikbare geslachten: %2$s."
 
-#: templates/archive-orbis_person.php:37
+#: templates/archive-orbis_person.php:41
 msgid "Photo"
 msgstr "Foto"
 
-#: templates/archive-orbis_person.php:38
+#: templates/archive-orbis_person.php:42
 msgid "Name"
 msgstr "Naam"
 
-#: templates/archive-orbis_person.php:42
+#: templates/archive-orbis_person.php:47
 #: templates/single-orbis_person.php:73
 msgid "Actions"
 msgstr "Acties"
+
+#. translators: 1: minimum age, 2: maximum age
+#: templates/archive-orbis_person.php:137
+#: templates/person-details.php:201
+#, php-format
+msgid "%1$d or %2$d"
+msgstr "%1$d of %2$d"
+
+#. translators: %s: age
+#: templates/archive-orbis_person.php:140
+#, php-format
+msgid "%s years"
+msgstr "%s jaar"
 
 #: templates/person-details.php:109
 #: templates/person-details.php:118
@@ -807,8 +821,8 @@ msgid "Today!"
 msgstr "Vandaag!"
 
 #: templates/person-details.php:171
-msgid "j F Y"
-msgstr "j F Y"
+msgid "l j F Y"
+msgstr "l j F Y"
 
 #. translators: %d: number of days
 #: templates/person-details.php:176
@@ -831,12 +845,6 @@ msgstr "Eerstvolgende verjaardag"
 #: templates/person-details.php:193
 msgid "Age"
 msgstr "Leeftijd"
-
-#. translators: 1: minimum age, 2: maximum age
-#: templates/person-details.php:201
-#, php-format
-msgid "%1$d or %2$d"
-msgstr "%1$d of %2$d"
 
 #: templates/person-details.php:211
 msgid "vCard"

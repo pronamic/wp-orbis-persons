@@ -10,6 +10,8 @@
 
 namespace Pronamic\Orbis\Persons;
 
+use DateTimeImmutable;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -19,6 +21,8 @@ $get_meta = static function ( string $key ): string {
 
 	return \is_string( $value ) ? $value : '';
 };
+
+$today = new DateTimeImmutable( 'today', \wp_timezone() );
 
 \get_header();
 
@@ -38,6 +42,7 @@ $get_meta = static function ( string $key ): string {
 						<th><?php \esc_html_e( 'Name', 'orbis-persons' ); ?></th>
 						<th><?php \esc_html_e( 'Organization', 'orbis-persons' ); ?></th>
 						<th><?php \esc_html_e( 'Address', 'orbis-persons' ); ?></th>
+						<th><?php \esc_html_e( 'Birth Date', 'orbis-persons' ); ?></th>
 						<th><?php \esc_html_e( 'Author', 'orbis-persons' ); ?></th>
 						<th><span class="visually-hidden"><?php \esc_html_e( 'Actions', 'orbis-persons' ); ?></span></th>
 					</tr>
@@ -64,6 +69,17 @@ $get_meta = static function ( string $key ): string {
 						$address  = $get_meta( '_orbis_address' );
 						$postcode = $get_meta( '_orbis_postcode' );
 						$city     = $get_meta( '_orbis_city' );
+
+						$birth_date = BirthDate::from_post( (int) \get_the_ID() );
+
+						$age_range = $birth_date->get_age_range( $today );
+
+						/**
+						 * For historical persons an age is not meaningful.
+						 */
+						if ( null !== $age_range && $age_range[1] > 150 ) {
+							$age_range = null;
+						}
 
 						$avatar_url = \get_template_directory_uri() . '/placeholders/avatar.png';
 
@@ -105,6 +121,28 @@ $get_meta = static function ( string $key ): string {
 								echo \esc_html( $address ), '<br />', \esc_html( \trim( $postcode . ' ' . $city ) );
 
 								?>
+							</td>
+							<td>
+								<?php echo \esc_html( $birth_date->format() ); ?>
+
+								<?php if ( null !== $age_range ) : ?>
+
+									<br />
+									<span class="text-muted">
+										<?php
+
+										$age = $age_range[0] === $age_range[1]
+											? (string) $age_range[0]
+											/* translators: 1: minimum age, 2: maximum age */
+											: \sprintf( \__( '%1$d or %2$d', 'orbis-persons' ), $age_range[0], $age_range[1] );
+
+										/* translators: %s: age */
+										echo \esc_html( \sprintf( \__( '%s years', 'orbis-persons' ), $age ) );
+
+										?>
+									</span>
+
+								<?php endif; ?>
 							</td>
 							<td>
 								<?php \the_author(); ?>
