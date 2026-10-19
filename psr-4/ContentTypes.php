@@ -94,6 +94,47 @@ final class ContentTypes {
 			]
 		);
 
+		/*
+		 * Register the person details meta with revisions enabled, so changes
+		 * are kept in the person revisions and restored with them. The derived
+		 * birth date meta is revisioned as well, so it stays consistent with
+		 * the day, month and year after restoring a revision.
+		 */
+		$meta_keys = [
+			'_orbis_title',
+			'_orbis_organization',
+			'_orbis_department',
+			'_orbis_email',
+			'_orbis_phone_number',
+			'_orbis_mobile_number',
+			'_orbis_address',
+			'_orbis_postcode',
+			'_orbis_city',
+			'_orbis_country',
+			'_orbis_iban',
+			'_orbis_twitter',
+			'_orbis_facebook',
+			'_orbis_linkedin',
+			'_orbis_birth_day',
+			'_orbis_birth_month',
+			'_orbis_birth_year',
+			'_orbis_birthday',
+			'_orbis_birth_date',
+			'_orbis_birth_date_timestamp',
+		];
+
+		foreach ( $meta_keys as $meta_key ) {
+			\register_post_meta(
+				'orbis_person',
+				$meta_key,
+				[
+					'type'              => 'string',
+					'single'            => true,
+					'revisions_enabled' => true,
+				]
+			);
+		}
+
 		\register_taxonomy(
 			'orbis_gender',
 			[ 'orbis_person' ],

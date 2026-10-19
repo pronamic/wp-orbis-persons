@@ -38,6 +38,66 @@ final readonly class AdminPersonPostType {
 		\add_action( 'save_post_orbis_person', $this->save_person( ... ) );
 
 		\add_action( 'admin_notices', $this->admin_notices( ... ) );
+
+		\add_filter( '_wp_post_revision_fields', $this->revision_fields( ... ), 10, 2 );
+
+		\add_filter( '_wp_post_revision_field__orbis_birth_date', $this->revision_field_birth_date( ... ), 10, 3 );
+	}
+
+	/**
+	 * Revision fields.
+	 *
+	 * Adds the person details to the revisions screen. The values are read
+	 * from the revisioned meta by the `WP_Post` magic getter.
+	 *
+	 * WordPress keeps the filtered fields in a static variable, so the fields
+	 * are removed again for other post types.
+	 *
+	 * @param array<string, string> $fields Fields.
+	 * @param mixed                 $post   Post array, `null` for an unknown post.
+	 * @return array<string, string>
+	 */
+	private function revision_fields( array $fields, mixed $post ): array {
+		$person_fields = [
+			'_orbis_title'         => \_x( 'Title', 'person', 'orbis-persons' ),
+			'_orbis_organization'  => \_x( 'Organization', 'person', 'orbis-persons' ),
+			'_orbis_department'    => \_x( 'Department', 'person', 'orbis-persons' ),
+			'_orbis_email'         => \__( 'Email Address', 'orbis-persons' ),
+			'_orbis_phone_number'  => \__( 'Phone Number', 'orbis-persons' ),
+			'_orbis_mobile_number' => \__( 'Mobile Number', 'orbis-persons' ),
+			'_orbis_address'       => \__( 'Address', 'orbis-persons' ),
+			'_orbis_postcode'      => \__( 'Postcode', 'orbis-persons' ),
+			'_orbis_city'          => \__( 'City', 'orbis-persons' ),
+			'_orbis_country'       => \__( 'Country', 'orbis-persons' ),
+			'_orbis_birth_date'    => \__( 'Birth Date', 'orbis-persons' ),
+			'_orbis_iban'          => \__( 'IBAN', 'orbis-persons' ),
+			'_orbis_twitter'       => \__( 'Twitter Username', 'orbis-persons' ),
+			'_orbis_facebook'      => \__( 'Facebook URL', 'orbis-persons' ),
+			'_orbis_linkedin'      => \__( 'LinkedIn URL', 'orbis-persons' ),
+		];
+
+		$fields = \array_diff_key( $fields, $person_fields );
+
+		if ( ! \is_array( $post ) || 'orbis_person' !== ( $post['post_type'] ?? null ) ) {
+			return $fields;
+		}
+
+		return $fields + $person_fields;
+	}
+
+	/**
+	 * Revision field birth date.
+	 *
+	 * Shows the known parts of the birth date instead of the derived full
+	 * date meta, which is only stored when the day, month and year are known.
+	 *
+	 * @param mixed   $value    Value.
+	 * @param string  $field    Field.
+	 * @param WP_Post $revision Revision.
+	 * @return string
+	 */
+	private function revision_field_birth_date( mixed $value, string $field, WP_Post $revision ): string {
+		return BirthDate::from_post( $revision->ID )->format();
 	}
 
 	/**

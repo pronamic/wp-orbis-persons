@@ -248,6 +248,12 @@ final readonly class PersonRepository {
 
 		$this->save( $post_id, $prepared );
 
+		/*
+		 * WordPress only saves revisions when updating a post, so save the
+		 * initial revision, including the revisioned meta.
+		 */
+		\wp_save_post_revision( $post_id );
+
 		return $this->get( $post_id ) ?? $this->not_found_error( $post_id );
 	}
 
@@ -274,15 +280,18 @@ final readonly class PersonRepository {
 			return $prepared;
 		}
 
-		if ( [] !== $prepared['post'] ) {
-			$result = \wp_update_post( \wp_slash( [ 'ID' => $post_id ] + $prepared['post'] ), true );
-
-			if ( $result instanceof WP_Error ) {
-				return $result;
-			}
-		}
-
 		$this->save( $post_id, $prepared );
+
+		/*
+		 * Always update the post after saving the meta, also when only meta
+		 * changed. The revision is saved on `wp_after_insert_post` and then
+		 * includes the new revisioned meta, and the modified date is updated.
+		 */
+		$result = \wp_update_post( \wp_slash( [ 'ID' => $post_id ] + $prepared['post'] ), true );
+
+		if ( $result instanceof WP_Error ) {
+			return $result;
+		}
 
 		return $this->get( $post_id ) ?? $this->not_found_error( $post_id );
 	}
@@ -518,8 +527,8 @@ final readonly class PersonRepository {
 		}
 
 		/*
-		 * The `wp_after_insert_post` sync runs before the meta is saved when
-		 * creating a person, so sync again with the saved meta.
+		 * When creating a person, the `wp_after_insert_post` sync runs before
+		 * the meta is saved, so sync again with the saved meta.
 		 */
 		$this->sync_table( $post_id );
 	}
