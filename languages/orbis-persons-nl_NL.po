@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2026-10-05T10:14:46+00:00\n"
-"PO-Revision-Date: 2026-10-05T17:49:36+00:00\n"
+"PO-Revision-Date: 2026-10-19T14:19:14+00:00\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.9\n"
@@ -39,321 +39,370 @@ msgstr "Pronamic"
 msgid "https://www.pronamic.eu/"
 msgstr "https://www.pronamic.nl/"
 
-#: admin/meta-box-person-details.php:57
+#: admin/meta-box-person-details.php:59
 msgid "Orbis ID"
 msgstr "Orbis ID"
 
-#: admin/meta-box-person-details.php:65
-#: psr-4/AdminPersonPostType.php:45
+#: admin/meta-box-person-details.php:67
+#: psr-4/AdminPersonPostType.php:46
 #: templates/archive-orbis_person.php:39
-#: templates/person-details.php:60
+#: templates/person-details.php:75
 msgid "Organization"
 msgstr "Organisatie"
 
-#: admin/meta-box-person-details.php:68
+#: admin/meta-box-person-details.php:70
 msgctxt "person"
 msgid "Title"
 msgstr "Functie"
 
-#: admin/meta-box-person-details.php:70
+#: admin/meta-box-person-details.php:72
 msgctxt "person"
 msgid "Organization"
 msgstr "Organisatie"
 
-#: admin/meta-box-person-details.php:72
+#: admin/meta-box-person-details.php:74
 msgctxt "person"
 msgid "Department"
 msgstr "Afdeling"
 
-#: admin/meta-box-person-details.php:77
-#: templates/person-details.php:94
+#: admin/meta-box-person-details.php:79
+#: templates/person-details.php:109
 msgid "Gender"
 msgstr "Geslacht"
 
-#: admin/meta-box-person-details.php:90
+#: admin/meta-box-person-details.php:92
 msgid "— Select Gender —"
 msgstr "— Selecteer geslacht —"
 
-#: admin/meta-box-person-details.php:102
-#: templates/person-details.php:85
+#: admin/meta-box-person-details.php:104
+#: templates/person-details.php:100
 msgid "Email Address"
 msgstr "E-mailadres"
 
-#: admin/meta-box-person-details.php:110
-#: templates/person-details.php:67
+#: admin/meta-box-person-details.php:112
+#: templates/person-details.php:82
 msgid "Phone Number"
 msgstr "Telefoonnummer"
 
-#: admin/meta-box-person-details.php:118
-#: templates/person-details.php:76
+#: admin/meta-box-person-details.php:120
+#: templates/person-details.php:91
 msgid "Mobile Number"
 msgstr "Mobiel nummer"
 
-#: admin/meta-box-person-details.php:126
-#: admin/meta-box-person-details.php:129
+#: admin/meta-box-person-details.php:128
+#: admin/meta-box-person-details.php:131
 #: templates/archive-orbis_person.php:40
-#: templates/person-details.php:101
+#: templates/person-details.php:116
 msgid "Address"
 msgstr "Adres"
 
-#: admin/meta-box-person-details.php:131
+#: admin/meta-box-person-details.php:133
 msgid "Postcode"
 msgstr "Postcode"
 
-#: admin/meta-box-person-details.php:132
+#: admin/meta-box-person-details.php:134
 msgid "City"
 msgstr "Plaats"
 
-#: admin/meta-box-person-details.php:134
+#: admin/meta-box-person-details.php:136
 msgid "Country"
 msgstr "Land"
 
-#: admin/meta-box-person-details.php:139
-#: templates/person-details.php:119
+#: admin/meta-box-person-details.php:141
+#: admin/meta-box-person-details.php:145
+#: templates/person-details.php:134
 msgid "Birth Date"
 msgstr "Geboortedatum"
 
-#: admin/meta-box-person-details.php:142
-msgctxt "birth date format"
-msgid "dd-mm-yyyy"
-msgstr "dd-mm-jjjj"
-
 #: admin/meta-box-person-details.php:147
-#: templates/person-details.php:112
+msgid "Day"
+msgstr "Dag"
+
+#: admin/meta-box-person-details.php:148
+msgctxt "birth day placeholder"
+msgid "dd"
+msgstr "dd"
+
+#: admin/meta-box-person-details.php:150
+msgid "Month"
+msgstr "Maand"
+
+#: admin/meta-box-person-details.php:151
+msgctxt "birth month placeholder"
+msgid "mm"
+msgstr "mm"
+
+#: admin/meta-box-person-details.php:153
+msgid "Year"
+msgstr "Jaar"
+
+#: admin/meta-box-person-details.php:154
+msgctxt "birth year placeholder"
+msgid "yyyy"
+msgstr "jjjj"
+
+#: admin/meta-box-person-details.php:156
+msgid "Fill in what is known, each part is optional."
+msgstr "Vul in wat bekend is, elk deel is optioneel."
+
+#: admin/meta-box-person-details.php:162
+#: templates/person-details.php:127
 msgid "IBAN"
 msgstr "IBAN"
 
-#: admin/meta-box-person-details.php:155
+#: admin/meta-box-person-details.php:170
 msgid "Twitter Username"
 msgstr "Twitter-gebruikersnaam"
 
-#: admin/meta-box-person-details.php:163
+#: admin/meta-box-person-details.php:178
 msgid "Facebook URL"
 msgstr "Facebook-URL"
 
-#: admin/meta-box-person-details.php:171
+#: admin/meta-box-person-details.php:186
 msgid "LinkedIn URL"
 msgstr "LinkedIn-URL"
 
-#: psr-4/AdminPersonPostType.php:44
+#: psr-4/AdminPersonPostType.php:45
 msgid "Title"
 msgstr "Titel"
 
-#: psr-4/AdminPersonPostType.php:46
+#: psr-4/AdminPersonPostType.php:47
 msgid "Contact"
 msgstr "Contact"
 
-#: psr-4/AdminPersonPostType.php:47
+#: psr-4/AdminPersonPostType.php:48
 #: templates/archive-orbis_person.php:41
 msgid "Author"
 msgstr "Auteur"
 
-#: psr-4/AdminPersonPostType.php:48
+#: psr-4/AdminPersonPostType.php:49
 msgid "Comments"
 msgstr "Reacties"
 
-#: psr-4/AdminPersonPostType.php:49
+#: psr-4/AdminPersonPostType.php:50
 msgid "Date"
 msgstr "Datum"
 
-#: psr-4/AdminPersonPostType.php:131
+#: psr-4/AdminPersonPostType.php:127
 msgid "Person Details"
 msgstr "Persoonsgegevens"
 
-#: psr-4/ContentTypes.php:39
-#: psr-4/ContentTypes.php:41
-#: psr-4/ContentTypes.php:62
+#: psr-4/AdminPersonPostType.php:232
+msgid "The birth date is invalid and has not been saved."
+msgstr "De geboortedatum is ongeldig en is niet opgeslagen."
+
+#. translators: 1: day, 2: month name, 3: year
+#: psr-4/BirthDate.php:204
+#, php-format
+msgid "%1$d %2$s %3$d"
+msgstr "%1$d %2$s %3$d"
+
+#. translators: 1: day, 2: month name
+#: psr-4/BirthDate.php:206
+#, php-format
+msgid "%1$d %2$s"
+msgstr "%1$d %2$s"
+
+#. translators: 1: month name, 2: year
+#: psr-4/BirthDate.php:208
+#, php-format
+msgid "%1$s %2$d"
+msgstr "%1$s %2$d"
+
+#: psr-4/ContentTypes.php:35
+#: psr-4/ContentTypes.php:37
+#: psr-4/ContentTypes.php:58
 msgid "Persons"
 msgstr "Personen"
 
-#: psr-4/ContentTypes.php:42
-#: psr-4/ContentTypes.php:75
+#: psr-4/ContentTypes.php:38
+#: psr-4/ContentTypes.php:71
 msgid "Person"
 msgstr "Persoon"
 
-#: psr-4/ContentTypes.php:43
+#: psr-4/ContentTypes.php:39
 msgctxt "orbis_person"
 msgid "Add New"
 msgstr "Nieuwe toevoegen"
 
-#: psr-4/ContentTypes.php:44
+#: psr-4/ContentTypes.php:40
 msgid "Add New Person"
 msgstr "Nieuwe persoon toevoegen"
 
-#: psr-4/ContentTypes.php:45
+#: psr-4/ContentTypes.php:41
 msgid "Edit Person"
 msgstr "Persoon bewerken"
 
-#: psr-4/ContentTypes.php:46
+#: psr-4/ContentTypes.php:42
 msgid "New Person"
 msgstr "Nieuwe persoon"
 
-#: psr-4/ContentTypes.php:47
+#: psr-4/ContentTypes.php:43
 msgid "View Person"
 msgstr "Persoon bekijken"
 
-#: psr-4/ContentTypes.php:48
+#: psr-4/ContentTypes.php:44
 msgid "View Persons"
 msgstr "Personen bekijken"
 
-#: psr-4/ContentTypes.php:49
+#: psr-4/ContentTypes.php:45
 msgid "Search Persons"
 msgstr "Personen zoeken"
 
-#: psr-4/ContentTypes.php:50
+#: psr-4/ContentTypes.php:46
 msgid "No persons found."
 msgstr "Geen personen gevonden."
 
-#: psr-4/ContentTypes.php:51
+#: psr-4/ContentTypes.php:47
 msgid "No persons found in Trash."
 msgstr "Geen personen gevonden in de prullenbak."
 
-#: psr-4/ContentTypes.php:52
+#: psr-4/ContentTypes.php:48
 msgid "Parent Person:"
 msgstr "Hoofdpersoon:"
 
-#: psr-4/ContentTypes.php:53
+#: psr-4/ContentTypes.php:49
 msgid "All Persons"
 msgstr "Alle personen"
 
-#: psr-4/ContentTypes.php:54
+#: psr-4/ContentTypes.php:50
 msgid "Person Archives"
 msgstr "Personenarchief"
 
-#: psr-4/ContentTypes.php:55
+#: psr-4/ContentTypes.php:51
 msgid "Person Attributes"
 msgstr "Persoonsattributen"
 
-#: psr-4/ContentTypes.php:56
+#: psr-4/ContentTypes.php:52
 msgid "Insert into person"
 msgstr "Invoegen in persoon"
 
-#: psr-4/ContentTypes.php:57
+#: psr-4/ContentTypes.php:53
 msgid "Uploaded to this person"
 msgstr "Geüpload naar deze persoon"
 
-#: psr-4/ContentTypes.php:58
+#: psr-4/ContentTypes.php:54
 msgid "Featured image"
 msgstr "Uitgelichte afbeelding"
 
-#: psr-4/ContentTypes.php:59
+#: psr-4/ContentTypes.php:55
 msgid "Set featured image"
 msgstr "Uitgelichte afbeelding instellen"
 
-#: psr-4/ContentTypes.php:60
+#: psr-4/ContentTypes.php:56
 msgid "Remove featured image"
 msgstr "Uitgelichte afbeelding verwijderen"
 
-#: psr-4/ContentTypes.php:61
+#: psr-4/ContentTypes.php:57
 msgid "Use as featured image"
 msgstr "Gebruiken als uitgelichte afbeelding"
 
-#: psr-4/ContentTypes.php:63
+#: psr-4/ContentTypes.php:59
 msgid "Filter persons list"
 msgstr "Personenlijst filteren"
 
-#: psr-4/ContentTypes.php:64
+#: psr-4/ContentTypes.php:60
 msgid "Filter by date"
 msgstr "Filteren op datum"
 
-#: psr-4/ContentTypes.php:65
+#: psr-4/ContentTypes.php:61
 msgid "Persons list navigation"
 msgstr "Navigatie personenlijst"
 
-#: psr-4/ContentTypes.php:66
+#: psr-4/ContentTypes.php:62
 msgid "Persons list"
 msgstr "Personenlijst"
 
-#: psr-4/ContentTypes.php:67
+#: psr-4/ContentTypes.php:63
 msgid "Person published."
 msgstr "Persoon gepubliceerd."
 
-#: psr-4/ContentTypes.php:68
+#: psr-4/ContentTypes.php:64
 msgid "Person published privately."
 msgstr "Persoon privé gepubliceerd."
 
-#: psr-4/ContentTypes.php:69
+#: psr-4/ContentTypes.php:65
 msgid "Person reverted to draft."
 msgstr "Persoon teruggezet naar concept."
 
-#: psr-4/ContentTypes.php:70
+#: psr-4/ContentTypes.php:66
 msgid "Person trashed."
 msgstr "Persoon naar prullenbak verplaatst."
 
-#: psr-4/ContentTypes.php:71
+#: psr-4/ContentTypes.php:67
 msgid "Person scheduled."
 msgstr "Persoon ingepland."
 
-#: psr-4/ContentTypes.php:72
+#: psr-4/ContentTypes.php:68
 msgid "Person updated."
 msgstr "Persoon bijgewerkt."
 
-#: psr-4/ContentTypes.php:73
+#: psr-4/ContentTypes.php:69
 msgctxt "navigation link block title"
 msgid "Person Link"
 msgstr "Persoonslink"
 
-#: psr-4/ContentTypes.php:74
+#: psr-4/ContentTypes.php:70
 msgctxt "navigation link block description"
 msgid "A link to a person."
 msgstr "Een link naar een persoon."
 
-#: psr-4/ContentTypes.php:76
+#: psr-4/ContentTypes.php:72
 msgid "Single item: Person"
 msgstr "Enkel item: Persoon"
 
-#: psr-4/ContentTypes.php:96
+#: psr-4/ContentTypes.php:92
 msgctxt "slug"
 msgid "persons"
 msgstr "personen"
 
-#: psr-4/ContentTypes.php:107
+#: psr-4/ContentTypes.php:103
 msgctxt "taxonomy general name"
 msgid "Genders"
 msgstr "Geslachten"
 
-#: psr-4/ContentTypes.php:108
+#: psr-4/ContentTypes.php:104
 msgctxt "taxonomy singular name"
 msgid "Gender"
 msgstr "Geslacht"
 
-#: psr-4/ContentTypes.php:109
+#: psr-4/ContentTypes.php:105
 msgid "Search Genders"
 msgstr "Geslachten zoeken"
 
-#: psr-4/ContentTypes.php:110
+#: psr-4/ContentTypes.php:106
 msgid "All Genders"
 msgstr "Alle geslachten"
 
-#: psr-4/ContentTypes.php:111
+#: psr-4/ContentTypes.php:107
 msgid "Parent Gender"
 msgstr "Hoofdgeslacht"
 
-#: psr-4/ContentTypes.php:112
+#: psr-4/ContentTypes.php:108
 msgid "Parent Gender:"
 msgstr "Hoofdgeslacht:"
 
-#: psr-4/ContentTypes.php:113
+#: psr-4/ContentTypes.php:109
 msgid "Edit Gender"
 msgstr "Geslacht bewerken"
 
-#: psr-4/ContentTypes.php:114
+#: psr-4/ContentTypes.php:110
 msgid "Update Gender"
 msgstr "Geslacht bijwerken"
 
-#: psr-4/ContentTypes.php:115
+#: psr-4/ContentTypes.php:111
 msgid "Add New Gender"
 msgstr "Nieuw geslacht toevoegen"
 
-#: psr-4/ContentTypes.php:116
+#: psr-4/ContentTypes.php:112
 msgid "New Gender Name"
 msgstr "Nieuwe geslachtsnaam"
 
-#: psr-4/ContentTypes.php:117
+#: psr-4/ContentTypes.php:113
 msgid "Genders"
 msgstr "Geslachten"
 
-#: psr-4/ContentTypes.php:128
+#: psr-4/ContentTypes.php:124
 msgctxt "slug"
 msgid "genders"
 msgstr "geslachten"
@@ -371,40 +420,68 @@ msgstr "Naam"
 msgid "Actions"
 msgstr "Acties"
 
-#: templates/person-details.php:69
-#: templates/person-details.php:78
+#: templates/person-details.php:84
+#: templates/person-details.php:93
 msgid "Call this number"
 msgstr "Bel dit nummer"
 
-#: templates/person-details.php:120
+#: templates/person-details.php:146
+msgid "Today!"
+msgstr "Vandaag!"
+
+#: templates/person-details.php:146
 msgid "j F Y"
 msgstr "j F Y"
 
-#: templates/person-details.php:122
+#. translators: %d: number of days
+#: templates/person-details.php:151
+#, php-format
+msgid "in %d day"
+msgid_plural "in %d days"
+msgstr[0] "over %d dag"
+msgstr[1] "over %d dagen"
+
+#. translators: %d: age
+#: templates/person-details.php:156
+#, php-format
+msgid "turns %d"
+msgstr "wordt %d"
+
+#: templates/person-details.php:161
+msgid "Next Birthday"
+msgstr "Eerstvolgende verjaardag"
+
+#: templates/person-details.php:168
 msgid "Age"
 msgstr "Leeftijd"
 
-#: templates/person-details.php:129
+#. translators: 1: minimum age, 2: maximum age
+#: templates/person-details.php:176
+#, php-format
+msgid "%1$d or %2$d"
+msgstr "%1$d of %2$d"
+
+#: templates/person-details.php:186
 msgid "vCard"
 msgstr "vCard"
 
-#: templates/person-details.php:131
+#: templates/person-details.php:188
 msgid "Download vCard"
 msgstr "vCard downloaden"
 
-#: templates/person-details.php:138
+#: templates/person-details.php:195
 msgid "Social Media"
 msgstr "Social media"
 
-#: templates/person-details.php:147
+#: templates/person-details.php:204
 msgid "Twitter"
 msgstr "Twitter"
 
-#: templates/person-details.php:159
+#: templates/person-details.php:216
 msgid "Facebook"
 msgstr "Facebook"
 
-#: templates/person-details.php:171
+#: templates/person-details.php:228
 msgid "LinkedIn"
 msgstr "LinkedIn"
 

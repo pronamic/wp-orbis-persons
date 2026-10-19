@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- 
+### Changed
+
+- The birth day, month and year can now be set separately, each part is optional.
+- The person details show the next birthday and the (possible) age.
+- Existing birth dates are migrated to the separate day, month and year fields.
 
 ## [1.0.0]
 

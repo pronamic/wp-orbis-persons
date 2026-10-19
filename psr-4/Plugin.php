@@ -65,12 +65,14 @@ final class Plugin {
 	 * @return void
 	 */
 	private function init(): void {
-		$version = '1.1.0';
+		$version = '1.2.0';
 
 		if ( \get_option( 'orbis_persons_db_version' ) !== $version ) {
 			$this->install();
 
 			$this->add_foreign_keys();
+
+			$this->migrate_birth_dates();
 
 			\update_option( 'orbis_persons_db_version', $version );
 		}
@@ -179,6 +181,74 @@ final class Plugin {
 			$wpdb->query( $foreign_key['sql'] );
 		}
 		// phpcs:enable WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.NotPrepared
+	}
+
+	/**
+	 * Migrate birth dates.
+	 *
+	 * Birth dates used to be stored as one `d-m-Y` string, now the day, month
+	 * and year are stored separately. Strings with only some parts, for
+	 * example `1985` or `12-03`, are migrated as well. Strings that cannot be
+	 * parsed are kept.
+	 *
+	 * @return void
+	 */
+	private function migrate_birth_dates(): void {
+		global $wpdb;
+
+		/**
+		 * WordPress database abstraction object.
+		 *
+		 * @var \wpdb $wpdb
+		 */
+
+		$query = <<<SQL
+			SELECT
+				post_id
+			FROM
+				$wpdb->postmeta
+			WHERE
+				meta_key = '_orbis_birth_date_string'
+			;
+			SQL;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- One-time migration, the query is built from table names only.
+		$post_ids = \array_map( \intval( ... ), $wpdb->get_col( $query ) );
+
+		foreach ( $post_ids as $post_id ) {
+			$value = \get_post_meta( $post_id, '_orbis_birth_date_string', true );
+
+			if ( ! \is_string( $value ) ) {
+				continue;
+			}
+
+			$value = \trim( $value );
+
+			$patterns = [
+				'/^(?<day>\d{1,2})[-\/. ](?<month>\d{1,2})[-\/. ](?<year>\d{4})$/',
+				'/^(?<month>\d{1,2})[-\/. ](?<year>\d{4})$/',
+				'/^(?<day>\d{1,2})[-\/. ](?<month>\d{1,2})$/',
+				'/^(?<year>\d{4})$/',
+			];
+
+			$birth_date = null;
+
+			foreach ( $patterns as $pattern ) {
+				if ( 1 === \preg_match( $pattern, $value, $matches ) ) {
+					$birth_date = BirthDate::from_input( $matches['day'] ?? '', $matches['month'] ?? '', $matches['year'] ?? '' );
+
+					break;
+				}
+			}
+
+			if ( null === $birth_date ) {
+				continue;
+			}
+
+			$birth_date->save( $post_id );
+
+			\delete_post_meta( $post_id, '_orbis_birth_date_string' );
+		}
 	}
 
 	/**

@@ -39,7 +39,9 @@ $postcode = $get_meta( '_orbis_postcode' );
 $city     = $get_meta( '_orbis_city' );
 $country  = $get_meta( '_orbis_country' );
 
-$birth_date = $get_meta( '_orbis_birth_date_string' );
+$birth_day   = $get_meta( '_orbis_birth_day' );
+$birth_month = $get_meta( '_orbis_birth_month' );
+$birth_year  = $get_meta( '_orbis_birth_year' );
 
 $iban = $get_meta( '_orbis_iban' );
 
@@ -136,10 +138,23 @@ $linkedin = $get_meta( '_orbis_linkedin' );
 		</tr>
 		<tr valign="top">
 			<th scope="row">
-				<label for="orbis_person_birth_date"><?php \esc_html_e( 'Birth Date', 'orbis-persons' ); ?></label>
+				<label for="orbis_person_birth_day"><?php \esc_html_e( 'Birth Date', 'orbis-persons' ); ?></label>
 			</th>
 			<td>
-				<input type="text" id="orbis_person_birth_date" name="_orbis_birth_date_string" value="<?php echo \esc_attr( $birth_date ); ?>" class="regular-text" placeholder="<?php echo \esc_attr( \_x( 'dd-mm-yyyy', 'birth date format', 'orbis-persons' ) ); ?>" />
+				<fieldset>
+					<legend class="screen-reader-text"><?php \esc_html_e( 'Birth Date', 'orbis-persons' ); ?></legend>
+
+					<label for="orbis_person_birth_day" class="screen-reader-text"><?php \esc_html_e( 'Day', 'orbis-persons' ); ?></label>
+					<input type="text" id="orbis_person_birth_day" name="_orbis_birth_day" value="<?php echo \esc_attr( $birth_day ); ?>" inputmode="numeric" pattern="[0-9]*" size="2" maxlength="2" placeholder="<?php echo \esc_attr( \_x( 'dd', 'birth day placeholder', 'orbis-persons' ) ); ?>" />
+
+					<label for="orbis_person_birth_month" class="screen-reader-text"><?php \esc_html_e( 'Month', 'orbis-persons' ); ?></label>
+					<input type="text" id="orbis_person_birth_month" name="_orbis_birth_month" value="<?php echo \esc_attr( $birth_month ); ?>" inputmode="numeric" pattern="[0-9]*" size="2" maxlength="2" placeholder="<?php echo \esc_attr( \_x( 'mm', 'birth month placeholder', 'orbis-persons' ) ); ?>" />
+
+					<label for="orbis_person_birth_year" class="screen-reader-text"><?php \esc_html_e( 'Year', 'orbis-persons' ); ?></label>
+					<input type="text" id="orbis_person_birth_year" name="_orbis_birth_year" value="<?php echo \esc_attr( $birth_year ); ?>" inputmode="numeric" pattern="[0-9]*" size="4" maxlength="4" placeholder="<?php echo \esc_attr( \_x( 'yyyy', 'birth year placeholder', 'orbis-persons' ) ); ?>" />
+
+					<p class="description"><?php \esc_html_e( 'Fill in what is known, each part is optional.', 'orbis-persons' ); ?></p>
+				</fieldset>
 			</td>
 		</tr>
 		<tr valign="top">

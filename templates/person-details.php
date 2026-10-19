@@ -47,7 +47,22 @@ $iban = $get_meta( '_orbis_iban' );
 $genders = \get_the_terms( (int) \get_the_ID(), 'orbis_gender' );
 $genders = \is_array( $genders ) ? \wp_list_pluck( $genders, 'name' ) : [];
 
-$birth_date = DateTimeImmutable::createFromFormat( '!Y-m-d', $get_meta( '_orbis_birth_date' ), \wp_timezone() );
+$birth_date = BirthDate::from_post( (int) \get_the_ID() );
+
+$today = new DateTimeImmutable( 'today', \wp_timezone() );
+
+$next_birthday = $birth_date->get_next_birthday( $today );
+
+$age_range = $birth_date->get_age_range( $today );
+
+/**
+ * For historical persons an age is not meaningful.
+ */
+if ( null !== $age_range && $age_range[1] > 150 ) {
+	$age_range = null;
+}
+
+$age_on_next_birthday = null === $age_range ? null : $birth_date->get_age_on_next_birthday( $today );
 
 $twitter  = $get_meta( '_orbis_twitter' );
 $facebook = $get_meta( '_orbis_facebook' );
@@ -114,13 +129,55 @@ $linkedin = $get_meta( '_orbis_linkedin' );
 
 	<?php endif; ?>
 
-	<?php if ( false !== $birth_date ) : ?>
+	<?php if ( ! $birth_date->is_empty() ) : ?>
 
 		<dt><?php \esc_html_e( 'Birth Date', 'orbis-persons' ); ?></dt>
-		<dd><?php echo \esc_html( \wp_date( \__( 'j F Y', 'orbis-persons' ), $birth_date->getTimestamp() ) ); ?></dd>
+		<dd><?php echo \esc_html( $birth_date->format() ); ?></dd>
+
+	<?php endif; ?>
+
+	<?php if ( null !== $next_birthday ) : ?>
+
+		<?php
+
+		$days = (int) $today->diff( $next_birthday )->days;
+
+		$next_birthday_parts = [
+			0 === $days ? \__( 'Today!', 'orbis-persons' ) : \wp_date( \__( 'j F Y', 'orbis-persons' ), $next_birthday->getTimestamp() ),
+		];
+
+		if ( 0 !== $days ) {
+			/* translators: %d: number of days */
+			$next_birthday_parts[] = \sprintf( \_n( 'in %d day', 'in %d days', $days, 'orbis-persons' ), $days );
+		}
+
+		if ( null !== $age_on_next_birthday ) {
+			/* translators: %d: age */
+			$next_birthday_parts[] = \sprintf( \__( 'turns %d', 'orbis-persons' ), $age_on_next_birthday );
+		}
+
+		?>
+
+		<dt><?php \esc_html_e( 'Next Birthday', 'orbis-persons' ); ?></dt>
+		<dd><?php echo \esc_html( \implode( ' · ', $next_birthday_parts ) ); ?></dd>
+
+	<?php endif; ?>
+
+	<?php if ( null !== $age_range ) : ?>
 
 		<dt><?php \esc_html_e( 'Age', 'orbis-persons' ); ?></dt>
-		<dd><?php echo \esc_html( (string) $birth_date->diff( new DateTimeImmutable( 'now', \wp_timezone() ) )->y ); ?></dd>
+		<dd>
+			<?php
+
+			echo \esc_html(
+				$age_range[0] === $age_range[1]
+					? (string) $age_range[0]
+					/* translators: 1: minimum age, 2: maximum age */
+					: \sprintf( \__( '%1$d or %2$d', 'orbis-persons' ), $age_range[0], $age_range[1] )
+			);
+
+			?>
+		</dd>
 
 	<?php endif; ?>
 

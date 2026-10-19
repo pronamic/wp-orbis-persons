@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Pronamic\Orbis\Persons;
 
-use DateTimeImmutable;
 use WP_Post;
 
 /**
@@ -31,6 +30,8 @@ final class AdminPersonPostType {
 
 		\add_action( 'save_post_orbis_person', $this->save_person( ... ) );
 		\add_action( 'save_post_orbis_person', $this->save_person_sync( ... ), 500, 2 );
+
+		\add_action( 'admin_notices', $this->admin_notices( ... ) );
 	}
 
 	/**
@@ -163,21 +164,20 @@ final class AdminPersonPostType {
 		}
 
 		$fields = [
-			'_orbis_title'             => \sanitize_text_field( ... ),
-			'_orbis_organization'      => \sanitize_text_field( ... ),
-			'_orbis_department'        => \sanitize_text_field( ... ),
-			'_orbis_email'             => \sanitize_email( ... ),
-			'_orbis_phone_number'      => \sanitize_text_field( ... ),
-			'_orbis_mobile_number'     => \sanitize_text_field( ... ),
-			'_orbis_address'           => \sanitize_text_field( ... ),
-			'_orbis_postcode'          => \sanitize_text_field( ... ),
-			'_orbis_city'              => \sanitize_text_field( ... ),
-			'_orbis_country'           => \sanitize_text_field( ... ),
-			'_orbis_birth_date_string' => \sanitize_text_field( ... ),
-			'_orbis_iban'              => \sanitize_text_field( ... ),
-			'_orbis_twitter'           => \sanitize_text_field( ... ),
-			'_orbis_facebook'          => \sanitize_text_field( ... ),
-			'_orbis_linkedin'          => \sanitize_text_field( ... ),
+			'_orbis_title'         => \sanitize_text_field( ... ),
+			'_orbis_organization'  => \sanitize_text_field( ... ),
+			'_orbis_department'    => \sanitize_text_field( ... ),
+			'_orbis_email'         => \sanitize_email( ... ),
+			'_orbis_phone_number'  => \sanitize_text_field( ... ),
+			'_orbis_mobile_number' => \sanitize_text_field( ... ),
+			'_orbis_address'       => \sanitize_text_field( ... ),
+			'_orbis_postcode'      => \sanitize_text_field( ... ),
+			'_orbis_city'          => \sanitize_text_field( ... ),
+			'_orbis_country'       => \sanitize_text_field( ... ),
+			'_orbis_iban'          => \sanitize_text_field( ... ),
+			'_orbis_twitter'       => \sanitize_text_field( ... ),
+			'_orbis_facebook'      => \sanitize_text_field( ... ),
+			'_orbis_linkedin'      => \sanitize_text_field( ... ),
 		];
 
 		foreach ( $fields as $key => $sanitize ) {
@@ -191,30 +191,50 @@ final class AdminPersonPostType {
 			}
 		}
 
-		$this->save_birth_date( $post_id );
-	}
+		$birth_date_input = [];
 
-	/**
-	 * Save birth date.
-	 *
-	 * The birth date is entered as `d-m-Y` string, `_orbis_birth_date` and
-	 * `_orbis_birth_date_timestamp` are derived for sorting and querying.
-	 *
-	 * @param int $post_id Post ID.
-	 * @return void
-	 */
-	private function save_birth_date( int $post_id ): void {
-		$date = DateTimeImmutable::createFromFormat( '!d-m-Y', $this->get_meta( $post_id, '_orbis_birth_date_string' ) );
+		foreach ( [ '_orbis_birth_day', '_orbis_birth_month', '_orbis_birth_year' ] as $key ) {
+			$birth_date_input[] = \array_key_exists( $key, $_POST ) && \is_string( $_POST[ $key ] ) ? \sanitize_text_field( \wp_unslash( $_POST[ $key ] ) ) : '';
+		}
 
-		if ( false === $date ) {
-			\delete_post_meta( $post_id, '_orbis_birth_date' );
-			\delete_post_meta( $post_id, '_orbis_birth_date_timestamp' );
+		$birth_date = BirthDate::from_input( ...$birth_date_input );
+
+		if ( null === $birth_date ) {
+			\add_filter(
+				'redirect_post_location',
+				static fn ( string $location ): string => \add_query_arg( 'orbis_persons_invalid_birth_date', '1', $location )
+			);
 
 			return;
 		}
 
-		\update_post_meta( $post_id, '_orbis_birth_date', $date->format( 'Y-m-d' ) );
-		\update_post_meta( $post_id, '_orbis_birth_date_timestamp', $date->getTimestamp() );
+		$birth_date->save( $post_id );
+	}
+
+	/**
+	 * Admin notices.
+	 *
+	 * @return void
+	 */
+	private function admin_notices(): void {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Only used to show a notice after saving.
+		if ( ! \array_key_exists( 'orbis_persons_invalid_birth_date', $_GET ) ) {
+			return;
+		}
+
+		$screen = \get_current_screen();
+
+		if ( null === $screen || 'orbis_person' !== $screen->post_type ) {
+			return;
+		}
+
+		\wp_admin_notice(
+			\__( 'The birth date is invalid and has not been saved.', 'orbis-persons' ),
+			[
+				'type'        => 'error',
+				'dismissible' => true,
+			]
+		);
 	}
 
 	/**
