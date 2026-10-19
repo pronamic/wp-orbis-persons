@@ -147,7 +147,7 @@ final readonly class AbilitiesController {
 			],
 			'content'       => [
 				'type'        => 'string',
-				'description' => \__( 'Description of or notes about the person.', 'orbis-persons' ),
+				'description' => \__( 'Description of or notes about the person, as block editor (Gutenberg) markup, for example <!-- wp:paragraph --><p>Text</p><!-- /wp:paragraph -->. Plain HTML is also accepted. Replaces the whole description, so get the person with orbis-persons/get first and keep the existing blocks when adding to it.', 'orbis-persons' ),
 			],
 			'job_title'     => [
 				'type'        => 'string',
@@ -246,7 +246,10 @@ final readonly class AbilitiesController {
 				'first_name'      => $nullable_string,
 				'last_name'       => $nullable_string,
 				'maiden_name'     => $nullable_string,
-				'content'         => $nullable_string,
+				'content'         => [
+					...$nullable_string,
+					'description' => \__( 'Description of the person as block editor (Gutenberg) markup. In orbis-persons/search results this is shortened to a plain text excerpt without markup.', 'orbis-persons' ),
+				],
 				'job_title'       => $nullable_string,
 				'organization'    => $nullable_string,
 				'department'      => $nullable_string,
