@@ -62,6 +62,7 @@ final class Plugin {
 
 		new ContentTypes();
 		new TemplateController();
+		new CommentsController();
 
 		( new AbilitiesController( $this ) )->setup();
 

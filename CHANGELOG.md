@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Abilities to search, get, create, update and comment on persons (`orbis-persons/search`, `orbis-persons/get`, `orbis-persons/create`, `orbis-persons/update` and `orbis-persons/comment`), also available as Orbis MCP server tools.
 - Changes made through the abilities are logged as comments, with the AI provider and model in the comment meta.
+- Person comments show the AI provider and model that wrote them.
 
 ### Changed
 
