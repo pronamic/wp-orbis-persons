@@ -2,20 +2,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Orbis Persons 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/orbis-persons\n"
+"POT-Creation-Date: 2026-10-05T10:14:46+00:00\n"
+"PO-Revision-Date: 2026-10-19T17:36:04+00:00\n"
 "Last-Translator: Remco Tolsma <info@remcotolsma.nl>\n"
 "Language-Team: Pronamic <info@pronamic.nl>\n"
+"Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-05T10:14:46+00:00\n"
-"PO-Revision-Date: 2026-10-19T14:19:14+00:00\n"
-"Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.9\n"
 "X-Domain: orbis-persons\n"
+"X-Generator: Poedit 3.9\n"
 
 #. Plugin Name of the plugin
 #: orbis-persons.php:11
+#: psr-4/AbilitiesController.php:75
 msgid "Orbis Persons"
 msgstr "Orbis Persons"
 
@@ -26,8 +27,12 @@ msgstr "https://wp.pronamic.directory/plugins/orbis-persons/"
 
 #. Description of the plugin
 #: orbis-persons.php:13
-msgid "WordPress plugin for Orbis that adds persons, with personal details such as birth date and gender, built on top of Orbis Contacts."
-msgstr "WordPress-plugin voor Orbis die personen toevoegt, met persoonlijke gegevens zoals geboortedatum en geslacht, gebouwd op Orbis Contacts."
+msgid ""
+"WordPress plugin for Orbis that adds persons, with personal details such as "
+"birth date and gender, built on top of Orbis Contacts."
+msgstr ""
+"WordPress-plugin voor Orbis die personen toevoegt, met persoonlijke gegevens "
+"zoals geboortedatum en geslacht, gebouwd op Orbis Contacts."
 
 #. Author of the plugin
 #: orbis-persons.php:18
@@ -44,28 +49,32 @@ msgid "Orbis ID"
 msgstr "Orbis ID"
 
 #: admin/meta-box-person-details.php:67
-#: psr-4/AdminPersonPostType.php:46
+#: psr-4/AdminPersonPostType.php:52
 #: templates/archive-orbis_person.php:39
 #: templates/person-details.php:75
 msgid "Organization"
 msgstr "Organisatie"
 
 #: admin/meta-box-person-details.php:70
+#: psr-4/AbilitiesController.php:855
 msgctxt "person"
 msgid "Title"
 msgstr "Functie"
 
 #: admin/meta-box-person-details.php:72
+#: psr-4/AbilitiesController.php:856
 msgctxt "person"
 msgid "Organization"
 msgstr "Organisatie"
 
 #: admin/meta-box-person-details.php:74
+#: psr-4/AbilitiesController.php:857
 msgctxt "person"
 msgid "Department"
 msgstr "Afdeling"
 
 #: admin/meta-box-person-details.php:79
+#: psr-4/AbilitiesController.php:858
 #: templates/person-details.php:109
 msgid "Gender"
 msgstr "Geslacht"
@@ -75,41 +84,49 @@ msgid "— Select Gender —"
 msgstr "— Selecteer geslacht —"
 
 #: admin/meta-box-person-details.php:104
+#: psr-4/AbilitiesController.php:859
 #: templates/person-details.php:100
 msgid "Email Address"
 msgstr "E-mailadres"
 
 #: admin/meta-box-person-details.php:112
+#: psr-4/AbilitiesController.php:860
 #: templates/person-details.php:82
 msgid "Phone Number"
 msgstr "Telefoonnummer"
 
 #: admin/meta-box-person-details.php:120
+#: psr-4/AbilitiesController.php:861
 #: templates/person-details.php:91
 msgid "Mobile Number"
 msgstr "Mobiel nummer"
 
 #: admin/meta-box-person-details.php:128
 #: admin/meta-box-person-details.php:131
+#: psr-4/AbilitiesController.php:862
 #: templates/archive-orbis_person.php:40
 #: templates/person-details.php:116
 msgid "Address"
 msgstr "Adres"
 
 #: admin/meta-box-person-details.php:133
+#: psr-4/AbilitiesController.php:863
 msgid "Postcode"
 msgstr "Postcode"
 
 #: admin/meta-box-person-details.php:134
+#: psr-4/AbilitiesController.php:864
 msgid "City"
 msgstr "Plaats"
 
 #: admin/meta-box-person-details.php:136
+#: psr-4/AbilitiesController.php:865
 msgid "Country"
 msgstr "Land"
 
 #: admin/meta-box-person-details.php:141
 #: admin/meta-box-person-details.php:145
+#: psr-4/AbilitiesController.php:866
 #: templates/person-details.php:134
 msgid "Birth Date"
 msgstr "Geboortedatum"
@@ -146,48 +163,465 @@ msgid "Fill in what is known, each part is optional."
 msgstr "Vul in wat bekend is, elk deel is optioneel."
 
 #: admin/meta-box-person-details.php:162
+#: psr-4/AbilitiesController.php:867
 #: templates/person-details.php:127
 msgid "IBAN"
 msgstr "IBAN"
 
 #: admin/meta-box-person-details.php:170
+#: psr-4/AbilitiesController.php:868
 msgid "Twitter Username"
 msgstr "Twitter-gebruikersnaam"
 
 #: admin/meta-box-person-details.php:178
+#: psr-4/AbilitiesController.php:869
 msgid "Facebook URL"
 msgstr "Facebook-URL"
 
 #: admin/meta-box-person-details.php:186
+#: psr-4/AbilitiesController.php:870
 msgid "LinkedIn URL"
 msgstr "LinkedIn-URL"
 
-#: psr-4/AdminPersonPostType.php:45
+#: psr-4/AbilitiesController.php:76
+msgid "Abilities for working with Orbis persons."
+msgstr "Abilities voor het werken met Orbis personen."
+
+#: psr-4/AbilitiesController.php:109
+msgid "ID of the AI provider, for example \"anthropic\", \"openai\" or \"google\"."
+msgstr "ID van de AI-provider, bijvoorbeeld \"anthropic\", \"openai\" of \"google\"."
+
+#: psr-4/AbilitiesController.php:114
+msgid "Name of the AI provider, for example \"Anthropic\", \"OpenAI\" or \"Google\"."
+msgstr "Naam van de AI-provider, bijvoorbeeld \"Anthropic\", \"OpenAI\" of \"Google\"."
+
+#: psr-4/AbilitiesController.php:118
+msgid ""
+"ID of the AI model, for example \"claude-opus-4-1\", \"gpt-5\" or "
+"\"gemini-2.5-pro\"."
+msgstr ""
+"ID van het AI-model, bijvoorbeeld \"claude-opus-4-1\", \"gpt-5\" of "
+"\"gemini-2.5-pro\"."
+
+#: psr-4/AbilitiesController.php:123
+msgid ""
+"Name of the AI model, for example \"Claude Opus 4.1\", \"GPT-5\" or \"Gemini "
+"2.5 Pro\"."
+msgstr ""
+"Naam van het AI-model, bijvoorbeeld \"Claude Opus 4.1\", \"GPT-5\" of "
+"\"Gemini 2.5 Pro\"."
+
+#: psr-4/AbilitiesController.php:129
+msgid ""
+"Optional explanation of the change, for example the source of the data. It is"
+" added to the comment that logs the change."
+msgstr ""
+"Optionele toelichting op de wijziging, bijvoorbeeld de bron van de gegevens. "
+"Deze wordt toegevoegd aan de reactie die de wijziging vastlegt."
+
+#: psr-4/AbilitiesController.php:134
+msgid "Full name of the person."
+msgstr "Volledige naam van de persoon."
+
+#: psr-4/AbilitiesController.php:139
+msgid "Description of or notes about the person."
+msgstr "Beschrijving van of notities over de persoon."
+
+#: psr-4/AbilitiesController.php:143
+msgid "Job title, for example \"Developer\"."
+msgstr "Functie, bijvoorbeeld \"Ontwikkelaar\"."
+
+#: psr-4/AbilitiesController.php:147
+msgid "Name of the organization the person works for."
+msgstr "Naam van de organisatie waar de persoon werkt."
+
+#: psr-4/AbilitiesController.php:151
+msgid "Department within the organization."
+msgstr "Afdeling binnen de organisatie."
+
+#: psr-4/AbilitiesController.php:155
+msgid "Email address."
+msgstr "E-mailadres."
+
+#: psr-4/AbilitiesController.php:159
+msgid "Phone number."
+msgstr "Telefoonnummer."
+
+#: psr-4/AbilitiesController.php:163
+msgid "Mobile phone number."
+msgstr "Mobiel telefoonnummer."
+
+#: psr-4/AbilitiesController.php:167
+msgid "Street and house number."
+msgstr "Straat en huisnummer."
+
+#: psr-4/AbilitiesController.php:171
+msgid "Postcode."
+msgstr "Postcode."
+
+#: psr-4/AbilitiesController.php:175
+msgid "City."
+msgstr "Plaats."
+
+#: psr-4/AbilitiesController.php:179
+msgid "Country."
+msgstr "Land."
+
+#: psr-4/AbilitiesController.php:183
+msgid ""
+"Gender: the ID, slug or name of a term of the gender taxonomy. An empty "
+"string removes the gender."
+msgstr ""
+"Geslacht: de ID, slug of naam van een term uit de geslachtstaxonomie. Een "
+"lege string verwijdert het geslacht."
+
+#: psr-4/AbilitiesController.php:187
+msgid ""
+"Day of the month of the birth date. Each part of the birth date is optional, "
+"but a day requires a month. Null removes the day."
+msgstr ""
+"Dag van de maand van de geboortedatum. Elk deel van de geboortedatum is "
+"optioneel, maar een dag vereist een maand. Null verwijdert de dag."
+
+#: psr-4/AbilitiesController.php:193
+msgid "Month (1-12) of the birth date. Null removes the month."
+msgstr "Maand (1-12) van de geboortedatum. Null verwijdert de maand."
+
+#: psr-4/AbilitiesController.php:199
+msgid "Year of the birth date. Null removes the year."
+msgstr "Jaar van de geboortedatum. Null verwijdert het jaar."
+
+#: psr-4/AbilitiesController.php:204
+msgid "IBAN bank account number."
+msgstr "IBAN-bankrekeningnummer."
+
+#: psr-4/AbilitiesController.php:208
+msgid "Twitter (X) username."
+msgstr "Twitter (X)-gebruikersnaam."
+
+#: psr-4/AbilitiesController.php:212
+msgid "Facebook URL."
+msgstr "Facebook-URL."
+
+#: psr-4/AbilitiesController.php:216
+msgid "LinkedIn URL."
+msgstr "LinkedIn-URL."
+
+#: psr-4/AbilitiesController.php:225
+msgid ""
+"HAL links of the person. Each link has an href and a title that describes "
+"what the link is for."
+msgstr ""
+"HAL-links van de persoon. Elke link heeft een href en een titel die "
+"beschrijft waarvoor de link is."
+
+#: psr-4/AbilitiesController.php:242
+msgid "Email addresses of the person from Orbis Contacts, each with a label."
+msgstr "E-mailadressen van de persoon uit Orbis Contacts, elk met een label."
+
+#: psr-4/AbilitiesController.php:267
+msgid ""
+"Birth date, null when nothing of it is known. Each part can be unknown: when "
+"only the year (and month) is known, the age is a range from age_min to "
+"age_max. The next birthday is today or later."
+msgstr ""
+"Geboortedatum, null als er niets van bekend is. Elk deel kan onbekend zijn: "
+"als alleen het jaar (en de maand) bekend is, is de leeftijd een bereik van "
+"age_min tot age_max. De volgende verjaardag is vandaag of later."
+
+#: psr-4/AbilitiesController.php:317
+msgid "Search persons"
+msgstr "Personen zoeken"
+
+#: psr-4/AbilitiesController.php:318
+msgid ""
+"Searches Orbis persons and returns their contact details, organization, "
+"gender and birth date. Without a search term all persons are returned, "
+"ordered by name. Upcoming birthdays are persons ordered by \"birthday\": the "
+"person whose birthday is next comes first. The output contains the current "
+"date of the site. Use orbis-persons/get for the full description of a person "
+"and orbis/search-comments for the comments of a person."
+msgstr ""
+"Zoekt Orbis personen en geeft hun contactgegevens, organisatie, geslacht en "
+"geboortedatum terug. Zonder zoekterm worden alle personen teruggegeven, "
+"gesorteerd op naam. Komende verjaardagen zijn personen gesorteerd op "
+"\"birthday\": de persoon die als eerstvolgende jarig is, komt eerst. De "
+"uitvoer bevat de huidige datum van de site. Gebruik orbis-persons/get voor de"
+" volledige beschrijving van een persoon en orbis/search-comments voor de "
+"reacties op een persoon."
+
+#: psr-4/AbilitiesController.php:326
+msgid ""
+"Search term, matched against the name, the email addresses, the organization "
+"and the phone numbers."
+msgstr ""
+"Zoekterm, vergeleken met de naam, de e-mailadressen, de organisatie en de "
+"telefoonnummers."
+
+#: psr-4/AbilitiesController.php:330
+msgid ""
+"Limit the results to persons with this gender: the ID, slug or name of a term"
+" of the gender taxonomy."
+msgstr ""
+"Beperk de resultaten tot personen met dit geslacht: de ID, slug of naam van "
+"een term uit de geslachtstaxonomie."
+
+#: psr-4/AbilitiesController.php:334
+msgid ""
+"Sort the persons by name, creation date, modification date or upcoming "
+"birthday. Persons without a known birthday come last when sorting by "
+"birthday."
+msgstr ""
+"Sorteer de personen op naam, aanmaakdatum, wijzigingsdatum of komende "
+"verjaardag. Personen zonder bekende verjaardag komen als laatste bij sorteren"
+" op verjaardag."
+
+#: psr-4/AbilitiesController.php:340
+msgid ""
+"Sort order. Defaults to ascending for the name and descending for the dates. "
+"Not used when sorting by birthday."
+msgstr ""
+"Sorteervolgorde. Standaard oplopend voor de naam en aflopend voor de datums. "
+"Niet gebruikt bij sorteren op verjaardag."
+
+#: psr-4/AbilitiesController.php:345
+msgid "Maximum number of persons to return."
+msgstr "Maximaal aantal personen om terug te geven."
+
+#: psr-4/AbilitiesController.php:352
+msgid "Page of results to return."
+msgstr "Pagina met resultaten om terug te geven."
+
+#: psr-4/AbilitiesController.php:388
+msgid "Get person"
+msgstr "Persoon ophalen"
+
+#: psr-4/AbilitiesController.php:389
+msgid ""
+"Returns a single Orbis person by its post ID (post_id of the orbis-"
+"persons/search output), with the full description."
+msgstr ""
+"Geeft één Orbis persoon terug op basis van het bericht-ID (post_id in de "
+"uitvoer van orbis-persons/search), met de volledige beschrijving."
+
+#: psr-4/AbilitiesController.php:397
+msgid "Post ID of the person."
+msgstr "Bericht-ID van de persoon."
+
+#: psr-4/AbilitiesController.php:420
+msgid "Create person"
+msgstr "Persoon aanmaken"
+
+#: psr-4/AbilitiesController.php:421
+msgid ""
+"Creates an Orbis person. Only set the fields the user provided. The current "
+"user becomes the author of the person. A comment is added to the person that "
+"logs the creation, with the AI provider and model. AI assistants must always "
+"pass their AI provider and model in the ai input. Use orbis-persons/search "
+"first to check that the person does not exist yet."
+msgstr ""
+"Maakt een Orbis persoon aan. Stel alleen de velden in die de gebruiker heeft "
+"opgegeven. De huidige gebruiker wordt de auteur van de persoon. Er wordt een "
+"reactie aan de persoon toegevoegd die het aanmaken vastlegt, met de AI-"
+"provider en het AI-model. AI-assistenten moeten altijd hun AI-provider en "
+"-model meegeven in de ai-invoer. Gebruik eerst orbis-persons/search om te "
+"controleren dat de persoon nog niet bestaat."
+
+#: psr-4/AbilitiesController.php:433
+msgid ""
+"The AI provider and model that created this person. AI assistants must always"
+" provide this, with the exact provider and model they run on, so that it is "
+"clear which persons were created by which AI model."
+msgstr ""
+"De AI-provider en het AI-model die deze persoon hebben aangemaakt. AI-"
+"assistenten moeten dit altijd meegeven, met de exacte provider en het exacte "
+"model waarop ze draaien, zodat duidelijk is welke personen door welk AI-model"
+" zijn aangemaakt."
+
+#: psr-4/AbilitiesController.php:455
+msgid "Update person"
+msgstr "Persoon bijwerken"
+
+#: psr-4/AbilitiesController.php:456
+msgid ""
+"Updates an Orbis person. Only the fields in the input are changed: an empty "
+"string clears a field and null clears a part of the birth date. Only change "
+"the fields the user asked for. A comment listing the changed fields is added "
+"to the person, with the AI provider and model. AI assistants must always pass"
+" their AI provider and model in the ai input. Use orbis-persons/search to "
+"find the post ID of the person."
+msgstr ""
+"Werkt een Orbis persoon bij. Alleen de velden in de invoer worden gewijzigd: "
+"een lege string leegt een veld en null leegt een deel van de geboortedatum. "
+"Wijzig alleen de velden waar de gebruiker om heeft gevraagd. Er wordt een "
+"reactie met de gewijzigde velden aan de persoon toegevoegd, met de AI-"
+"provider en het AI-model. AI-assistenten moeten altijd hun AI-provider en "
+"-model meegeven in de ai-invoer. Gebruik orbis-persons/search om het bericht-"
+"ID van de persoon te vinden."
+
+#: psr-4/AbilitiesController.php:464
+#: psr-4/AbilitiesController.php:505
+msgid "Post ID of the person, the post_id in the orbis-persons/search output."
+msgstr ""
+"Bericht-ID van de persoon, de post_id in de uitvoer van orbis-persons/search."
+
+#: psr-4/AbilitiesController.php:474
+msgid ""
+"The AI provider and model that updated this person. AI assistants must always"
+" provide this, with the exact provider and model they run on, so that it is "
+"clear which changes were made by which AI model."
+msgstr ""
+"De AI-provider en het AI-model die deze persoon hebben bijgewerkt. AI-"
+"assistenten moeten dit altijd meegeven, met de exacte provider en het exacte "
+"model waarop ze draaien, zodat duidelijk is welke wijzigingen door welk AI-"
+"model zijn gemaakt."
+
+#: psr-4/AbilitiesController.php:496
+msgid "Comment on person"
+msgstr "Reageren op persoon"
+
+#: psr-4/AbilitiesController.php:497
+msgid ""
+"Adds a comment from the current user to an Orbis person, for example a note "
+"about a conversation with the person. AI assistants must always pass their AI"
+" provider and model in the ai input. Use orbis-persons/search to find the "
+"post ID of the person and orbis/search-comments for the existing comments of "
+"a person."
+msgstr ""
+"Voegt een reactie van de huidige gebruiker toe aan een Orbis persoon, "
+"bijvoorbeeld een notitie over een gesprek met de persoon. AI-assistenten "
+"moeten altijd hun AI-provider en -model meegeven in de ai-invoer. Gebruik "
+"orbis-persons/search om het bericht-ID van de persoon te vinden en "
+"orbis/search-comments voor de bestaande reacties op een persoon."
+
+#: psr-4/AbilitiesController.php:510
+msgid "Text of the comment."
+msgstr "Tekst van de reactie."
+
+#: psr-4/AbilitiesController.php:515
+msgid ""
+"The AI provider and model that wrote this comment. AI assistants must always "
+"provide this, with the exact provider and model they run on, so that it is "
+"clear which comments were written by which AI model."
+msgstr ""
+"De AI-provider en het AI-model die deze reactie hebben geschreven. AI-"
+"assistenten moeten dit altijd meegeven, met de exacte provider en het exacte "
+"model waarop ze draaien, zodat duidelijk is welke reacties door welk AI-model"
+" zijn geschreven."
+
+#: psr-4/AbilitiesController.php:625
+msgid "The person could not be created."
+msgstr "De persoon kon niet worden aangemaakt."
+
+#: psr-4/AbilitiesController.php:630
+msgid "Person created."
+msgstr "Persoon aangemaakt."
+
+#: psr-4/AbilitiesController.php:667
+msgid "You are not allowed to edit this person."
+msgstr "Je hebt geen toestemming om deze persoon te bewerken."
+
+#: psr-4/AbilitiesController.php:677
+msgid "No fields to update, pass at least one person field."
+msgstr "Geen velden om bij te werken, geef minstens één persoonsveld mee."
+
+#. translators: %s: comma-separated list of changed fields
+#: psr-4/AbilitiesController.php:697
+#, php-format
+msgid "Person updated: %s."
+msgstr "Persoon bijgewerkt: %s."
+
+#: psr-4/AbilitiesController.php:735
+msgid "Comments are closed for this person."
+msgstr "Reacties zijn gesloten voor deze persoon."
+
+#: psr-4/AbilitiesController.php:741
+msgid "The comment text is required."
+msgstr "De tekst van de reactie is verplicht."
+
+#: psr-4/AbilitiesController.php:775
+msgid "The comment could not be added."
+msgstr "De reactie kon niet worden toegevoegd."
+
+#: psr-4/AbilitiesController.php:794
+msgid "The post ID of the person is required."
+msgstr "Het bericht-ID van de persoon is verplicht."
+
+#. translators: %d: post ID
+#: psr-4/AbilitiesController.php:813
+#: psr-4/PersonRepository.php:576
+#, php-format
+msgid "Person with post ID %d not found."
+msgstr "Persoon met bericht-ID %d niet gevonden."
+
+#: psr-4/AbilitiesController.php:853
+#: templates/archive-orbis_person.php:38
+msgid "Name"
+msgstr "Naam"
+
+#: psr-4/AbilitiesController.php:854
+msgid "Description"
+msgstr "Beschrijving"
+
+#: psr-4/AbilitiesController.php:974
+msgid ""
+"The AI provider and model are required: pass the provider_id and model_id of "
+"the exact AI provider and model you run on in the ai input."
+msgstr ""
+"De AI-provider en het AI-model zijn verplicht: geef de provider_id en "
+"model_id van de exacte AI-provider en het exacte AI-model waarop je draait "
+"mee in de ai-invoer."
+
+#: psr-4/AbilitiesController.php:1019
+msgid ""
+"Orbis page of this person. Show this link to the user so they can open the "
+"person directly."
+msgstr ""
+"Orbis-pagina van deze persoon. Toon deze link aan de gebruiker zodat die de "
+"persoon direct kan openen."
+
+#: psr-4/AbilitiesController.php:1028
+msgid "WordPress admin page to edit this person."
+msgstr "WordPress-beheerpagina om deze persoon te bewerken."
+
+#: psr-4/AbilitiesController.php:1051
+msgid ""
+"Web page of the comment. Show this link to the user so they can open the "
+"comment directly."
+msgstr ""
+"Webpagina van de reactie. Toon deze link aan de gebruiker zodat die de "
+"reactie direct kan openen."
+
+#: psr-4/AbilitiesController.php:1055
+msgid "Orbis page of the person."
+msgstr "Orbis-pagina van de persoon."
+
+#: psr-4/AdminPersonPostType.php:51
 msgid "Title"
 msgstr "Titel"
 
-#: psr-4/AdminPersonPostType.php:47
+#: psr-4/AdminPersonPostType.php:53
 msgid "Contact"
 msgstr "Contact"
 
-#: psr-4/AdminPersonPostType.php:48
+#: psr-4/AdminPersonPostType.php:54
 #: templates/archive-orbis_person.php:41
 msgid "Author"
 msgstr "Auteur"
 
-#: psr-4/AdminPersonPostType.php:49
+#: psr-4/AdminPersonPostType.php:55
 msgid "Comments"
 msgstr "Reacties"
 
-#: psr-4/AdminPersonPostType.php:50
+#: psr-4/AdminPersonPostType.php:56
 msgid "Date"
 msgstr "Datum"
 
-#: psr-4/AdminPersonPostType.php:127
+#: psr-4/AdminPersonPostType.php:133
 msgid "Person Details"
 msgstr "Persoonsgegevens"
 
-#: psr-4/AdminPersonPostType.php:232
+#: psr-4/AdminPersonPostType.php:219
 msgid "The birth date is invalid and has not been saved."
 msgstr "De geboortedatum is ongeldig en is niet opgeslagen."
 
@@ -407,13 +841,37 @@ msgctxt "slug"
 msgid "genders"
 msgstr "geslachten"
 
+#: psr-4/PersonRepository.php:435
+msgid "The name is required."
+msgstr "De naam is verplicht."
+
+#. translators: %s: email address
+#: psr-4/PersonRepository.php:451
+#, php-format
+msgid "The email address \"%s\" is invalid."
+msgstr "Het e-mailadres \"%s\" is ongeldig."
+
+#. translators: 1: day, 2: month, 3: year
+#: psr-4/PersonRepository.php:491
+#, php-format
+msgid ""
+"The birth date (day \"%1$s\", month \"%2$s\", year \"%3$s\") is invalid. Each"
+" part is optional, but a day requires a month and the date cannot be in the "
+"future."
+msgstr ""
+"De geboortedatum (dag \"%1$s\", maand \"%2$s\", jaar \"%3$s\") is ongeldig. "
+"Elk deel is optioneel, maar een dag vereist een maand en de datum kan niet in"
+" de toekomst liggen."
+
+#. translators: 1: gender, 2: available genders
+#: psr-4/PersonRepository.php:558
+#, php-format
+msgid "Gender \"%1$s\" not found. Available genders: %2$s."
+msgstr "Geslacht \"%1$s\" niet gevonden. Beschikbare geslachten: %2$s."
+
 #: templates/archive-orbis_person.php:37
 msgid "Photo"
 msgstr "Foto"
-
-#: templates/archive-orbis_person.php:38
-msgid "Name"
-msgstr "Naam"
 
 #: templates/archive-orbis_person.php:42
 #: templates/single-orbis_person.php:73

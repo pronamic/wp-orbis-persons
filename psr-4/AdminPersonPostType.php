@@ -17,11 +17,18 @@ use WP_Post;
 /**
  * Admin person post type class
  */
-final class AdminPersonPostType {
+final readonly class AdminPersonPostType {
 	/**
 	 * Construct.
+	 *
+	 * @param Plugin $plugin Plugin.
 	 */
-	public function __construct() {
+	public function __construct(
+		/**
+		 * Plugin.
+		 */
+		private Plugin $plugin
+	) {
 		\add_filter( 'manage_edit-orbis_person_columns', $this->edit_columns( ... ) );
 
 		\add_action( 'manage_orbis_person_posts_custom_column', $this->custom_columns( ... ), 10, 2 );
@@ -29,7 +36,6 @@ final class AdminPersonPostType {
 		\add_action( 'add_meta_boxes', $this->add_meta_boxes( ... ), 20 );
 
 		\add_action( 'save_post_orbis_person', $this->save_person( ... ) );
-		\add_action( 'save_post_orbis_person', $this->save_person_sync( ... ), 500, 2 );
 
 		\add_action( 'admin_notices', $this->admin_notices( ... ) );
 	}
@@ -163,33 +169,14 @@ final class AdminPersonPostType {
 			return;
 		}
 
-		$fields = [
-			'_orbis_title'         => \sanitize_text_field( ... ),
-			'_orbis_organization'  => \sanitize_text_field( ... ),
-			'_orbis_department'    => \sanitize_text_field( ... ),
-			'_orbis_email'         => \sanitize_email( ... ),
-			'_orbis_phone_number'  => \sanitize_text_field( ... ),
-			'_orbis_mobile_number' => \sanitize_text_field( ... ),
-			'_orbis_address'       => \sanitize_text_field( ... ),
-			'_orbis_postcode'      => \sanitize_text_field( ... ),
-			'_orbis_city'          => \sanitize_text_field( ... ),
-			'_orbis_country'       => \sanitize_text_field( ... ),
-			'_orbis_iban'          => \sanitize_text_field( ... ),
-			'_orbis_twitter'       => \sanitize_text_field( ... ),
-			'_orbis_facebook'      => \sanitize_text_field( ... ),
-			'_orbis_linkedin'      => \sanitize_text_field( ... ),
-		];
+		$data = [];
 
-		foreach ( $fields as $key => $sanitize ) {
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized by the field specific callback.
-			$value = \array_key_exists( $key, $_POST ) && \is_string( $_POST[ $key ] ) ? $sanitize( \wp_unslash( $_POST[ $key ] ) ) : '';
-
-			if ( '' === $value ) {
-				\delete_post_meta( $post_id, $key );
-			} else {
-				\update_post_meta( $post_id, $key, $value );
-			}
+		foreach ( $this->plugin->persons->get_meta_keys() as $key => $meta_key ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized by `PersonRepository::sanitize()`.
+			$data[ $key ] = \array_key_exists( $meta_key, $_POST ) && \is_string( $_POST[ $meta_key ] ) ? \wp_unslash( $_POST[ $meta_key ] ) : '';
 		}
+
+		$this->plugin->persons->save_meta( $post_id, $this->plugin->persons->sanitize( $data ) );
 
 		$birth_date_input = [];
 
@@ -235,80 +222,5 @@ final class AdminPersonPostType {
 				'dismissible' => true,
 			]
 		);
-	}
-
-	/**
-	 * Sync person with Orbis tables.
-	 *
-	 * @param int     $post_id Post ID.
-	 * @param WP_Post $post    Post.
-	 * @return void
-	 */
-	private function save_person_sync( int $post_id, WP_Post $post ): void {
-		global $wpdb;
-
-		/**
-		 * WordPress database abstraction object.
-		 *
-		 * @var \wpdb $wpdb
-		 */
-
-		if ( \defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-			return;
-		}
-
-		if ( \wp_is_post_revision( $post_id ) ) {
-			return;
-		}
-
-		if ( 'publish' !== $post->post_status ) {
-			return;
-		}
-
-		$email = $this->get_meta( $post_id, '_orbis_email' );
-
-		$email = '' === $email ? null : $email;
-
-		$orbis_id = \get_post_meta( $post_id, '_orbis_person_id', true );
-
-		$now = \current_time( 'mysql', true );
-
-		if ( ! empty( $orbis_id ) ) {
-			$wpdb->update(
-				$wpdb->prefix . 'orbis_persons',
-				[
-					'name'       => $post->post_title,
-					'email'      => $email,
-					'updated_at' => $now,
-				],
-				[ 'id' => $orbis_id ],
-				[ '%s', '%s', '%s' ],
-				[ '%d' ]
-			);
-
-			return;
-		}
-
-		$result = $wpdb->insert(
-			$wpdb->prefix . 'orbis_persons',
-			[
-				'post_id'    => $post_id,
-				'name'       => $post->post_title,
-				'email'      => $email,
-				'created_at' => $now,
-				'updated_at' => $now,
-			],
-			[
-				'%d',
-				'%s',
-				'%s',
-				'%s',
-				'%s',
-			]
-		);
-
-		if ( false !== $result ) {
-			\update_post_meta( $post_id, '_orbis_person_id', $wpdb->insert_id );
-		}
 	}
 }

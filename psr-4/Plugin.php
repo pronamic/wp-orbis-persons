@@ -24,6 +24,13 @@ final class Plugin {
 	private static $instance = null;
 
 	/**
+	 * Persons.
+	 *
+	 * @var PersonRepository
+	 */
+	public readonly PersonRepository $persons;
+
+	/**
 	 * Return instance of this class.
 	 *
 	 * @param string $plugin_file The plugin file.
@@ -46,16 +53,20 @@ final class Plugin {
 		 */
 		private readonly string $plugin_file
 	) {
+		$this->persons = new PersonRepository();
+
 		\register_activation_hook( $this->plugin_file, $this->activate( ... ) );
 
 		\add_action( 'init', $this->init( ... ), 0 );
-		\add_action( 'wp_after_insert_post', $this->sync_contact_id( ... ), 20, 2 );
+		\add_action( 'wp_after_insert_post', $this->after_insert_post( ... ), 20, 2 );
 
 		new ContentTypes();
 		new TemplateController();
 
+		( new AbilitiesController( $this ) )->setup();
+
 		if ( \is_admin() ) {
-			new AdminPersonPostType();
+			new AdminPersonPostType( $this );
 		}
 	}
 
@@ -252,45 +263,22 @@ final class Plugin {
 	}
 
 	/**
-	 * Sync contact ID.
+	 * After insert post.
 	 *
-	 * The Orbis Contacts plugin inserts the contact row on
-	 * `wp_after_insert_post` with priority 10, so this runs afterwards.
+	 * Syncs the person with the Orbis persons table, after the Orbis
+	 * Contacts plugin inserted the contact row on `wp_after_insert_post`
+	 * with priority 10.
 	 *
 	 * @param int      $post_id Post ID.
 	 * @param \WP_Post $post    Post.
 	 * @return void
 	 */
-	private function sync_contact_id( int $post_id, \WP_Post $post ): void {
-		global $wpdb;
-
-		/**
-		 * WordPress database abstraction object.
-		 *
-		 * @var \wpdb $wpdb
-		 */
-
+	private function after_insert_post( int $post_id, \WP_Post $post ): void {
 		if ( 'orbis_person' !== $post->post_type ) {
 			return;
 		}
 
-		if ( ! \class_exists( \Pronamic\Orbis\Contacts\ContactsTable::class ) ) {
-			return;
-		}
-
-		$contact_id = \Pronamic\Orbis\Contacts\ContactsTable::get_contact_id( $post_id );
-
-		if ( null === $contact_id ) {
-			return;
-		}
-
-		$wpdb->update(
-			$wpdb->prefix . 'orbis_persons',
-			[ 'contact_id' => $contact_id ],
-			[ 'post_id' => $post_id ],
-			[ '%d' ],
-			[ '%d' ]
-		);
+		$this->persons->sync_table( $post_id );
 	}
 
 	/**
