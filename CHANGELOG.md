@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changes made through the abilities are logged as comments, with the AI provider and model in the comment meta.
 - Person comments show the AI provider and model that wrote them.
 - Person details are kept in revisions, shown in the revisions screen and restored with a revision.
+- Separate fields for the first names, last names and last name at birth. The post title is the display name, composed of the first names and last names when left empty.
 
 ### Changed
 

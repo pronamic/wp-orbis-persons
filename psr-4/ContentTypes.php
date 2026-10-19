@@ -101,6 +101,9 @@ final class ContentTypes {
 		 * the day, month and year after restoring a revision.
 		 */
 		$meta_keys = [
+			'_orbis_first_name',
+			'_orbis_last_name',
+			'_orbis_maiden_name',
 			'_orbis_title',
 			'_orbis_organization',
 			'_orbis_department',

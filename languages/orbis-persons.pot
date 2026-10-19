@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-19T17:42:36+00:00\n"
+"POT-Creation-Date: 2026-10-19T18:00:31+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: orbis-persons\n"
@@ -40,142 +40,178 @@ msgstr ""
 msgid "https://www.pronamic.eu/"
 msgstr ""
 
-#: admin/meta-box-person-details.php:59
+#: admin/meta-box-person-details.php:63
 msgid "Orbis ID"
 msgstr ""
 
-#: admin/meta-box-person-details.php:67
-#: psr-4/AdminPersonPostType.php:52
+#: admin/meta-box-person-details.php:71
+#: psr-4/AbilitiesController.php:868
+#: psr-4/AdminPersonPostType.php:66
+#: templates/person-details.php:79
+msgid "First Names"
+msgstr ""
+
+#: admin/meta-box-person-details.php:79
+#: psr-4/AbilitiesController.php:869
+#: psr-4/AdminPersonPostType.php:67
+#: templates/person-details.php:86
+msgid "Last Names"
+msgstr ""
+
+#: admin/meta-box-person-details.php:87
+#: psr-4/AbilitiesController.php:870
+#: psr-4/AdminPersonPostType.php:68
+#: templates/person-details.php:93
+msgid "Last Name at Birth"
+msgstr ""
+
+#: admin/meta-box-person-details.php:95
+#: psr-4/AdminPersonPostType.php:119
 #: templates/archive-orbis_person.php:39
-#: templates/person-details.php:75
+#: templates/person-details.php:100
 msgid "Organization"
 msgstr ""
 
-#: admin/meta-box-person-details.php:70
-#: psr-4/AbilitiesController.php:855
+#: admin/meta-box-person-details.php:98
+#: psr-4/AbilitiesController.php:872
+#: psr-4/AdminPersonPostType.php:69
 msgctxt "person"
 msgid "Title"
 msgstr ""
 
-#: admin/meta-box-person-details.php:72
-#: psr-4/AbilitiesController.php:856
+#: admin/meta-box-person-details.php:100
+#: psr-4/AbilitiesController.php:873
+#: psr-4/AdminPersonPostType.php:70
 msgctxt "person"
 msgid "Organization"
 msgstr ""
 
-#: admin/meta-box-person-details.php:74
-#: psr-4/AbilitiesController.php:857
+#: admin/meta-box-person-details.php:102
+#: psr-4/AbilitiesController.php:874
+#: psr-4/AdminPersonPostType.php:71
 msgctxt "person"
 msgid "Department"
 msgstr ""
 
-#: admin/meta-box-person-details.php:79
-#: psr-4/AbilitiesController.php:858
-#: templates/person-details.php:109
+#: admin/meta-box-person-details.php:107
+#: psr-4/AbilitiesController.php:875
+#: templates/person-details.php:134
 msgid "Gender"
 msgstr ""
 
-#: admin/meta-box-person-details.php:92
+#: admin/meta-box-person-details.php:120
 msgid "— Select Gender —"
 msgstr ""
 
-#: admin/meta-box-person-details.php:104
-#: psr-4/AbilitiesController.php:859
-#: templates/person-details.php:100
+#: admin/meta-box-person-details.php:132
+#: psr-4/AbilitiesController.php:876
+#: psr-4/AdminPersonPostType.php:72
+#: templates/person-details.php:125
 msgid "Email Address"
 msgstr ""
 
-#: admin/meta-box-person-details.php:112
-#: psr-4/AbilitiesController.php:860
-#: templates/person-details.php:82
+#: admin/meta-box-person-details.php:140
+#: psr-4/AbilitiesController.php:877
+#: psr-4/AdminPersonPostType.php:73
+#: templates/person-details.php:107
 msgid "Phone Number"
 msgstr ""
 
-#: admin/meta-box-person-details.php:120
-#: psr-4/AbilitiesController.php:861
-#: templates/person-details.php:91
+#: admin/meta-box-person-details.php:148
+#: psr-4/AbilitiesController.php:878
+#: psr-4/AdminPersonPostType.php:74
+#: templates/person-details.php:116
 msgid "Mobile Number"
 msgstr ""
 
-#: admin/meta-box-person-details.php:128
-#: admin/meta-box-person-details.php:131
-#: psr-4/AbilitiesController.php:862
+#: admin/meta-box-person-details.php:156
+#: admin/meta-box-person-details.php:159
+#: psr-4/AbilitiesController.php:879
+#: psr-4/AdminPersonPostType.php:75
 #: templates/archive-orbis_person.php:40
-#: templates/person-details.php:116
+#: templates/person-details.php:141
 msgid "Address"
 msgstr ""
 
-#: admin/meta-box-person-details.php:133
-#: psr-4/AbilitiesController.php:863
+#: admin/meta-box-person-details.php:161
+#: psr-4/AbilitiesController.php:880
+#: psr-4/AdminPersonPostType.php:76
 msgid "Postcode"
 msgstr ""
 
-#: admin/meta-box-person-details.php:134
-#: psr-4/AbilitiesController.php:864
+#: admin/meta-box-person-details.php:162
+#: psr-4/AbilitiesController.php:881
+#: psr-4/AdminPersonPostType.php:77
 msgid "City"
 msgstr ""
 
-#: admin/meta-box-person-details.php:136
-#: psr-4/AbilitiesController.php:865
+#: admin/meta-box-person-details.php:164
+#: psr-4/AbilitiesController.php:882
+#: psr-4/AdminPersonPostType.php:78
 msgid "Country"
 msgstr ""
 
-#: admin/meta-box-person-details.php:141
-#: admin/meta-box-person-details.php:145
-#: psr-4/AbilitiesController.php:866
-#: templates/person-details.php:134
+#: admin/meta-box-person-details.php:169
+#: admin/meta-box-person-details.php:173
+#: psr-4/AbilitiesController.php:883
+#: psr-4/AdminPersonPostType.php:79
+#: templates/person-details.php:159
 msgid "Birth Date"
 msgstr ""
 
-#: admin/meta-box-person-details.php:147
+#: admin/meta-box-person-details.php:175
 msgid "Day"
 msgstr ""
 
-#: admin/meta-box-person-details.php:148
+#: admin/meta-box-person-details.php:176
 msgctxt "birth day placeholder"
 msgid "dd"
 msgstr ""
 
-#: admin/meta-box-person-details.php:150
+#: admin/meta-box-person-details.php:178
 msgid "Month"
 msgstr ""
 
-#: admin/meta-box-person-details.php:151
+#: admin/meta-box-person-details.php:179
 msgctxt "birth month placeholder"
 msgid "mm"
 msgstr ""
 
-#: admin/meta-box-person-details.php:153
+#: admin/meta-box-person-details.php:181
 msgid "Year"
 msgstr ""
 
-#: admin/meta-box-person-details.php:154
+#: admin/meta-box-person-details.php:182
 msgctxt "birth year placeholder"
 msgid "yyyy"
 msgstr ""
 
-#: admin/meta-box-person-details.php:156
+#: admin/meta-box-person-details.php:184
 msgid "Fill in what is known, each part is optional."
 msgstr ""
 
-#: admin/meta-box-person-details.php:162
-#: psr-4/AbilitiesController.php:867
-#: templates/person-details.php:127
+#: admin/meta-box-person-details.php:190
+#: psr-4/AbilitiesController.php:884
+#: psr-4/AdminPersonPostType.php:80
+#: templates/person-details.php:152
 msgid "IBAN"
 msgstr ""
 
-#: admin/meta-box-person-details.php:170
-#: psr-4/AbilitiesController.php:868
+#: admin/meta-box-person-details.php:198
+#: psr-4/AbilitiesController.php:885
+#: psr-4/AdminPersonPostType.php:81
 msgid "Twitter Username"
 msgstr ""
 
-#: admin/meta-box-person-details.php:178
-#: psr-4/AbilitiesController.php:869
+#: admin/meta-box-person-details.php:206
+#: psr-4/AbilitiesController.php:886
+#: psr-4/AdminPersonPostType.php:82
 msgid "Facebook URL"
 msgstr ""
 
-#: admin/meta-box-person-details.php:186
-#: psr-4/AbilitiesController.php:870
+#: admin/meta-box-person-details.php:214
+#: psr-4/AbilitiesController.php:887
+#: psr-4/AdminPersonPostType.php:83
 msgid "LinkedIn URL"
 msgstr ""
 
@@ -204,286 +240,295 @@ msgid "Optional explanation of the change, for example the source of the data. I
 msgstr ""
 
 #: psr-4/AbilitiesController.php:134
-msgid "Full name of the person."
+msgid "Display name of the person. When empty, it is composed of the first names and last names."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:139
+#: psr-4/AbilitiesController.php:138
+msgid "All first names (given names)."
+msgstr ""
+
+#: psr-4/AbilitiesController.php:142
+msgid "Current last names, including prefixes such as \"van der\"."
+msgstr ""
+
+#: psr-4/AbilitiesController.php:146
+msgid "Last name at birth, when it differs from the current last name."
+msgstr ""
+
+#: psr-4/AbilitiesController.php:150
 msgid "Description of or notes about the person."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:143
+#: psr-4/AbilitiesController.php:154
 msgid "Job title, for example \"Developer\"."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:147
+#: psr-4/AbilitiesController.php:158
 msgid "Name of the organization the person works for."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:151
+#: psr-4/AbilitiesController.php:162
 msgid "Department within the organization."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:155
+#: psr-4/AbilitiesController.php:166
 msgid "Email address."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:159
+#: psr-4/AbilitiesController.php:170
 msgid "Phone number."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:163
+#: psr-4/AbilitiesController.php:174
 msgid "Mobile phone number."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:167
+#: psr-4/AbilitiesController.php:178
 msgid "Street and house number."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:171
+#: psr-4/AbilitiesController.php:182
 msgid "Postcode."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:175
+#: psr-4/AbilitiesController.php:186
 msgid "City."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:179
+#: psr-4/AbilitiesController.php:190
 msgid "Country."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:183
+#: psr-4/AbilitiesController.php:194
 msgid "Gender: the ID, slug or name of a term of the gender taxonomy. An empty string removes the gender."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:187
+#: psr-4/AbilitiesController.php:198
 msgid "Day of the month of the birth date. Each part of the birth date is optional, but a day requires a month. Null removes the day."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:193
+#: psr-4/AbilitiesController.php:204
 msgid "Month (1-12) of the birth date. Null removes the month."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:199
+#: psr-4/AbilitiesController.php:210
 msgid "Year of the birth date. Null removes the year."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:204
+#: psr-4/AbilitiesController.php:215
 msgid "IBAN bank account number."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:208
+#: psr-4/AbilitiesController.php:219
 msgid "Twitter (X) username."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:212
+#: psr-4/AbilitiesController.php:223
 msgid "Facebook URL."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:216
+#: psr-4/AbilitiesController.php:227
 msgid "LinkedIn URL."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:225
+#: psr-4/AbilitiesController.php:236
 msgid "HAL links of the person. Each link has an href and a title that describes what the link is for."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:242
+#: psr-4/AbilitiesController.php:256
 msgid "Email addresses of the person from Orbis Contacts, each with a label."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:267
+#: psr-4/AbilitiesController.php:281
 msgid "Birth date, null when nothing of it is known. Each part can be unknown: when only the year (and month) is known, the age is a range from age_min to age_max. The next birthday is today or later."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:317
+#: psr-4/AbilitiesController.php:331
 msgid "Search persons"
 msgstr ""
 
-#: psr-4/AbilitiesController.php:318
+#: psr-4/AbilitiesController.php:332
 msgid "Searches Orbis persons and returns their contact details, organization, gender and birth date. Without a search term all persons are returned, ordered by name. Upcoming birthdays are persons ordered by \"birthday\": the person whose birthday is next comes first. The output contains the current date of the site. Use orbis-persons/get for the full description of a person and orbis/search-comments for the comments of a person."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:326
-msgid "Search term, matched against the name, the email addresses, the organization and the phone numbers."
+#: psr-4/AbilitiesController.php:340
+msgid "Search term, matched against the display name, the first names, the last names, the email addresses, the organization and the phone numbers."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:330
+#: psr-4/AbilitiesController.php:344
 msgid "Limit the results to persons with this gender: the ID, slug or name of a term of the gender taxonomy."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:334
+#: psr-4/AbilitiesController.php:348
 msgid "Sort the persons by name, creation date, modification date or upcoming birthday. Persons without a known birthday come last when sorting by birthday."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:340
+#: psr-4/AbilitiesController.php:354
 msgid "Sort order. Defaults to ascending for the name and descending for the dates. Not used when sorting by birthday."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:345
+#: psr-4/AbilitiesController.php:359
 msgid "Maximum number of persons to return."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:352
+#: psr-4/AbilitiesController.php:366
 msgid "Page of results to return."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:388
+#: psr-4/AbilitiesController.php:402
 msgid "Get person"
 msgstr ""
 
-#: psr-4/AbilitiesController.php:389
+#: psr-4/AbilitiesController.php:403
 msgid "Returns a single Orbis person by its post ID (post_id of the orbis-persons/search output), with the full description."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:397
+#: psr-4/AbilitiesController.php:411
 msgid "Post ID of the person."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:420
+#: psr-4/AbilitiesController.php:434
 msgid "Create person"
 msgstr ""
 
-#: psr-4/AbilitiesController.php:421
-msgid "Creates an Orbis person. Only set the fields the user provided. The current user becomes the author of the person. A comment is added to the person that logs the creation, with the AI provider and model. AI assistants must always pass their AI provider and model in the ai input. Use orbis-persons/search first to check that the person does not exist yet."
+#: psr-4/AbilitiesController.php:435
+msgid "Creates an Orbis person. A display name, or first names or last names, is required. Only set the fields the user provided. The current user becomes the author of the person. A comment is added to the person that logs the creation, with the AI provider and model. AI assistants must always pass their AI provider and model in the ai input. Use orbis-persons/search first to check that the person does not exist yet."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:433
+#: psr-4/AbilitiesController.php:447
 msgid "The AI provider and model that created this person. AI assistants must always provide this, with the exact provider and model they run on, so that it is clear which persons were created by which AI model."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:455
+#: psr-4/AbilitiesController.php:469
 msgid "Update person"
 msgstr ""
 
-#: psr-4/AbilitiesController.php:456
+#: psr-4/AbilitiesController.php:470
 msgid "Updates an Orbis person. Only the fields in the input are changed: an empty string clears a field and null clears a part of the birth date. Only change the fields the user asked for. A comment listing the changed fields is added to the person, with the AI provider and model. AI assistants must always pass their AI provider and model in the ai input. Use orbis-persons/search to find the post ID of the person."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:464
-#: psr-4/AbilitiesController.php:505
+#: psr-4/AbilitiesController.php:478
+#: psr-4/AbilitiesController.php:519
 msgid "Post ID of the person, the post_id in the orbis-persons/search output."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:474
+#: psr-4/AbilitiesController.php:488
 msgid "The AI provider and model that updated this person. AI assistants must always provide this, with the exact provider and model they run on, so that it is clear which changes were made by which AI model."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:496
+#: psr-4/AbilitiesController.php:510
 msgid "Comment on person"
 msgstr ""
 
-#: psr-4/AbilitiesController.php:497
+#: psr-4/AbilitiesController.php:511
 msgid "Adds a comment from the current user to an Orbis person, for example a note about a conversation with the person. AI assistants must always pass their AI provider and model in the ai input. Use orbis-persons/search to find the post ID of the person and orbis/search-comments for the existing comments of a person."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:510
+#: psr-4/AbilitiesController.php:524
 msgid "Text of the comment."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:515
+#: psr-4/AbilitiesController.php:529
 msgid "The AI provider and model that wrote this comment. AI assistants must always provide this, with the exact provider and model they run on, so that it is clear which comments were written by which AI model."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:625
+#: psr-4/AbilitiesController.php:639
 msgid "The person could not be created."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:630
+#: psr-4/AbilitiesController.php:644
 msgid "Person created."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:667
+#: psr-4/AbilitiesController.php:681
 msgid "You are not allowed to edit this person."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:677
+#: psr-4/AbilitiesController.php:691
 msgid "No fields to update, pass at least one person field."
 msgstr ""
 
 #. translators: %s: comma-separated list of changed fields
-#: psr-4/AbilitiesController.php:697
+#: psr-4/AbilitiesController.php:711
 #, php-format
 msgid "Person updated: %s."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:735
+#: psr-4/AbilitiesController.php:749
 msgid "Comments are closed for this person."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:741
+#: psr-4/AbilitiesController.php:755
 msgid "The comment text is required."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:775
+#: psr-4/AbilitiesController.php:789
 msgid "The comment could not be added."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:794
+#: psr-4/AbilitiesController.php:808
 msgid "The post ID of the person is required."
 msgstr ""
 
 #. translators: %d: post ID
-#: psr-4/AbilitiesController.php:813
-#: psr-4/PersonRepository.php:576
+#: psr-4/AbilitiesController.php:827
+#: psr-4/PersonRepository.php:609
 #, php-format
 msgid "Person with post ID %d not found."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:853
-#: templates/archive-orbis_person.php:38
-msgid "Name"
+#: psr-4/AbilitiesController.php:867
+#: psr-4/AdminPersonPostType.php:118
+#: psr-4/AdminPersonPostType.php:230
+msgid "Display Name"
 msgstr ""
 
-#: psr-4/AbilitiesController.php:854
+#: psr-4/AbilitiesController.php:871
 msgid "Description"
 msgstr ""
 
-#: psr-4/AbilitiesController.php:974
+#: psr-4/AbilitiesController.php:991
 msgid "The AI provider and model are required: pass the provider_id and model_id of the exact AI provider and model you run on in the ai input."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:1019
+#: psr-4/AbilitiesController.php:1036
 msgid "Orbis page of this person. Show this link to the user so they can open the person directly."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:1028
+#: psr-4/AbilitiesController.php:1045
 msgid "WordPress admin page to edit this person."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:1051
+#: psr-4/AbilitiesController.php:1068
 msgid "Web page of the comment. Show this link to the user so they can open the comment directly."
 msgstr ""
 
-#: psr-4/AbilitiesController.php:1055
+#: psr-4/AbilitiesController.php:1072
 msgid "Orbis page of the person."
 msgstr ""
 
-#: psr-4/AdminPersonPostType.php:51
-msgid "Title"
-msgstr ""
-
-#: psr-4/AdminPersonPostType.php:53
+#: psr-4/AdminPersonPostType.php:120
 msgid "Contact"
 msgstr ""
 
-#: psr-4/AdminPersonPostType.php:54
+#: psr-4/AdminPersonPostType.php:121
 #: templates/archive-orbis_person.php:41
 msgid "Author"
 msgstr ""
 
-#: psr-4/AdminPersonPostType.php:55
+#: psr-4/AdminPersonPostType.php:122
 msgid "Comments"
 msgstr ""
 
-#: psr-4/AdminPersonPostType.php:56
+#: psr-4/AdminPersonPostType.php:123
 msgid "Date"
 msgstr ""
 
-#: psr-4/AdminPersonPostType.php:133
+#: psr-4/AdminPersonPostType.php:200
 msgid "Person Details"
 msgstr ""
 
-#: psr-4/AdminPersonPostType.php:219
+#: psr-4/AdminPersonPostType.php:336
 msgid "The birth date is invalid and has not been saved."
 msgstr ""
 
@@ -666,75 +711,75 @@ msgctxt "slug"
 msgid "persons"
 msgstr ""
 
-#: psr-4/ContentTypes.php:103
+#: psr-4/ContentTypes.php:147
 msgctxt "taxonomy general name"
 msgid "Genders"
 msgstr ""
 
-#: psr-4/ContentTypes.php:104
+#: psr-4/ContentTypes.php:148
 msgctxt "taxonomy singular name"
 msgid "Gender"
 msgstr ""
 
-#: psr-4/ContentTypes.php:105
+#: psr-4/ContentTypes.php:149
 msgid "Search Genders"
 msgstr ""
 
-#: psr-4/ContentTypes.php:106
+#: psr-4/ContentTypes.php:150
 msgid "All Genders"
 msgstr ""
 
-#: psr-4/ContentTypes.php:107
+#: psr-4/ContentTypes.php:151
 msgid "Parent Gender"
 msgstr ""
 
-#: psr-4/ContentTypes.php:108
+#: psr-4/ContentTypes.php:152
 msgid "Parent Gender:"
 msgstr ""
 
-#: psr-4/ContentTypes.php:109
+#: psr-4/ContentTypes.php:153
 msgid "Edit Gender"
 msgstr ""
 
-#: psr-4/ContentTypes.php:110
+#: psr-4/ContentTypes.php:154
 msgid "Update Gender"
 msgstr ""
 
-#: psr-4/ContentTypes.php:111
+#: psr-4/ContentTypes.php:155
 msgid "Add New Gender"
 msgstr ""
 
-#: psr-4/ContentTypes.php:112
+#: psr-4/ContentTypes.php:156
 msgid "New Gender Name"
 msgstr ""
 
-#: psr-4/ContentTypes.php:113
+#: psr-4/ContentTypes.php:157
 msgid "Genders"
 msgstr ""
 
-#: psr-4/ContentTypes.php:124
+#: psr-4/ContentTypes.php:168
 msgctxt "slug"
 msgid "genders"
 msgstr ""
 
-#: psr-4/PersonRepository.php:435
-msgid "The name is required."
+#: psr-4/PersonRepository.php:468
+msgid "The display name is required, or fill in the first names or last names."
 msgstr ""
 
 #. translators: %s: email address
-#: psr-4/PersonRepository.php:451
+#: psr-4/PersonRepository.php:484
 #, php-format
 msgid "The email address \"%s\" is invalid."
 msgstr ""
 
 #. translators: 1: day, 2: month, 3: year
-#: psr-4/PersonRepository.php:491
+#: psr-4/PersonRepository.php:524
 #, php-format
 msgid "The birth date (day \"%1$s\", month \"%2$s\", year \"%3$s\") is invalid. Each part is optional, but a day requires a month and the date cannot be in the future."
 msgstr ""
 
 #. translators: 1: gender, 2: available genders
-#: psr-4/PersonRepository.php:558
+#: psr-4/PersonRepository.php:591
 #, php-format
 msgid "Gender \"%1$s\" not found. Available genders: %2$s."
 msgstr ""
@@ -743,26 +788,30 @@ msgstr ""
 msgid "Photo"
 msgstr ""
 
+#: templates/archive-orbis_person.php:38
+msgid "Name"
+msgstr ""
+
 #: templates/archive-orbis_person.php:42
 #: templates/single-orbis_person.php:73
 msgid "Actions"
 msgstr ""
 
-#: templates/person-details.php:84
-#: templates/person-details.php:93
+#: templates/person-details.php:109
+#: templates/person-details.php:118
 msgid "Call this number"
 msgstr ""
 
-#: templates/person-details.php:146
+#: templates/person-details.php:171
 msgid "Today!"
 msgstr ""
 
-#: templates/person-details.php:146
+#: templates/person-details.php:171
 msgid "j F Y"
 msgstr ""
 
 #. translators: %d: number of days
-#: templates/person-details.php:151
+#: templates/person-details.php:176
 #, php-format
 msgid "in %d day"
 msgid_plural "in %d days"
@@ -770,46 +819,46 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: age
-#: templates/person-details.php:156
+#: templates/person-details.php:181
 #, php-format
 msgid "turns %d"
 msgstr ""
 
-#: templates/person-details.php:161
+#: templates/person-details.php:186
 msgid "Next Birthday"
 msgstr ""
 
-#: templates/person-details.php:168
+#: templates/person-details.php:193
 msgid "Age"
 msgstr ""
 
 #. translators: 1: minimum age, 2: maximum age
-#: templates/person-details.php:176
+#: templates/person-details.php:201
 #, php-format
 msgid "%1$d or %2$d"
 msgstr ""
 
-#: templates/person-details.php:186
+#: templates/person-details.php:211
 msgid "vCard"
 msgstr ""
 
-#: templates/person-details.php:188
+#: templates/person-details.php:213
 msgid "Download vCard"
 msgstr ""
 
-#: templates/person-details.php:195
+#: templates/person-details.php:220
 msgid "Social Media"
 msgstr ""
 
-#: templates/person-details.php:204
+#: templates/person-details.php:229
 msgid "Twitter"
 msgstr ""
 
-#: templates/person-details.php:216
+#: templates/person-details.php:241
 msgid "Facebook"
 msgstr ""
 
-#: templates/person-details.php:228
+#: templates/person-details.php:253
 msgid "LinkedIn"
 msgstr ""
 

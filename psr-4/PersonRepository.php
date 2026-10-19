@@ -25,7 +25,10 @@ use WP_Term;
  * abilities.
  *
  * @phpstan-type PersonData array{
- *     name?: string,
+ *     display_name?: string,
+ *     first_name?: string,
+ *     last_name?: string,
+ *     maiden_name?: string,
  *     content?: string,
  *     gender?: string,
  *     birth_day?: int|string|null,
@@ -55,6 +58,9 @@ final readonly class PersonRepository {
 	 */
 	public function get_meta_keys(): array {
 		return [
+			'first_name'    => '_orbis_first_name',
+			'last_name'     => '_orbis_last_name',
+			'maiden_name'   => '_orbis_maiden_name',
 			'job_title'     => '_orbis_title',
 			'organization'  => '_orbis_organization',
 			'department'    => '_orbis_department',
@@ -94,7 +100,7 @@ final readonly class PersonRepository {
 	 * @param array{search?: string, gender?: string, orderby?: string, order?: string, per_page?: int, page?: int} $args {
 	 *     Arguments.
 	 *
-	 *     @type string $search   Search term, matched against the name, the email addresses, the organization and the phone numbers.
+	 *     @type string $search   Search term, matched against the display name, the first names, the last names, the email addresses, the organization and the phone numbers.
 	 *     @type string $gender   Gender term ID, slug or name.
 	 *     @type string $orderby  Order by `name`, `created`, `modified` or `birthday` (upcoming birthdays first).
 	 *     @type string $order    Order, `asc` or `desc`, not used for `birthday`.
@@ -133,7 +139,7 @@ final readonly class PersonRepository {
 							FROM
 								%i
 							WHERE
-								meta_key IN ( '_orbis_email', '_orbis_contact_email', '_orbis_organization', '_orbis_phone_number', '_orbis_mobile_number' )
+								meta_key IN ( '_orbis_first_name', '_orbis_last_name', '_orbis_maiden_name', '_orbis_email','_orbis_contact_email', '_orbis_organization', '_orbis_phone_number', '_orbis_mobile_number' )
 									AND
 								meta_value LIKE %s
 						)
@@ -305,7 +311,7 @@ final readonly class PersonRepository {
 	public function sanitize( array $data ): array {
 		$sanitized = [];
 
-		$keys = \array_merge( [ 'name', 'content', 'gender' ], \array_keys( $this->get_meta_keys() ) );
+		$keys = \array_merge( [ 'display_name', 'content', 'gender' ], \array_keys( $this->get_meta_keys() ) );
 
 		foreach ( $keys as $key ) {
 			if ( ! \array_key_exists( $key, $data ) ) {
@@ -322,6 +328,17 @@ final readonly class PersonRepository {
 		}
 
 		return $sanitized;
+	}
+
+	/**
+	 * Compose a display name from the first names and last names.
+	 *
+	 * @param string $first_name First names.
+	 * @param string $last_name  Last names.
+	 * @return string Display name, empty when both are empty.
+	 */
+	public function compose_display_name( string $first_name, string $last_name ): string {
+		return \implode( ' ', \array_filter( [ \trim( $first_name ), \trim( $last_name ) ], static fn ( string $part ): bool => '' !== $part ) );
 	}
 
 	/**
@@ -437,14 +454,21 @@ final readonly class PersonRepository {
 			'meta' => \array_intersect_key( $sanitized, $this->get_meta_keys() ),
 		];
 
-		if ( \array_key_exists( 'name', $sanitized ) || null === $person ) {
-			$name = \trim( $sanitized['name'] ?? '' );
+		if ( \array_key_exists( 'display_name', $sanitized ) || null === $person ) {
+			$display_name = \trim( $sanitized['display_name'] ?? '' );
 
-			if ( '' === $name ) {
-				return new WP_Error( 'orbis_persons_missing_name', \__( 'The name is required.', 'orbis-persons' ), [ 'status' => 400 ] );
+			if ( '' === $display_name ) {
+				$display_name = $this->compose_display_name(
+					$sanitized['first_name'] ?? $person->first_name ?? '',
+					$sanitized['last_name'] ?? $person->last_name ?? ''
+				);
 			}
 
-			$prepared['post']['post_title'] = $name;
+			if ( '' === $display_name ) {
+				return new WP_Error( 'orbis_persons_missing_name', \__( 'The display name is required, or fill in the first names or last names.', 'orbis-persons' ), [ 'status' => 400 ] );
+			}
+
+			$prepared['post']['post_title'] = $display_name;
 		}
 
 		if ( \array_key_exists( 'content', $sanitized ) ) {

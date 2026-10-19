@@ -35,6 +35,10 @@ final readonly class AdminPersonPostType {
 
 		\add_action( 'add_meta_boxes', $this->add_meta_boxes( ... ), 20 );
 
+		\add_filter( 'enter_title_here', $this->enter_title_here( ... ), 10, 2 );
+
+		\add_filter( 'wp_insert_post_data', $this->insert_post_data( ... ) );
+
 		\add_action( 'save_post_orbis_person', $this->save_person( ... ) );
 
 		\add_action( 'admin_notices', $this->admin_notices( ... ) );
@@ -59,6 +63,9 @@ final readonly class AdminPersonPostType {
 	 */
 	private function revision_fields( array $fields, mixed $post ): array {
 		$person_fields = [
+			'_orbis_first_name'    => \__( 'First Names', 'orbis-persons' ),
+			'_orbis_last_name'     => \__( 'Last Names', 'orbis-persons' ),
+			'_orbis_maiden_name'   => \__( 'Last Name at Birth', 'orbis-persons' ),
 			'_orbis_title'         => \_x( 'Title', 'person', 'orbis-persons' ),
 			'_orbis_organization'  => \_x( 'Organization', 'person', 'orbis-persons' ),
 			'_orbis_department'    => \_x( 'Department', 'person', 'orbis-persons' ),
@@ -108,7 +115,7 @@ final readonly class AdminPersonPostType {
 	private function edit_columns(): array {
 		return [
 			'cb'                        => '<input type="checkbox" />',
-			'title'                     => \__( 'Title', 'orbis-persons' ),
+			'title'                     => \__( 'Display Name', 'orbis-persons' ),
 			'orbis_person_organization' => \__( 'Organization', 'orbis-persons' ),
 			'orbis_person_contact'      => \__( 'Contact', 'orbis-persons' ),
 			'author'                    => \__( 'Author', 'orbis-persons' ),
@@ -206,6 +213,56 @@ final readonly class AdminPersonPostType {
 	 */
 	private function meta_box( WP_Post $post ): void {
 		include __DIR__ . '/../admin/meta-box-person-details.php';
+	}
+
+	/**
+	 * Enter title here.
+	 *
+	 * @param string  $text Placeholder text.
+	 * @param WP_Post $post Post.
+	 * @return string
+	 */
+	private function enter_title_here( string $text, WP_Post $post ): string {
+		if ( 'orbis_person' !== $post->post_type ) {
+			return $text;
+		}
+
+		return \__( 'Display Name', 'orbis-persons' );
+	}
+
+	/**
+	 * Insert post data.
+	 *
+	 * Composes the display name (post title) from the first names and last
+	 * names when it is left empty in the person details meta box.
+	 *
+	 * @param array<string, mixed> $data Slashed, sanitized and processed post data.
+	 * @return array<string, mixed>
+	 */
+	private function insert_post_data( array $data ): array {
+		if ( 'orbis_person' !== ( $data['post_type'] ?? null ) || '' !== \trim( \is_string( $data['post_title'] ?? null ) ? $data['post_title'] : '' ) ) {
+			return $data;
+		}
+
+		$nonce = \array_key_exists( 'orbis_persons_details_meta_box_nonce', $_POST ) && \is_string( $_POST['orbis_persons_details_meta_box_nonce'] ) ? \sanitize_text_field( \wp_unslash( $_POST['orbis_persons_details_meta_box_nonce'] ) ) : '';
+
+		if ( ! \wp_verify_nonce( $nonce, 'orbis_persons_save_details' ) ) {
+			return $data;
+		}
+
+		$parts = [];
+
+		foreach ( [ '_orbis_first_name', '_orbis_last_name' ] as $key ) {
+			$parts[] = \array_key_exists( $key, $_POST ) && \is_string( $_POST[ $key ] ) ? \sanitize_text_field( \wp_unslash( $_POST[ $key ] ) ) : '';
+		}
+
+		$display_name = $this->plugin->persons->compose_display_name( ...$parts );
+
+		if ( '' !== $display_name ) {
+			$data['post_title'] = \wp_slash( $display_name );
+		}
+
+		return $data;
 	}
 
 	/**

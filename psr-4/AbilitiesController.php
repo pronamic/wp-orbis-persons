@@ -129,10 +129,21 @@ final readonly class AbilitiesController {
 		$log_comment_description = \__( 'Optional explanation of the change, for example the source of the data. It is added to the comment that logs the change.', 'orbis-persons' );
 
 		$person_properties = [
-			'name'          => [
+			'display_name'  => [
 				'type'        => 'string',
-				'description' => \__( 'Full name of the person.', 'orbis-persons' ),
-				'minLength'   => 1,
+				'description' => \__( 'Display name of the person. When empty, it is composed of the first names and last names.', 'orbis-persons' ),
+			],
+			'first_name'    => [
+				'type'        => 'string',
+				'description' => \__( 'All first names (given names).', 'orbis-persons' ),
+			],
+			'last_name'     => [
+				'type'        => 'string',
+				'description' => \__( 'Current last names, including prefixes such as "van der".', 'orbis-persons' ),
+			],
+			'maiden_name'   => [
+				'type'        => 'string',
+				'description' => \__( 'Last name at birth, when it differs from the current last name.', 'orbis-persons' ),
 			],
 			'content'       => [
 				'type'        => 'string',
@@ -231,7 +242,10 @@ final readonly class AbilitiesController {
 				'post_id'         => $nullable_integer,
 				'id'              => $nullable_integer,
 				'contact_id'      => $nullable_integer,
-				'name'            => $nullable_string,
+				'display_name'    => $nullable_string,
+				'first_name'      => $nullable_string,
+				'last_name'       => $nullable_string,
+				'maiden_name'     => $nullable_string,
 				'content'         => $nullable_string,
 				'job_title'       => $nullable_string,
 				'organization'    => $nullable_string,
@@ -323,7 +337,7 @@ final readonly class AbilitiesController {
 					'properties'           => [
 						'search'   => [
 							'type'        => 'string',
-							'description' => \__( 'Search term, matched against the name, the email addresses, the organization and the phone numbers.', 'orbis-persons' ),
+							'description' => \__( 'Search term, matched against the display name, the first names, the last names, the email addresses, the organization and the phone numbers.', 'orbis-persons' ),
 						],
 						'gender'   => [
 							'type'        => 'string',
@@ -418,11 +432,11 @@ final readonly class AbilitiesController {
 			'orbis-persons/create',
 			[
 				'label'               => \__( 'Create person', 'orbis-persons' ),
-				'description'         => \__( 'Creates an Orbis person. Only set the fields the user provided. The current user becomes the author of the person. A comment is added to the person that logs the creation, with the AI provider and model. AI assistants must always pass their AI provider and model in the ai input. Use orbis-persons/search first to check that the person does not exist yet.', 'orbis-persons' ),
+				'description'         => \__( 'Creates an Orbis person. A display name, or first names or last names, is required. Only set the fields the user provided. The current user becomes the author of the person. A comment is added to the person that logs the creation, with the AI provider and model. AI assistants must always pass their AI provider and model in the ai input. Use orbis-persons/search first to check that the person does not exist yet.', 'orbis-persons' ),
 				'category'            => 'orbis-persons',
 				'input_schema'        => [
 					'type'                 => 'object',
-					'required'             => [ 'name', 'ai' ],
+					'required'             => [ 'ai' ],
 					'properties'           => $person_properties + [
 						'comment' => [
 							'type'        => 'string',
@@ -826,7 +840,7 @@ final readonly class AbilitiesController {
 	 */
 	private function get_person_data( array $input ): array {
 		$keys = \array_merge(
-			[ 'name', 'content', 'gender', 'birth_day', 'birth_month', 'birth_year' ],
+			[ 'display_name', 'content', 'gender', 'birth_day', 'birth_month', 'birth_year' ],
 			\array_keys( $this->plugin->persons->get_meta_keys() )
 		);
 
@@ -850,7 +864,10 @@ final readonly class AbilitiesController {
 	 */
 	private function get_changes( Person $before, Person $after ): array {
 		$labels = [
-			'name'          => \__( 'Name', 'orbis-persons' ),
+			'display_name'  => \__( 'Display Name', 'orbis-persons' ),
+			'first_name'    => \__( 'First Names', 'orbis-persons' ),
+			'last_name'     => \__( 'Last Names', 'orbis-persons' ),
+			'maiden_name'   => \__( 'Last Name at Birth', 'orbis-persons' ),
 			'content'       => \__( 'Description', 'orbis-persons' ),
 			'job_title'     => \_x( 'Title', 'person', 'orbis-persons' ),
 			'organization'  => \_x( 'Organization', 'person', 'orbis-persons' ),

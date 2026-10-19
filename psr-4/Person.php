@@ -31,7 +31,10 @@ final class Person {
 	 * @param int|null                                        $post_id         Post ID, `null` for a person that is not saved yet.
 	 * @param int|null                                        $orbis_id        ID in the `{prefix}orbis_persons` table.
 	 * @param int|null                                        $contact_id      ID in the `{prefix}orbis_contacts` table.
-	 * @param string|null                                     $name            Name, the post title.
+	 * @param string|null                                     $display_name    Display name, the post title.
+	 * @param string|null                                     $first_name      First names.
+	 * @param string|null                                     $last_name       Last names.
+	 * @param string|null                                     $maiden_name     Last name at birth.
 	 * @param string|null                                     $content         Description, the post content.
 	 * @param string|null                                     $job_title       Job title.
 	 * @param string|null                                     $organization    Organization.
@@ -58,7 +61,10 @@ final class Person {
 		public ?int $post_id = null,
 		public ?int $orbis_id = null,
 		public ?int $contact_id = null,
-		public ?string $name = null,
+		public ?string $display_name = null,
+		public ?string $first_name = null,
+		public ?string $last_name = null,
+		public ?string $maiden_name = null,
 		public ?string $content = null,
 		public ?string $job_title = null,
 		public ?string $organization = null,
@@ -101,7 +107,10 @@ final class Person {
 		$person = new self();
 
 		$person->post_id       = $post->ID;
-		$person->name          = '' === $post->post_title ? null : $post->post_title;
+		$person->display_name  = '' === $post->post_title ? null : $post->post_title;
+		$person->first_name    = $get_meta( '_orbis_first_name' );
+		$person->last_name     = $get_meta( '_orbis_last_name' );
+		$person->maiden_name   = $get_meta( '_orbis_maiden_name' );
 		$person->content       = '' === $post->post_content ? null : $post->post_content;
 		$person->job_title     = $get_meta( '_orbis_title' );
 		$person->organization  = $get_meta( '_orbis_organization' );
@@ -207,7 +216,10 @@ final class Person {
 			'post_id'         => $this->post_id,
 			'id'              => $this->orbis_id,
 			'contact_id'      => $this->contact_id,
-			'name'            => $this->name,
+			'display_name'    => $this->display_name,
+			'first_name'      => $this->first_name,
+			'last_name'       => $this->last_name,
+			'maiden_name'     => $this->maiden_name,
 			'content'         => $this->content,
 			'job_title'       => $this->job_title,
 			'organization'    => $this->organization,

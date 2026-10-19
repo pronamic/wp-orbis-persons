@@ -22,6 +22,10 @@ $get_meta = static function ( string $key ): string {
 	return \is_string( $value ) ? $value : '';
 };
 
+$first_name  = $get_meta( '_orbis_first_name' );
+$last_name   = $get_meta( '_orbis_last_name' );
+$maiden_name = $get_meta( '_orbis_maiden_name' );
+
 $organization = \implode(
 	', ',
 	\array_filter(
@@ -70,6 +74,27 @@ $linkedin = $get_meta( '_orbis_linkedin' );
 
 ?>
 <dl>
+	<?php if ( '' !== $first_name ) : ?>
+
+		<dt><?php \esc_html_e( 'First Names', 'orbis-persons' ); ?></dt>
+		<dd><?php echo \esc_html( $first_name ); ?></dd>
+
+	<?php endif; ?>
+
+	<?php if ( '' !== $last_name ) : ?>
+
+		<dt><?php \esc_html_e( 'Last Names', 'orbis-persons' ); ?></dt>
+		<dd><?php echo \esc_html( $last_name ); ?></dd>
+
+	<?php endif; ?>
+
+	<?php if ( '' !== $maiden_name ) : ?>
+
+		<dt><?php \esc_html_e( 'Last Name at Birth', 'orbis-persons' ); ?></dt>
+		<dd><?php echo \esc_html( $maiden_name ); ?></dd>
+
+	<?php endif; ?>
+
 	<?php if ( '' !== $organization ) : ?>
 
 		<dt><?php \esc_html_e( 'Organization', 'orbis-persons' ); ?></dt>
