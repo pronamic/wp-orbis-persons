@@ -77,7 +77,7 @@ final class Plugin {
 	 * @return void
 	 */
 	private function init(): void {
-		$version = '1.2.0';
+		$version = '1.3.0';
 
 		if ( \get_option( 'orbis_persons_db_version' ) !== $version ) {
 			$this->install();
@@ -85,6 +85,8 @@ final class Plugin {
 			$this->add_foreign_keys();
 
 			$this->migrate_birth_dates();
+
+			$this->migrate_genders();
 
 			\update_option( 'orbis_persons_db_version', $version );
 		}
@@ -193,6 +195,66 @@ final class Plugin {
 			$wpdb->query( $foreign_key['sql'] );
 		}
 		// phpcs:enable WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.NotPrepared
+	}
+
+	/**
+	 * Migrate genders.
+	 *
+	 * The gender used to be a term of the `orbis_gender` taxonomy, now it is
+	 * stored as `male` or `female` in the `_orbis_gender` post meta. Terms
+	 * that cannot be mapped, for example `X`, are skipped. The terms are
+	 * kept, so nothing is lost.
+	 *
+	 * @return void
+	 */
+	private function migrate_genders(): void {
+		global $wpdb;
+
+		/**
+		 * WordPress database abstraction object.
+		 *
+		 * @var \wpdb $wpdb
+		 */
+
+		$query = <<<SQL
+			SELECT
+				term_relationship.object_id AS post_id,
+				term.slug,
+				term.name
+			FROM
+				$wpdb->term_relationships AS term_relationship
+					INNER JOIN
+				$wpdb->term_taxonomy AS term_taxonomy
+						ON term_taxonomy.term_taxonomy_id = term_relationship.term_taxonomy_id
+					INNER JOIN
+				$wpdb->terms AS term
+						ON term.term_id = term_taxonomy.term_id
+			WHERE
+				term_taxonomy.taxonomy = 'orbis_gender'
+			;
+			SQL;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- One-time migration, the query is built from table names only.
+		$rows = $wpdb->get_results( $query, ARRAY_A );
+
+		foreach ( $rows as $row ) {
+			$post_id = \is_numeric( $row['post_id'] ) ? (int) $row['post_id'] : 0;
+
+			$slug = \is_string( $row['slug'] ) ? $row['slug'] : '';
+			$name = \is_string( $row['name'] ) ? $row['name'] : '';
+
+			if ( '' !== \get_post_meta( $post_id, '_orbis_gender', true ) ) {
+				continue;
+			}
+
+			$gender = Gender::from_input( $slug ) ?? Gender::from_input( $name );
+
+			if ( null === $gender ) {
+				continue;
+			}
+
+			\update_post_meta( $post_id, '_orbis_gender', $gender->value );
+		}
 	}
 
 	/**

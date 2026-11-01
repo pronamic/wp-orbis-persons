@@ -14,12 +14,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Person comments show the AI provider and model that wrote them.
 - Person details are kept in revisions, shown in the revisions screen and restored with a revision.
 - Separate fields for the first names, last names and last name at birth. The post title is the display name, composed of the first names and last names when left empty.
+- Father and mother of a person, stored on the child as the post ID of the parent (`_orbis_person_father_post_id` and `_orbis_person_mother_post_id`). The person page and the abilities show the father, mother and children.
 
 ### Changed
 
 - The birth day, month and year can now be set separately, each part is optional.
 - The person details show the next birthday and the (possible) age.
 - Existing birth dates are migrated to the separate day, month and year fields.
+- The gender is a fixed choice, male or female, stored in the `_orbis_gender` post meta instead of a term of the `orbis_gender` taxonomy. Existing terms like "Man" and "Vrouw" are migrated, terms that cannot be mapped are kept but no longer shown.
+- The gender in the abilities is `"male"`, `"female"` or `null` instead of a term object.
+- The father search only shows men and persons without a gender, the mother search only women and persons without a gender. A woman cannot be saved as father and a man cannot be saved as mother.
+
+### Removed
+
+- The `orbis_gender` taxonomy.
 
 ## [1.0.0]
 

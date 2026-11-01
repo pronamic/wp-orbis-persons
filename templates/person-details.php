@@ -48,9 +48,6 @@ $country  = $get_meta( '_orbis_country' );
 
 $iban = $get_meta( '_orbis_iban' );
 
-$genders = \get_the_terms( (int) \get_the_ID(), 'orbis_gender' );
-$genders = \is_array( $genders ) ? \wp_list_pluck( $genders, 'name' ) : [];
-
 $birth_date = BirthDate::from_post( (int) \get_the_ID() );
 
 $today = new DateTimeImmutable( 'today', \wp_timezone() );
@@ -67,6 +64,15 @@ if ( null !== $age_range && $age_range[1] > 150 ) {
 }
 
 $age_on_next_birthday = null === $age_range ? null : $birth_date->get_age_on_next_birthday( $today );
+
+$persons = new PersonRepository();
+
+$person = $persons->get( (int) \get_the_ID() );
+
+$father = null === $person?->father_post_id ? null : $persons->get( $person->father_post_id );
+$mother = null === $person?->mother_post_id ? null : $persons->get( $person->mother_post_id );
+
+$children = $persons->get_children( (int) \get_the_ID() );
 
 $twitter  = $get_meta( '_orbis_twitter' );
 $facebook = $get_meta( '_orbis_facebook' );
@@ -129,10 +135,10 @@ $linkedin = $get_meta( '_orbis_linkedin' );
 
 	<?php endif; ?>
 
-	<?php if ( [] !== $genders ) : ?>
+	<?php if ( null !== $person?->gender ) : ?>
 
 		<dt><?php \esc_html_e( 'Gender', 'orbis-persons' ); ?></dt>
-		<dd><?php echo \esc_html( \implode( ', ', $genders ) ); ?></dd>
+		<dd><?php echo \esc_html( $person->gender->label() ); ?></dd>
 
 	<?php endif; ?>
 
@@ -202,6 +208,44 @@ $linkedin = $get_meta( '_orbis_linkedin' );
 			);
 
 			?>
+		</dd>
+
+	<?php endif; ?>
+
+	<?php
+
+	$parents = [
+		[ \__( 'Father', 'orbis-persons' ), $father ],
+		[ \__( 'Mother', 'orbis-persons' ), $mother ],
+	];
+
+	foreach ( $parents as [ $label, $parent ] ) :
+		if ( null === $parent ) {
+			continue;
+		}
+
+		?>
+
+		<dt><?php echo \esc_html( $label ); ?></dt>
+		<dd>
+			<a href="<?php echo \esc_url( (string) $parent->get_permalink() ); ?>"><?php echo \esc_html( (string) $parent->display_name ); ?></a>
+		</dd>
+
+	<?php endforeach; ?>
+
+	<?php if ( [] !== $children ) : ?>
+
+		<dt><?php \esc_html_e( 'Children', 'orbis-persons' ); ?></dt>
+		<dd>
+			<ul class="list-unstyled mb-0">
+				<?php foreach ( $children as $child ) : ?>
+
+					<li>
+						<a href="<?php echo \esc_url( (string) $child->get_permalink() ); ?>"><?php echo \esc_html( (string) $child->display_name ); ?></a>
+					</li>
+
+				<?php endforeach; ?>
+			</ul>
 		</dd>
 
 	<?php endif; ?>

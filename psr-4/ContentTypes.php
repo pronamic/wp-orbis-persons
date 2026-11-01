@@ -21,6 +21,9 @@ final class ContentTypes {
 	 */
 	public function __construct() {
 		\add_action( 'init', $this->init( ... ) );
+
+		\add_filter( 'rest_orbis_person_collection_params', $this->rest_collection_params( ... ) );
+		\add_filter( 'rest_orbis_person_query', $this->rest_query( ... ), 10, 2 );
 	}
 
 	/**
@@ -104,6 +107,7 @@ final class ContentTypes {
 			'_orbis_first_name',
 			'_orbis_last_name',
 			'_orbis_maiden_name',
+			'_orbis_gender',
 			'_orbis_title',
 			'_orbis_organization',
 			'_orbis_department',
@@ -138,36 +142,76 @@ final class ContentTypes {
 			);
 		}
 
-		\register_taxonomy(
-			'orbis_gender',
-			[ 'orbis_person' ],
+		/*
+		 * The father and mother are stored on the child as the post ID of
+		 * the parent person. The children of a person are queried.
+		 */
+		foreach ( [ '_orbis_person_father_post_id', '_orbis_person_mother_post_id' ] as $meta_key ) {
+			\register_post_meta(
+				'orbis_person',
+				$meta_key,
+				[
+					'type'              => 'integer',
+					'single'            => true,
+					'revisions_enabled' => true,
+				]
+			);
+		}
+	}
+
+	/**
+	 * REST collection parameters.
+	 *
+	 * Adds the `orbis_exclude_gender` parameter, used by the father and mother
+	 * fields to leave out women and men respectively.
+	 *
+	 * @param array<string, array<string, mixed>> $params Collection parameters.
+	 * @return array<string, array<string, mixed>>
+	 */
+	private function rest_collection_params( array $params ): array {
+		$params['orbis_exclude_gender'] = [
+			'description' => \__( 'Leave out persons with this gender, persons without a gender are included.', 'orbis-persons' ),
+			'type'        => 'string',
+			'enum'        => Gender::values(),
+		];
+
+		return $params;
+	}
+
+	/**
+	 * REST query.
+	 *
+	 * @param array<string, mixed> $args    Query arguments.
+	 * @param \WP_REST_Request     $request Request.
+	 * @return array<string, mixed>
+	 */
+	private function rest_query( array $args, \WP_REST_Request $request ): array {
+		$value = $request->get_param( 'orbis_exclude_gender' );
+
+		$gender = \is_string( $value ) ? Gender::tryFrom( $value ) : null;
+
+		if ( null === $gender ) {
+			return $args;
+		}
+
+		$clause = [
+			'relation' => 'OR',
 			[
-				'hierarchical'       => true,
-				'labels'             => [
-					'name'              => \_x( 'Genders', 'taxonomy general name', 'orbis-persons' ),
-					'singular_name'     => \_x( 'Gender', 'taxonomy singular name', 'orbis-persons' ),
-					'search_items'      => \__( 'Search Genders', 'orbis-persons' ),
-					'all_items'         => \__( 'All Genders', 'orbis-persons' ),
-					'parent_item'       => \__( 'Parent Gender', 'orbis-persons' ),
-					'parent_item_colon' => \__( 'Parent Gender:', 'orbis-persons' ),
-					'edit_item'         => \__( 'Edit Gender', 'orbis-persons' ),
-					'update_item'       => \__( 'Update Gender', 'orbis-persons' ),
-					'add_new_item'      => \__( 'Add New Gender', 'orbis-persons' ),
-					'new_item_name'     => \__( 'New Gender Name', 'orbis-persons' ),
-					'menu_name'         => \__( 'Genders', 'orbis-persons' ),
-				],
-				'public'             => true,
-				'show_ui'            => true,
-				'show_in_menu'       => true,
-				'show_in_nav_menus'  => true,
-				'show_tagcloud'      => false,
-				'show_in_quick_edit' => false,
-				'meta_box_cb'        => false,
-				'query_var'          => true,
-				'rewrite'            => [
-					'slug' => \_x( 'genders', 'slug', 'orbis-persons' ),
-				],
-			]
-		);
+				'key'     => '_orbis_gender',
+				'compare' => 'NOT EXISTS',
+			],
+			[
+				'key'     => '_orbis_gender',
+				'value'   => $gender->value,
+				'compare' => '!=',
+			],
+		];
+
+		$meta_query = $args['meta_query'] ?? null;
+
+		// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Only used by the father and mother search.
+		$args['meta_query'] = \is_array( $meta_query ) && [] !== $meta_query ? [ $meta_query, $clause ] : [ $clause ];
+
+		return $args;
 	}
 }

@@ -129,102 +129,121 @@ final readonly class AbilitiesController {
 		$log_comment_description = \__( 'Optional explanation of the change, for example the source of the data. It is added to the comment that logs the change.', 'orbis-persons' );
 
 		$person_properties = [
-			'display_name'  => [
+			'display_name'   => [
 				'type'        => 'string',
 				'description' => \__( 'Display name of the person. When empty, it is composed of the first names and last names.', 'orbis-persons' ),
 			],
-			'first_name'    => [
+			'first_name'     => [
 				'type'        => 'string',
 				'description' => \__( 'All first names (given names).', 'orbis-persons' ),
 			],
-			'last_name'     => [
+			'last_name'      => [
 				'type'        => 'string',
 				'description' => \__( 'Current last names, including prefixes such as "van der".', 'orbis-persons' ),
 			],
-			'maiden_name'   => [
+			'maiden_name'    => [
 				'type'        => 'string',
 				'description' => \__( 'Last name at birth, when it differs from the current last name.', 'orbis-persons' ),
 			],
-			'content'       => [
+			'content'        => [
 				'type'        => 'string',
 				'description' => \__( 'Description of or notes about the person, as block editor (Gutenberg) markup, for example <!-- wp:paragraph --><p>Text</p><!-- /wp:paragraph -->. Plain HTML is also accepted. Replaces the whole description, so get the person with orbis-persons/get first and keep the existing blocks when adding to it.', 'orbis-persons' ),
 			],
-			'job_title'     => [
+			'job_title'      => [
 				'type'        => 'string',
 				'description' => \__( 'Job title, for example "Developer".', 'orbis-persons' ),
 			],
-			'organization'  => [
+			'organization'   => [
 				'type'        => 'string',
 				'description' => \__( 'Name of the organization the person works for.', 'orbis-persons' ),
 			],
-			'department'    => [
+			'department'     => [
 				'type'        => 'string',
 				'description' => \__( 'Department within the organization.', 'orbis-persons' ),
 			],
-			'email'         => [
+			'email'          => [
 				'type'        => 'string',
 				'description' => \__( 'Email address.', 'orbis-persons' ),
 			],
-			'phone_number'  => [
+			'phone_number'   => [
 				'type'        => 'string',
 				'description' => \__( 'Phone number.', 'orbis-persons' ),
 			],
-			'mobile_number' => [
+			'mobile_number'  => [
 				'type'        => 'string',
 				'description' => \__( 'Mobile phone number.', 'orbis-persons' ),
 			],
-			'address'       => [
+			'address'        => [
 				'type'        => 'string',
 				'description' => \__( 'Street and house number.', 'orbis-persons' ),
 			],
-			'postcode'      => [
+			'postcode'       => [
 				'type'        => 'string',
 				'description' => \__( 'Postcode.', 'orbis-persons' ),
 			],
-			'city'          => [
+			'city'           => [
 				'type'        => 'string',
 				'description' => \__( 'City.', 'orbis-persons' ),
 			],
-			'country'       => [
+			'country'        => [
 				'type'        => 'string',
 				'description' => \__( 'Country.', 'orbis-persons' ),
 			],
-			'gender'        => [
+			'gender'         => [
 				'type'        => 'string',
-				'description' => \__( 'Gender: the ID, slug or name of a term of the gender taxonomy. An empty string removes the gender.', 'orbis-persons' ),
+				'description' => \__( 'Gender: "male" or "female". An empty string removes the gender.', 'orbis-persons' ),
+				'enum'        => \array_merge( Gender::values(), [ '' ] ),
 			],
-			'birth_day'     => [
+			'birth_day'      => [
 				'type'        => [ 'integer', 'null' ],
 				'description' => \__( 'Day of the month of the birth date. Each part of the birth date is optional, but a day requires a month. Null removes the day.', 'orbis-persons' ),
 				'minimum'     => 1,
 				'maximum'     => 31,
 			],
-			'birth_month'   => [
+			'birth_month'    => [
 				'type'        => [ 'integer', 'null' ],
 				'description' => \__( 'Month (1-12) of the birth date. Null removes the month.', 'orbis-persons' ),
 				'minimum'     => 1,
 				'maximum'     => 12,
 			],
-			'birth_year'    => [
+			'birth_year'     => [
 				'type'        => [ 'integer', 'null' ],
 				'description' => \__( 'Year of the birth date. Null removes the year.', 'orbis-persons' ),
 				'minimum'     => 1,
 			],
-			'iban'          => [
+			'father_post_id' => [
+				'type'        => [ 'integer', 'null' ],
+				'description' => \__( 'Post ID of the father, a person (post_id of the orbis-persons/search output) who is not female. Null removes the father.', 'orbis-persons' ),
+				'minimum'     => 1,
+			],
+			'mother_post_id' => [
+				'type'        => [ 'integer', 'null' ],
+				'description' => \__( 'Post ID of the mother, a person (post_id of the orbis-persons/search output) who is not male. Null removes the mother.', 'orbis-persons' ),
+				'minimum'     => 1,
+			],
+			'iban'           => [
 				'type'        => 'string',
 				'description' => \__( 'IBAN bank account number.', 'orbis-persons' ),
 			],
-			'twitter'       => [
+			'twitter'        => [
 				'type'        => 'string',
 				'description' => \__( 'Twitter (X) username.', 'orbis-persons' ),
 			],
-			'facebook'      => [
+			'facebook'       => [
 				'type'        => 'string',
 				'description' => \__( 'Facebook URL.', 'orbis-persons' ),
 			],
-			'linkedin'      => [
+			'linkedin'       => [
 				'type'        => 'string',
 				'description' => \__( 'LinkedIn URL.', 'orbis-persons' ),
+			],
+		];
+
+		$relative_schema = [
+			'type'       => 'object',
+			'properties' => [
+				'post_id'      => [ 'type' => 'integer' ],
+				'display_name' => [ 'type' => 'string' ],
 			],
 		];
 
@@ -272,12 +291,9 @@ final readonly class AbilitiesController {
 				'city'            => $nullable_string,
 				'country'         => $nullable_string,
 				'gender'          => [
-					'type'       => [ 'object', 'null' ],
-					'properties' => [
-						'id'   => [ 'type' => 'integer' ],
-						'slug' => [ 'type' => 'string' ],
-						'name' => [ 'type' => 'string' ],
-					],
+					'type'        => [ 'string', 'null' ],
+					'description' => \__( 'Gender: "male", "female" or null when unknown.', 'orbis-persons' ),
+					'enum'        => \array_merge( Gender::values(), [ null ] ),
 				],
 				'birth_date'      => [
 					'type'        => [ 'object', 'null' ],
@@ -291,6 +307,23 @@ final readonly class AbilitiesController {
 						'age_max'       => $nullable_integer,
 						'next_birthday' => $nullable_string,
 					],
+				],
+				'father_post_id'  => $nullable_integer,
+				'mother_post_id'  => $nullable_integer,
+				'father'          => [
+					...$relative_schema,
+					'type'        => [ 'object', 'null' ],
+					'description' => \__( 'Father of the person, null when unknown.', 'orbis-persons' ),
+				],
+				'mother'          => [
+					...$relative_schema,
+					'type'        => [ 'object', 'null' ],
+					'description' => \__( 'Mother of the person, null when unknown.', 'orbis-persons' ),
+				],
+				'children'        => [
+					'type'        => 'array',
+					'description' => \__( 'Children of the person: the persons with this person as father or mother. Not included in orbis-persons/search results.', 'orbis-persons' ),
+					'items'       => $relative_schema,
 				],
 				'iban'            => $nullable_string,
 				'twitter'         => $nullable_string,
@@ -344,7 +377,8 @@ final readonly class AbilitiesController {
 						],
 						'gender'   => [
 							'type'        => 'string',
-							'description' => \__( 'Limit the results to persons with this gender: the ID, slug or name of a term of the gender taxonomy.', 'orbis-persons' ),
+							'description' => \__( 'Limit the results to persons with this gender.', 'orbis-persons' ),
+							'enum'        => Gender::values(),
 						],
 						'orderby'  => [
 							'type'        => 'string',
@@ -403,7 +437,7 @@ final readonly class AbilitiesController {
 			'orbis-persons/get',
 			[
 				'label'               => \__( 'Get person', 'orbis-persons' ),
-				'description'         => \__( 'Returns a single Orbis person by its post ID (post_id of the orbis-persons/search output), with the full description.', 'orbis-persons' ),
+				'description'         => \__( 'Returns a single Orbis person by its post ID (post_id of the orbis-persons/search output), with the full description, the father, the mother and the children.', 'orbis-persons' ),
 				'category'            => 'orbis-persons',
 				'input_schema'        => [
 					'type'                 => 'object',
@@ -843,7 +877,7 @@ final readonly class AbilitiesController {
 	 */
 	private function get_person_data( array $input ): array {
 		$keys = \array_merge(
-			[ 'display_name', 'content', 'gender', 'birth_day', 'birth_month', 'birth_year' ],
+			[ 'display_name', 'content', 'gender', 'birth_day', 'birth_month', 'birth_year', 'father_post_id', 'mother_post_id' ],
 			\array_keys( $this->plugin->persons->get_meta_keys() )
 		);
 
@@ -867,27 +901,29 @@ final readonly class AbilitiesController {
 	 */
 	private function get_changes( Person $before, Person $after ): array {
 		$labels = [
-			'display_name'  => \__( 'Display Name', 'orbis-persons' ),
-			'first_name'    => \__( 'First Names', 'orbis-persons' ),
-			'last_name'     => \__( 'Last Names', 'orbis-persons' ),
-			'maiden_name'   => \__( 'Last Name at Birth', 'orbis-persons' ),
-			'content'       => \__( 'Description', 'orbis-persons' ),
-			'job_title'     => \_x( 'Title', 'person', 'orbis-persons' ),
-			'organization'  => \_x( 'Organization', 'person', 'orbis-persons' ),
-			'department'    => \_x( 'Department', 'person', 'orbis-persons' ),
-			'gender'        => \__( 'Gender', 'orbis-persons' ),
-			'email'         => \__( 'Email Address', 'orbis-persons' ),
-			'phone_number'  => \__( 'Phone Number', 'orbis-persons' ),
-			'mobile_number' => \__( 'Mobile Number', 'orbis-persons' ),
-			'address'       => \__( 'Address', 'orbis-persons' ),
-			'postcode'      => \__( 'Postcode', 'orbis-persons' ),
-			'city'          => \__( 'City', 'orbis-persons' ),
-			'country'       => \__( 'Country', 'orbis-persons' ),
-			'birth_date'    => \__( 'Birth Date', 'orbis-persons' ),
-			'iban'          => \__( 'IBAN', 'orbis-persons' ),
-			'twitter'       => \__( 'Twitter Username', 'orbis-persons' ),
-			'facebook'      => \__( 'Facebook URL', 'orbis-persons' ),
-			'linkedin'      => \__( 'LinkedIn URL', 'orbis-persons' ),
+			'display_name'   => \__( 'Display Name', 'orbis-persons' ),
+			'first_name'     => \__( 'First Names', 'orbis-persons' ),
+			'last_name'      => \__( 'Last Names', 'orbis-persons' ),
+			'maiden_name'    => \__( 'Last Name at Birth', 'orbis-persons' ),
+			'content'        => \__( 'Description', 'orbis-persons' ),
+			'job_title'      => \_x( 'Title', 'person', 'orbis-persons' ),
+			'organization'   => \_x( 'Organization', 'person', 'orbis-persons' ),
+			'department'     => \_x( 'Department', 'person', 'orbis-persons' ),
+			'gender'         => \__( 'Gender', 'orbis-persons' ),
+			'email'          => \__( 'Email Address', 'orbis-persons' ),
+			'phone_number'   => \__( 'Phone Number', 'orbis-persons' ),
+			'mobile_number'  => \__( 'Mobile Number', 'orbis-persons' ),
+			'address'        => \__( 'Address', 'orbis-persons' ),
+			'postcode'       => \__( 'Postcode', 'orbis-persons' ),
+			'city'           => \__( 'City', 'orbis-persons' ),
+			'country'        => \__( 'Country', 'orbis-persons' ),
+			'birth_date'     => \__( 'Birth Date', 'orbis-persons' ),
+			'father_post_id' => \__( 'Father', 'orbis-persons' ),
+			'mother_post_id' => \__( 'Mother', 'orbis-persons' ),
+			'iban'           => \__( 'IBAN', 'orbis-persons' ),
+			'twitter'        => \__( 'Twitter Username', 'orbis-persons' ),
+			'facebook'       => \__( 'Facebook URL', 'orbis-persons' ),
+			'linkedin'       => \__( 'LinkedIn URL', 'orbis-persons' ),
 		];
 
 		$before = $before->to_array();
@@ -1029,6 +1065,17 @@ final readonly class AbilitiesController {
 			$data['content'] = \wp_html_excerpt( \wp_strip_all_tags( $person->content ), 500, '…' );
 		}
 
+		$data['father'] = $this->format_relative( null === $person->father_post_id ? null : $this->plugin->persons->get( $person->father_post_id ) );
+		$data['mother'] = $this->format_relative( null === $person->mother_post_id ? null : $this->plugin->persons->get( $person->mother_post_id ) );
+
+		/*
+		 * The children are queried per person, so they are not included in
+		 * search results.
+		 */
+		if ( ! $excerpt && null !== $person->post_id ) {
+			$data['children'] = \array_map( $this->format_relative( ... ), $this->plugin->persons->get_children( $person->post_id ) );
+		}
+
 		$links = [];
 
 		$permalink = $person->get_permalink();
@@ -1050,6 +1097,23 @@ final readonly class AbilitiesController {
 		}
 
 		return [ '_links' => $links ] + $data;
+	}
+
+	/**
+	 * Format a father, mother or child for ability output.
+	 *
+	 * @param Person|null $person Person.
+	 * @return array{post_id: int|null, display_name: string|null}|null
+	 */
+	private function format_relative( ?Person $person ): ?array {
+		if ( null === $person ) {
+			return null;
+		}
+
+		return [
+			'post_id'      => $person->post_id,
+			'display_name' => $person->display_name,
+		];
 	}
 
 	/**

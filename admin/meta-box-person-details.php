@@ -34,6 +34,11 @@ $job_title    = $get_meta( '_orbis_title' );
 $organization = $get_meta( '_orbis_organization' );
 $department   = $get_meta( '_orbis_department' );
 
+$person = Person::from_post( $post );
+
+$father_post_id = $person->father_post_id;
+$mother_post_id = $person->mother_post_id;
+
 $email         = $get_meta( '_orbis_email' );
 $phone_number  = $get_meta( '_orbis_phone_number' );
 $mobile_number = $get_meta( '_orbis_mobile_number' );
@@ -107,24 +112,37 @@ $linkedin = $get_meta( '_orbis_linkedin' );
 				<label for="orbis_person_gender"><?php \esc_html_e( 'Gender', 'orbis-persons' ); ?></label>
 			</th>
 			<td>
-				<?php
+				<select id="orbis_person_gender" name="_orbis_gender">
+					<option value=""><?php \esc_html_e( '— Select Gender —', 'orbis-persons' ); ?></option>
 
-				$terms = \get_the_terms( $post->ID, 'orbis_gender' );
+					<?php foreach ( Gender::cases() as $gender ) : ?>
 
-				$gender_term = \is_array( $terms ) ? \reset( $terms ) : false;
+						<option value="<?php echo \esc_attr( $gender->value ); ?>" <?php \selected( $person->gender === $gender ); ?>><?php echo \esc_html( $gender->label() ); ?></option>
 
-				\wp_dropdown_categories(
-					[
-						'name'             => 'tax_input[orbis_gender]',
-						'id'               => 'orbis_person_gender',
-						'show_option_none' => \__( '— Select Gender —', 'orbis-persons' ),
-						'hide_empty'       => false,
-						'selected'         => $gender_term instanceof \WP_Term ? $gender_term->term_id : 0,
-						'taxonomy'         => 'orbis_gender',
-					]
-				);
+					<?php endforeach; ?>
+				</select>
+			</td>
+		</tr>
+		<tr valign="top">
+			<th scope="row">
+				<label for="orbis_person_father"><?php \esc_html_e( 'Father', 'orbis-persons' ); ?></label>
+			</th>
+			<td>
+				<input type="hidden" id="orbis_person_father_post_id" name="_orbis_person_father_post_id" value="<?php echo \esc_attr( null === $father_post_id ? '' : (string) $father_post_id ); ?>" />
 
-				?>
+				<input type="text" id="orbis_person_father" value="<?php echo \esc_attr( null === $father_post_id ? '' : \get_the_title( $father_post_id ) ); ?>" class="regular-text orbis-person-parent-control" data-target="orbis_person_father_post_id" data-exclude-gender="female" data-exclude="<?php echo \esc_attr( (string) $post->ID ); ?>" placeholder="<?php \esc_attr_e( 'Search a person…', 'orbis-persons' ); ?>" autocomplete="off" />
+			</td>
+		</tr>
+		<tr valign="top">
+			<th scope="row">
+				<label for="orbis_person_mother"><?php \esc_html_e( 'Mother', 'orbis-persons' ); ?></label>
+			</th>
+			<td>
+				<input type="hidden" id="orbis_person_mother_post_id" name="_orbis_person_mother_post_id" value="<?php echo \esc_attr( null === $mother_post_id ? '' : (string) $mother_post_id ); ?>" />
+
+				<input type="text" id="orbis_person_mother" value="<?php echo \esc_attr( null === $mother_post_id ? '' : \get_the_title( $mother_post_id ) ); ?>" class="regular-text orbis-person-parent-control" data-target="orbis_person_mother_post_id" data-exclude-gender="male" data-exclude="<?php echo \esc_attr( (string) $post->ID ); ?>" placeholder="<?php \esc_attr_e( 'Search a person…', 'orbis-persons' ); ?>" autocomplete="off" />
+
+				<p class="description"><?php \esc_html_e( 'Type at least 2 characters of the name and choose a person. Empty the field to remove the father or mother.', 'orbis-persons' ); ?></p>
 			</td>
 		</tr>
 		<tr valign="top">

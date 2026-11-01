@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Pronamic\Orbis\Persons;
 
+use WP_Error;
 use WP_Post;
 
 /**
@@ -35,6 +36,8 @@ final readonly class AdminPersonPostType {
 
 		\add_action( 'add_meta_boxes', $this->add_meta_boxes( ... ), 20 );
 
+		\add_action( 'admin_enqueue_scripts', $this->enqueue_scripts( ... ) );
+
 		\add_filter( 'enter_title_here', $this->enter_title_here( ... ), 10, 2 );
 
 		\add_filter( 'wp_insert_post_data', $this->insert_post_data( ... ) );
@@ -46,6 +49,12 @@ final readonly class AdminPersonPostType {
 		\add_filter( '_wp_post_revision_fields', $this->revision_fields( ... ), 10, 2 );
 
 		\add_filter( '_wp_post_revision_field__orbis_birth_date', $this->revision_field_birth_date( ... ), 10, 3 );
+
+		\add_filter( '_wp_post_revision_field__orbis_gender', $this->revision_field_gender( ... ) );
+
+		\add_filter( '_wp_post_revision_field__orbis_person_father_post_id', $this->revision_field_parent( ... ) );
+
+		\add_filter( '_wp_post_revision_field__orbis_person_mother_post_id', $this->revision_field_parent( ... ) );
 	}
 
 	/**
@@ -63,24 +72,27 @@ final readonly class AdminPersonPostType {
 	 */
 	private function revision_fields( array $fields, mixed $post ): array {
 		$person_fields = [
-			'_orbis_first_name'    => \__( 'First Names', 'orbis-persons' ),
-			'_orbis_last_name'     => \__( 'Last Names', 'orbis-persons' ),
-			'_orbis_maiden_name'   => \__( 'Last Name at Birth', 'orbis-persons' ),
-			'_orbis_title'         => \_x( 'Title', 'person', 'orbis-persons' ),
-			'_orbis_organization'  => \_x( 'Organization', 'person', 'orbis-persons' ),
-			'_orbis_department'    => \_x( 'Department', 'person', 'orbis-persons' ),
-			'_orbis_email'         => \__( 'Email Address', 'orbis-persons' ),
-			'_orbis_phone_number'  => \__( 'Phone Number', 'orbis-persons' ),
-			'_orbis_mobile_number' => \__( 'Mobile Number', 'orbis-persons' ),
-			'_orbis_address'       => \__( 'Address', 'orbis-persons' ),
-			'_orbis_postcode'      => \__( 'Postcode', 'orbis-persons' ),
-			'_orbis_city'          => \__( 'City', 'orbis-persons' ),
-			'_orbis_country'       => \__( 'Country', 'orbis-persons' ),
-			'_orbis_birth_date'    => \__( 'Birth Date', 'orbis-persons' ),
-			'_orbis_iban'          => \__( 'IBAN', 'orbis-persons' ),
-			'_orbis_twitter'       => \__( 'Twitter Username', 'orbis-persons' ),
-			'_orbis_facebook'      => \__( 'Facebook URL', 'orbis-persons' ),
-			'_orbis_linkedin'      => \__( 'LinkedIn URL', 'orbis-persons' ),
+			'_orbis_first_name'            => \__( 'First Names', 'orbis-persons' ),
+			'_orbis_last_name'             => \__( 'Last Names', 'orbis-persons' ),
+			'_orbis_maiden_name'           => \__( 'Last Name at Birth', 'orbis-persons' ),
+			'_orbis_title'                 => \_x( 'Title', 'person', 'orbis-persons' ),
+			'_orbis_organization'          => \_x( 'Organization', 'person', 'orbis-persons' ),
+			'_orbis_department'            => \_x( 'Department', 'person', 'orbis-persons' ),
+			'_orbis_email'                 => \__( 'Email Address', 'orbis-persons' ),
+			'_orbis_phone_number'          => \__( 'Phone Number', 'orbis-persons' ),
+			'_orbis_mobile_number'         => \__( 'Mobile Number', 'orbis-persons' ),
+			'_orbis_address'               => \__( 'Address', 'orbis-persons' ),
+			'_orbis_postcode'              => \__( 'Postcode', 'orbis-persons' ),
+			'_orbis_city'                  => \__( 'City', 'orbis-persons' ),
+			'_orbis_country'               => \__( 'Country', 'orbis-persons' ),
+			'_orbis_gender'                => \__( 'Gender', 'orbis-persons' ),
+			'_orbis_birth_date'            => \__( 'Birth Date', 'orbis-persons' ),
+			'_orbis_person_father_post_id' => \__( 'Father', 'orbis-persons' ),
+			'_orbis_person_mother_post_id' => \__( 'Mother', 'orbis-persons' ),
+			'_orbis_iban'                  => \__( 'IBAN', 'orbis-persons' ),
+			'_orbis_twitter'               => \__( 'Twitter Username', 'orbis-persons' ),
+			'_orbis_facebook'              => \__( 'Facebook URL', 'orbis-persons' ),
+			'_orbis_linkedin'              => \__( 'LinkedIn URL', 'orbis-persons' ),
 		];
 
 		$fields = \array_diff_key( $fields, $person_fields );
@@ -105,6 +117,32 @@ final readonly class AdminPersonPostType {
 	 */
 	private function revision_field_birth_date( mixed $value, string $field, WP_Post $revision ): string {
 		return BirthDate::from_post( $revision->ID )->format();
+	}
+
+	/**
+	 * Revision field gender.
+	 *
+	 * Shows the label of the gender instead of the stored value.
+	 *
+	 * @param mixed $value Gender value.
+	 * @return string
+	 */
+	private function revision_field_gender( mixed $value ): string {
+		return Gender::tryFrom( \is_string( $value ) ? $value : '' )?->label() ?? '';
+	}
+
+	/**
+	 * Revision field parent.
+	 *
+	 * Shows the display name of the father or mother instead of the post ID.
+	 *
+	 * @param mixed $value Post ID of the parent.
+	 * @return string
+	 */
+	private function revision_field_parent( mixed $value ): string {
+		$parent_id = \is_numeric( $value ) ? (int) $value : 0;
+
+		return $parent_id > 0 ? \get_the_title( $parent_id ) : '';
 	}
 
 	/**
@@ -187,6 +225,43 @@ final readonly class AdminPersonPostType {
 		$value = \get_post_meta( $post_id, $key, true );
 
 		return \is_string( $value ) ? $value : '';
+	}
+
+	/**
+	 * Enqueue scripts.
+	 *
+	 * The father and mother fields search persons with jQuery UI
+	 * Autocomplete, which WordPress includes and styles in the admin.
+	 *
+	 * @return void
+	 */
+	private function enqueue_scripts(): void {
+		$screen = \get_current_screen();
+
+		if ( null === $screen || 'post' !== $screen->base || 'orbis_person' !== $screen->post_type ) {
+			return;
+		}
+
+		$plugin_file = \dirname( __DIR__ ) . '/orbis-persons.php';
+
+		\wp_enqueue_script(
+			'orbis-persons-admin-person-parents',
+			\plugins_url( 'js/admin-person-parents.js', $plugin_file ),
+			[ 'jquery-ui-autocomplete', 'wp-api-fetch', 'wp-url' ],
+			(string) \filemtime( \dirname( $plugin_file ) . '/js/admin-person-parents.js' ),
+			true
+		);
+
+		\wp_localize_script(
+			'orbis-persons-admin-person-parents',
+			'orbisPersonParents',
+			[
+				'noResults' => \__( 'No persons found.', 'orbis-persons' ),
+				'result'    => \__( '1 person found. Use up and down arrow keys to navigate.', 'orbis-persons' ),
+				/* translators: %d: number of persons */
+				'results'   => \__( '%d persons found. Use up and down arrow keys to navigate.', 'orbis-persons' ),
+			]
+		);
 	}
 
 	/**
@@ -295,6 +370,24 @@ final readonly class AdminPersonPostType {
 
 		$this->plugin->persons->save_meta( $post_id, $this->plugin->persons->sanitize( $data ) );
 
+		$gender = \array_key_exists( '_orbis_gender', $_POST ) && \is_string( $_POST['_orbis_gender'] ) ? \sanitize_text_field( \wp_unslash( $_POST['_orbis_gender'] ) ) : '';
+
+		$this->plugin->persons->save_gender( $post_id, Gender::tryFrom( $gender ) );
+
+		$get_parent_input = static fn ( string $key ): string => \array_key_exists( $key, $_POST ) && \is_string( $_POST[ $key ] ) ? \sanitize_text_field( \wp_unslash( $_POST[ $key ] ) ) : '';
+
+		$parents = $this->plugin->persons->validate_parents(
+			$get_parent_input( '_orbis_person_father_post_id' ),
+			$get_parent_input( '_orbis_person_mother_post_id' ),
+			$post_id
+		);
+
+		if ( $parents instanceof WP_Error ) {
+			$this->add_redirect_notice( 'orbis_persons_invalid_parent' );
+		} else {
+			$this->plugin->persons->save_parents( $post_id, $parents );
+		}
+
 		$birth_date_input = [];
 
 		foreach ( [ '_orbis_birth_day', '_orbis_birth_month', '_orbis_birth_year' ] as $key ) {
@@ -304,10 +397,7 @@ final readonly class AdminPersonPostType {
 		$birth_date = BirthDate::from_input( ...$birth_date_input );
 
 		if ( null === $birth_date ) {
-			\add_filter(
-				'redirect_post_location',
-				static fn ( string $location ): string => \add_query_arg( 'orbis_persons_invalid_birth_date', '1', $location )
-			);
+			$this->add_redirect_notice( 'orbis_persons_invalid_birth_date' );
 
 			return;
 		}
@@ -316,28 +406,48 @@ final readonly class AdminPersonPostType {
 	}
 
 	/**
+	 * Add a query argument to the redirect after saving, to show a notice.
+	 *
+	 * @param string $key Query argument.
+	 * @return void
+	 */
+	private function add_redirect_notice( string $key ): void {
+		\add_filter(
+			'redirect_post_location',
+			static fn ( string $location ): string => \add_query_arg( $key, '1', $location )
+		);
+	}
+
+	/**
 	 * Admin notices.
 	 *
 	 * @return void
 	 */
 	private function admin_notices(): void {
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Only used to show a notice after saving.
-		if ( ! \array_key_exists( 'orbis_persons_invalid_birth_date', $_GET ) ) {
-			return;
-		}
-
 		$screen = \get_current_screen();
 
 		if ( null === $screen || 'orbis_person' !== $screen->post_type ) {
 			return;
 		}
 
-		\wp_admin_notice(
-			\__( 'The birth date is invalid and has not been saved.', 'orbis-persons' ),
-			[
-				'type'        => 'error',
-				'dismissible' => true,
-			]
-		);
+		$notices = [
+			'orbis_persons_invalid_birth_date' => \__( 'The birth date is invalid and has not been saved.', 'orbis-persons' ),
+			'orbis_persons_invalid_parent'     => \__( 'The father or mother is invalid and has not been saved. A person cannot be their own father or mother, the father and mother cannot be the same person, the father cannot be a woman and the mother cannot be a man.', 'orbis-persons' ),
+		];
+
+		foreach ( $notices as $key => $message ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Only used to show a notice after saving.
+			if ( ! \array_key_exists( $key, $_GET ) ) {
+				continue;
+			}
+
+			\wp_admin_notice(
+				$message,
+				[
+					'type'        => 'error',
+					'dismissible' => true,
+				]
+			);
+		}
 	}
 }

@@ -15,7 +15,6 @@ namespace Pronamic\Orbis\Persons;
 use DateTimeImmutable;
 use Pronamic\Orbis\Contacts\ContactJson;
 use WP_Post;
-use WP_Term;
 
 /**
  * Person class
@@ -47,8 +46,10 @@ final class Person {
 	 * @param string|null                                     $postcode        Postcode.
 	 * @param string|null                                     $city            City.
 	 * @param string|null                                     $country         Country.
-	 * @param WP_Term|null                                    $gender          Gender term.
+	 * @param Gender|null                                     $gender          Gender.
 	 * @param BirthDate|null                                  $birth_date      Birth date.
+	 * @param int|null                                        $father_post_id       Post ID of the father.
+	 * @param int|null                                        $mother_post_id       Post ID of the mother.
 	 * @param string|null                                     $iban            IBAN.
 	 * @param string|null                                     $twitter         Twitter username.
 	 * @param string|null                                     $facebook        Facebook URL.
@@ -77,8 +78,10 @@ final class Person {
 		public ?string $postcode = null,
 		public ?string $city = null,
 		public ?string $country = null,
-		public ?WP_Term $gender = null,
+		public ?Gender $gender = null,
 		public ?BirthDate $birth_date = null,
+		public ?int $father_post_id = null,
+		public ?int $mother_post_id = null,
 		public ?string $iban = null,
 		public ?string $twitter = null,
 		public ?string $facebook = null,
@@ -134,15 +137,20 @@ final class Person {
 
 		$person->orbis_id = null !== $orbis_id && \ctype_digit( $orbis_id ) ? (int) $orbis_id : null;
 
-		$terms = \get_the_terms( $post, 'orbis_gender' );
-
-		$gender = \is_array( $terms ) ? \reset( $terms ) : false;
-
-		$person->gender = $gender instanceof WP_Term ? $gender : null;
+		$person->gender = Gender::tryFrom( (string) $get_meta( '_orbis_gender' ) );
 
 		$birth_date = BirthDate::from_post( $post->ID );
 
 		$person->birth_date = $birth_date->is_empty() ? null : $birth_date;
+
+		$get_post_id = static function ( string $key ) use ( $post ): ?int {
+			$value = \get_post_meta( $post->ID, $key, true );
+
+			return \is_numeric( $value ) && (int) $value > 0 ? (int) $value : null;
+		};
+
+		$person->father_post_id = $get_post_id( '_orbis_person_father_post_id' );
+		$person->mother_post_id = $get_post_id( '_orbis_person_mother_post_id' );
 
 		if ( \class_exists( ContactJson::class ) ) {
 			$contact = ContactJson::get( $post->ID );
@@ -232,12 +240,10 @@ final class Person {
 			'postcode'        => $this->postcode,
 			'city'            => $this->city,
 			'country'         => $this->country,
-			'gender'          => null === $this->gender ? null : [
-				'id'   => $this->gender->term_id,
-				'slug' => $this->gender->slug,
-				'name' => $this->gender->name,
-			],
+			'gender'          => $this->gender?->value,
 			'birth_date'      => $birth_date,
+			'father_post_id'  => $this->father_post_id,
+			'mother_post_id'  => $this->mother_post_id,
 			'iban'            => $this->iban,
 			'twitter'         => $this->twitter,
 			'facebook'        => $this->facebook,

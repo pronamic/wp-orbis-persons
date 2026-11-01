@@ -23,3 +23,5 @@ phpstan.neon.dist
 /deploy/
 
 /node_modules/
+
+/state/

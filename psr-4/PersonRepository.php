@@ -16,7 +16,6 @@ use DateTimeImmutable;
 use Pronamic\Orbis\Contacts\ContactsTable;
 use WP_Error;
 use WP_Post;
-use WP_Term;
 
 /**
  * Person repository class
@@ -34,6 +33,8 @@ use WP_Term;
  *     birth_day?: int|string|null,
  *     birth_month?: int|string|null,
  *     birth_year?: int|string|null,
+ *     father_post_id?: int|string|null,
+ *     mother_post_id?: int|string|null,
  *     job_title?: string,
  *     organization?: string,
  *     department?: string,
@@ -101,7 +102,7 @@ final readonly class PersonRepository {
 	 *     Arguments.
 	 *
 	 *     @type string $search   Search term, matched against the display name, the first names, the last names, the email addresses, the organization and the phone numbers.
-	 *     @type string $gender   Gender term ID, slug or name.
+	 *     @type string $gender   Gender, `male` or `female`.
 	 *     @type string $orderby  Order by `name`, `created`, `modified` or `birthday` (upcoming birthdays first).
 	 *     @type string $order    Order, `asc` or `desc`, not used for `birthday`.
 	 *     @type int    $per_page Number of persons per page.
@@ -154,16 +155,16 @@ final readonly class PersonRepository {
 		$gender = $args['gender'] ?? '';
 
 		if ( '' !== $gender ) {
-			$term = $this->get_gender_term( $gender );
+			$gender = $this->get_gender( $gender );
 
-			if ( $term instanceof WP_Error ) {
-				return $term;
+			if ( $gender instanceof WP_Error ) {
+				return $gender;
 			}
 
 			$conditions[] = (string) $wpdb->prepare(
-				'post.ID IN ( SELECT object_id FROM %i WHERE term_taxonomy_id = %d )',
-				$wpdb->term_relationships,
-				$term->term_taxonomy_id
+				"post.ID IN ( SELECT post_id FROM %i WHERE meta_key = '_orbis_gender' AND meta_value = %s )",
+				$wpdb->postmeta,
+				$gender->value
 			);
 		}
 
@@ -342,6 +343,158 @@ final readonly class PersonRepository {
 	}
 
 	/**
+	 * Validate the post IDs of the father and mother.
+	 *
+	 * The father cannot be a woman and the mother cannot be a man, a parent
+	 * without a known gender is allowed.
+	 *
+	 * @param mixed    $father_post_id Post ID of the father, empty, `null` or `0` for no father.
+	 * @param mixed    $mother_post_id Post ID of the mother, empty, `null` or `0` for no mother.
+	 * @param int|null $child_id  Post ID of the child, `null` when creating a person.
+	 * @return array{father_post_id: int, mother_post_id: int}|WP_Error Post IDs, `0` for no parent.
+	 */
+	public function validate_parents( mixed $father_post_id, mixed $mother_post_id, ?int $child_id ): array|WP_Error {
+		$father_post_id = $this->validate_parent_id( $father_post_id, $child_id, Gender::Male );
+
+		if ( $father_post_id instanceof WP_Error ) {
+			return $father_post_id;
+		}
+
+		$mother_post_id = $this->validate_parent_id( $mother_post_id, $child_id, Gender::Female );
+
+		if ( $mother_post_id instanceof WP_Error ) {
+			return $mother_post_id;
+		}
+
+		if ( 0 !== $father_post_id && $father_post_id === $mother_post_id ) {
+			return new WP_Error( 'orbis_persons_same_parents', \__( 'The father and mother cannot be the same person.', 'orbis-persons' ), [ 'status' => 400 ] );
+		}
+
+		return [
+			'father_post_id' => $father_post_id,
+			'mother_post_id' => $mother_post_id,
+		];
+	}
+
+	/**
+	 * Save the post IDs of the father and mother.
+	 *
+	 * @param int                                             $post_id Post ID of the child.
+	 * @param array{father_post_id: int, mother_post_id: int} $parents Validated post IDs, `0` for no parent.
+	 * @return void
+	 */
+	public function save_parents( int $post_id, array $parents ): void {
+		$meta = [
+			'_orbis_person_father_post_id' => $parents['father_post_id'],
+			'_orbis_person_mother_post_id' => $parents['mother_post_id'],
+		];
+
+		foreach ( $meta as $meta_key => $parent_id ) {
+			if ( 0 === $parent_id ) {
+				\delete_post_meta( $post_id, $meta_key );
+
+				continue;
+			}
+
+			\update_post_meta( $post_id, $meta_key, $parent_id );
+		}
+	}
+
+	/**
+	 * Validate the post ID of a father or mother.
+	 *
+	 * @param mixed    $value    Post ID of the parent, empty, `null` or `0` to remove the parent.
+	 * @param int|null $child_id Post ID of the child, `null` when creating a person.
+	 * @param Gender   $gender   Gender of the parent, `Gender::Male` for the father and `Gender::Female` for the mother.
+	 * @return int|WP_Error Post ID of the parent, `0` to remove the parent.
+	 */
+	private function validate_parent_id( mixed $value, ?int $child_id, Gender $gender ): int|WP_Error {
+		if ( null === $value || '' === $value || 0 === $value || '0' === $value ) {
+			return 0;
+		}
+
+		if ( ! \is_int( $value ) && ! ( \is_string( $value ) && \ctype_digit( $value ) ) ) {
+			return new WP_Error(
+				'orbis_persons_invalid_parent',
+				/* translators: %s: value */
+				\sprintf( \__( 'The father or mother "%s" is not a valid post ID of a person.', 'orbis-persons' ), \is_scalar( $value ) ? (string) $value : '' ),
+				[ 'status' => 400 ]
+			);
+		}
+
+		$parent_id = (int) $value;
+
+		if ( $parent_id === $child_id ) {
+			return new WP_Error( 'orbis_persons_own_parent', \__( 'A person cannot be their own father or mother.', 'orbis-persons' ), [ 'status' => 400 ] );
+		}
+
+		$parent = $this->get( $parent_id );
+
+		if ( null === $parent ) {
+			return new WP_Error(
+				'orbis_persons_parent_not_found',
+				/* translators: %d: post ID */
+				\sprintf( \__( 'The father or mother with post ID %d is not found.', 'orbis-persons' ), $parent_id ),
+				[ 'status' => 400 ]
+			);
+		}
+
+		if ( null !== $parent->gender && $gender !== $parent->gender ) {
+			return match ( $gender ) {
+				Gender::Male   => new WP_Error(
+					'orbis_persons_father_not_male',
+					/* translators: %s: display name */
+					\sprintf( \__( 'The father cannot be a woman, "%s" is female.', 'orbis-persons' ), (string) $parent->display_name ),
+					[ 'status' => 400 ]
+				),
+				Gender::Female => new WP_Error(
+					'orbis_persons_mother_not_female',
+					/* translators: %s: display name */
+					\sprintf( \__( 'The mother cannot be a man, "%s" is male.', 'orbis-persons' ), (string) $parent->display_name ),
+					[ 'status' => 400 ]
+				),
+			};
+		}
+
+		return $parent_id;
+	}
+
+	/**
+	 * Get the children of a person, the persons with this person as father or mother.
+	 *
+	 * @param int $post_id Post ID of the parent.
+	 * @return Person[]
+	 */
+	public function get_children( int $post_id ): array {
+		$posts = \get_posts(
+			[
+				'post_type'      => 'orbis_person',
+				'post_status'    => 'publish',
+				// phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_posts_per_page, WordPressVIPMinimum.Performance.NoPaging.posts_per_page_posts_per_page -- A person has few children, all of them are shown.
+				'posts_per_page' => -1,
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- The children are queried by the parent meta.
+				'meta_query'     => [
+					'relation' => 'OR',
+					[
+						'key'   => '_orbis_person_father_post_id',
+						'value' => $post_id,
+						'type'  => 'NUMERIC',
+					],
+					[
+						'key'   => '_orbis_person_mother_post_id',
+						'value' => $post_id,
+						'type'  => 'NUMERIC',
+					],
+				],
+			]
+		);
+
+		return \array_map( Person::from_post( ... ), $posts );
+	}
+
+	/**
 	 * Save the given person fields as post meta.
 	 *
 	 * @param int                   $post_id Post ID.
@@ -444,7 +597,7 @@ final readonly class PersonRepository {
 	 *
 	 * @param array<string, mixed> $data   Data.
 	 * @param Person|null          $person Current person, `null` when creating a person.
-	 * @return array{post: array{post_title?: string, post_content?: string}, meta: array<string, string>, gender?: WP_Term|null, birth_date?: BirthDate}|WP_Error
+	 * @return array{post: array{post_title?: string, post_content?: string}, meta: array<string, string>, gender?: Gender|null, birth_date?: BirthDate, parents?: array{father_post_id: int, mother_post_id: int}}|WP_Error
 	 */
 	private function prepare( array $data, ?Person $person ): array|WP_Error {
 		$sanitized = $this->sanitize( $data );
@@ -490,7 +643,7 @@ final readonly class PersonRepository {
 			$gender = null;
 
 			if ( '' !== $sanitized['gender'] ) {
-				$gender = $this->get_gender_term( $sanitized['gender'] );
+				$gender = $this->get_gender( $sanitized['gender'] );
 
 				if ( $gender instanceof WP_Error ) {
 					return $gender;
@@ -529,25 +682,43 @@ final readonly class PersonRepository {
 			$prepared['birth_date'] = $birth_date;
 		}
 
+		if ( \array_key_exists( 'father_post_id', $data ) || \array_key_exists( 'mother_post_id', $data ) ) {
+			$parents = $this->validate_parents(
+				\array_key_exists( 'father_post_id', $data ) ? $data['father_post_id'] : $person?->father_post_id,
+				\array_key_exists( 'mother_post_id', $data ) ? $data['mother_post_id'] : $person?->mother_post_id,
+				$person?->post_id
+			);
+
+			if ( $parents instanceof WP_Error ) {
+				return $parents;
+			}
+
+			$prepared['parents'] = $parents;
+		}
+
 		return $prepared;
 	}
 
 	/**
 	 * Save prepared person data, except for the post fields.
 	 *
-	 * @param int                                                                                                                                        $post_id  Post ID.
-	 * @param array{post: array{post_title?: string, post_content?: string}, meta: array<string, string>, gender?: WP_Term|null, birth_date?: BirthDate} $prepared Prepared data.
+	 * @param int                                                                                                                                                                                                  $post_id  Post ID.
+	 * @param array{post: array{post_title?: string, post_content?: string}, meta: array<string, string>, gender?: Gender|null, birth_date?: BirthDate, parents?: array{father_post_id: int, mother_post_id: int}} $prepared Prepared data.
 	 * @return void
 	 */
 	private function save( int $post_id, array $prepared ): void {
 		$this->save_meta( $post_id, $prepared['meta'] );
 
 		if ( \array_key_exists( 'gender', $prepared ) ) {
-			\wp_set_object_terms( $post_id, null === $prepared['gender'] ? [] : [ $prepared['gender']->term_id ], 'orbis_gender' );
+			$this->save_gender( $post_id, $prepared['gender'] );
 		}
 
 		if ( \array_key_exists( 'birth_date', $prepared ) ) {
 			$prepared['birth_date']->save( $post_id );
+		}
+
+		if ( \array_key_exists( 'parents', $prepared ) ) {
+			$this->save_parents( $post_id, $prepared['parents'] );
 		}
 
 		/*
@@ -558,39 +729,42 @@ final readonly class PersonRepository {
 	}
 
 	/**
-	 * Get gender term by ID, slug or name.
+	 * Save the gender.
 	 *
-	 * @param string $value Term ID, slug or name.
-	 * @return WP_Term|WP_Error
+	 * @param int         $post_id Post ID.
+	 * @param Gender|null $gender  Gender, `null` to remove the gender.
+	 * @return void
 	 */
-	private function get_gender_term( string $value ): WP_Term|WP_Error {
-		$value = \trim( $value );
+	public function save_gender( int $post_id, ?Gender $gender ): void {
+		if ( null === $gender ) {
+			\delete_post_meta( $post_id, '_orbis_gender' );
 
-		$term = \ctype_digit( $value ) ? \get_term_by( 'id', (int) $value, 'orbis_gender' ) : \get_term_by( 'slug', \sanitize_title( $value ), 'orbis_gender' );
-
-		if ( ! $term instanceof WP_Term ) {
-			$term = \get_term_by( 'name', $value, 'orbis_gender' );
+			return;
 		}
 
-		if ( $term instanceof WP_Term ) {
-			return $term;
-		}
+		\update_post_meta( $post_id, '_orbis_gender', $gender->value );
+	}
 
-		$names = \get_terms(
-			[
-				'taxonomy'   => 'orbis_gender',
-				'hide_empty' => false,
-				'fields'     => 'names',
-			]
-		);
+	/**
+	 * Get gender from input.
+	 *
+	 * @param string $value Gender, `male` or `female`, or a common alias like `m`, `man`, `v` or `vrouw`.
+	 * @return Gender|WP_Error
+	 */
+	private function get_gender( string $value ): Gender|WP_Error {
+		$gender = Gender::from_input( $value );
+
+		if ( null !== $gender ) {
+			return $gender;
+		}
 
 		return new WP_Error(
-			'orbis_persons_gender_not_found',
+			'orbis_persons_invalid_gender',
 			\sprintf(
 				/* translators: 1: gender, 2: available genders */
-				\__( 'Gender "%1$s" not found. Available genders: %2$s.', 'orbis-persons' ),
+				\__( 'Gender "%1$s" is invalid. Available genders: %2$s.', 'orbis-persons' ),
 				$value,
-				\is_array( $names ) ? \implode( ', ', \array_map( \strval( ... ), $names ) ) : ''
+				\implode( ', ', Gender::values() )
 			),
 			[ 'status' => 400 ]
 		);
