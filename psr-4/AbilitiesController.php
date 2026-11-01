@@ -97,6 +97,10 @@ final readonly class AbilitiesController {
 			'properties' => [
 				'href'  => [ 'type' => 'string' ],
 				'title' => [ 'type' => 'string' ],
+				'type'  => [
+					'type'        => 'string',
+					'description' => \__( 'Media type of the link target, for example "text/html".', 'orbis-persons' ),
+				],
 			],
 		];
 
@@ -254,8 +258,15 @@ final readonly class AbilitiesController {
 					'type'        => 'object',
 					'description' => \__( 'HAL links of the person. Each link has an href and a title that describes what the link is for.', 'orbis-persons' ),
 					'properties'  => [
-						'self' => $link_schema,
-						'edit' => $link_schema,
+						'self'     => $link_schema,
+						'edit'     => $link_schema,
+						'father'   => $link_schema,
+						'mother'   => $link_schema,
+						'children' => [
+							'type'        => 'array',
+							'description' => \__( 'Links to the children of the person. Not included in orbis-persons/search results.', 'orbis-persons' ),
+							'items'       => $link_schema,
+						],
 					],
 				],
 				'post_id'         => $nullable_integer,
@@ -1065,15 +1076,20 @@ final readonly class AbilitiesController {
 			$data['content'] = \wp_html_excerpt( \wp_strip_all_tags( $person->content ), 500, '…' );
 		}
 
-		$data['father'] = $this->format_relative( null === $person->father_post_id ? null : $this->plugin->persons->get( $person->father_post_id ) );
-		$data['mother'] = $this->format_relative( null === $person->mother_post_id ? null : $this->plugin->persons->get( $person->mother_post_id ) );
+		$father = null === $person->father_post_id ? null : $this->plugin->persons->get( $person->father_post_id );
+		$mother = null === $person->mother_post_id ? null : $this->plugin->persons->get( $person->mother_post_id );
+
+		$data['father'] = $this->format_relative( $father );
+		$data['mother'] = $this->format_relative( $mother );
 
 		/*
 		 * The children are queried per person, so they are not included in
 		 * search results.
 		 */
-		if ( ! $excerpt && null !== $person->post_id ) {
-			$data['children'] = \array_map( $this->format_relative( ... ), $this->plugin->persons->get_children( $person->post_id ) );
+		$children = ( ! $excerpt && null !== $person->post_id ) ? $this->plugin->persons->get_children( $person->post_id ) : null;
+
+		if ( null !== $children ) {
+			$data['children'] = \array_map( $this->format_relative( ... ), $children );
 		}
 
 		$links = [];
@@ -1084,6 +1100,7 @@ final readonly class AbilitiesController {
 			$links['self'] = [
 				'href'  => $permalink,
 				'title' => \__( 'Orbis page of this person. Show this link to the user so they can open the person directly.', 'orbis-persons' ),
+				'type'  => 'text/html',
 			];
 		}
 
@@ -1093,7 +1110,47 @@ final readonly class AbilitiesController {
 			$links['edit'] = [
 				'href'  => $edit_link,
 				'title' => \__( 'WordPress admin page to edit this person.', 'orbis-persons' ),
+				'type'  => 'text/html',
 			];
+		}
+
+		$father_permalink = $father?->get_permalink();
+
+		if ( null !== $father_permalink ) {
+			$links['father'] = [
+				'href'  => $father_permalink,
+				'title' => \__( 'Orbis page of the father of this person.', 'orbis-persons' ),
+				'type'  => 'text/html',
+			];
+		}
+
+		$mother_permalink = $mother?->get_permalink();
+
+		if ( null !== $mother_permalink ) {
+			$links['mother'] = [
+				'href'  => $mother_permalink,
+				'title' => \__( 'Orbis page of the mother of this person.', 'orbis-persons' ),
+				'type'  => 'text/html',
+			];
+		}
+
+		if ( null !== $children ) {
+			$links['children'] = [];
+
+			foreach ( $children as $child ) {
+				$child_permalink = $child->get_permalink();
+
+				if ( null === $child_permalink ) {
+					continue;
+				}
+
+				$links['children'][] = [
+					'href'  => $child_permalink,
+					/* translators: %s: display name of the child */
+					'title' => \sprintf( \__( 'Orbis page of %s, a child of this person.', 'orbis-persons' ), (string) $child->display_name ),
+					'type'  => 'text/html',
+				];
+			}
 		}
 
 		return [ '_links' => $links ] + $data;
@@ -1133,10 +1190,12 @@ final readonly class AbilitiesController {
 				'self'   => [
 					'href'  => \get_comment_link( $comment ),
 					'title' => \__( 'Web page of the comment. Show this link to the user so they can open the comment directly.', 'orbis-persons' ),
+					'type'  => 'text/html',
 				],
 				'person' => [
 					'href'  => (string) \get_permalink( (int) $comment->comment_post_ID ),
 					'title' => \__( 'Orbis page of the person.', 'orbis-persons' ),
+					'type'  => 'text/html',
 				],
 			],
 		];
