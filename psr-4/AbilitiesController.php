@@ -165,18 +165,6 @@ final readonly class AbilitiesController {
 				'type'        => 'string',
 				'description' => \__( 'Department within the organization.', 'orbis-persons' ),
 			],
-			'email'          => [
-				'type'        => 'string',
-				'description' => \__( 'Email address.', 'orbis-persons' ),
-			],
-			'phone_number'   => [
-				'type'        => 'string',
-				'description' => \__( 'Phone number.', 'orbis-persons' ),
-			],
-			'mobile_number'  => [
-				'type'        => 'string',
-				'description' => \__( 'Mobile phone number.', 'orbis-persons' ),
-			],
 			'address'        => [
 				'type'        => 'string',
 				'description' => \__( 'Street and house number.', 'orbis-persons' ),
@@ -283,10 +271,9 @@ final readonly class AbilitiesController {
 				'job_title'       => $nullable_string,
 				'organization'    => $nullable_string,
 				'department'      => $nullable_string,
-				'email'           => $nullable_string,
 				'email_addresses' => [
 					'type'        => [ 'array', 'null' ],
-					'description' => \__( 'Email addresses of the person from Orbis Contacts, each with a label.', 'orbis-persons' ),
+					'description' => \__( 'Email addresses of the person from Orbis Contacts, each with a label. Read-only, they cannot be changed with orbis-persons/create or orbis-persons/update.', 'orbis-persons' ),
 					'items'       => [
 						'type'       => 'object',
 						'properties' => [
@@ -295,8 +282,18 @@ final readonly class AbilitiesController {
 						],
 					],
 				],
-				'phone_number'    => $nullable_string,
-				'mobile_number'   => $nullable_string,
+				'phone_numbers'   => [
+					'type'        => [ 'array', 'null' ],
+					'description' => \__( 'Phone numbers of the person from Orbis Contacts, each with the number as entered (input), a label and the number standardized to E.164 (e164, null when it could not be standardized). Read-only, they cannot be changed with orbis-persons/create or orbis-persons/update.', 'orbis-persons' ),
+					'items'       => [
+						'type'       => 'object',
+						'properties' => [
+							'input' => [ 'type' => 'string' ],
+							'label' => [ 'type' => 'string' ],
+							'e164'  => $nullable_string,
+						],
+					],
+				],
 				'address'         => $nullable_string,
 				'postcode'        => $nullable_string,
 				'city'            => $nullable_string,
@@ -921,9 +918,6 @@ final readonly class AbilitiesController {
 			'organization'   => \_x( 'Organization', 'person', 'orbis-persons' ),
 			'department'     => \_x( 'Department', 'person', 'orbis-persons' ),
 			'gender'         => \__( 'Gender', 'orbis-persons' ),
-			'email'          => \__( 'Email Address', 'orbis-persons' ),
-			'phone_number'   => \__( 'Phone Number', 'orbis-persons' ),
-			'mobile_number'  => \__( 'Mobile Number', 'orbis-persons' ),
 			'address'        => \__( 'Address', 'orbis-persons' ),
 			'postcode'       => \__( 'Postcode', 'orbis-persons' ),
 			'city'           => \__( 'City', 'orbis-persons' ),

@@ -68,7 +68,9 @@ composer run qa
 |---|---|
 | Post type | `orbis_person` (supports `orbis_contact`) |
 | Taxonomies | `orbis_gender` |
-| Post meta | `_orbis_title`, `_orbis_organization`, `_orbis_department`, `_orbis_email`, `_orbis_phone_number`, `_orbis_mobile_number`, `_orbis_address`, `_orbis_postcode`, `_orbis_city`, `_orbis_country`, `_orbis_birth_date_string`, `_orbis_birth_date`, `_orbis_birth_date_timestamp`, `_orbis_iban`, `_orbis_twitter`, `_orbis_facebook`, `_orbis_linkedin` |
+| Post meta | `_orbis_title`, `_orbis_organization`, `_orbis_department`, `_orbis_address`, `_orbis_postcode`, `_orbis_city`, `_orbis_country`, `_orbis_birth_date_string`, `_orbis_birth_date`, `_orbis_birth_date_timestamp`, `_orbis_iban`, `_orbis_twitter`, `_orbis_facebook`, `_orbis_linkedin` |
+
+Email addresses and phone numbers are managed by [Orbis Contacts](https://github.com/pronamic/wp-orbis-contacts) in the `_orbis_contact_email`, `_orbis_contact_phone` (E.164) and `_orbis_contact_json` post meta. The old `_orbis_email`, `_orbis_phone_number` and `_orbis_mobile_number` post meta is no longer read or written.
 
 ## Orbis core
 

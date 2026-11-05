@@ -24,10 +24,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The gender is a fixed choice, male or female, stored in the `_orbis_gender` post meta instead of a term of the `orbis_gender` taxonomy. Existing terms like "Man" and "Vrouw" are migrated, terms that cannot be mapped are kept but no longer shown.
 - The gender in the abilities is `"male"`, `"female"` or `null` instead of a term object.
 - The father search only shows men and persons without a gender, the mother search only women and persons without a gender. A woman cannot be saved as father and a man cannot be saved as mother.
+- Email addresses and phone numbers come from Orbis Contacts (`_orbis_contact_email`, `_orbis_contact_phone` and `_orbis_contact_json`), with labels, and are shown in the admin list, the person page and the archive. Searching for a phone number like `06 12345678` finds `+31612345678`. The `{prefix}orbis_persons` table gets the first email address.
+- The abilities return `email_addresses` and `phone_numbers` instead of `email`, `phone_number` and `mobile_number`.
 
 ### Removed
 
 - The `orbis_gender` taxonomy.
+- The email address, phone number and mobile number fields of the person details meta box, they are replaced by the "Contact Details" meta box of Orbis Contacts. The `_orbis_email`, `_orbis_phone_number` and `_orbis_mobile_number` post meta is no longer read or written.
+- The `email`, `phone_number` and `mobile_number` input of `orbis-persons/create` and `orbis-persons/update`.
 
 ## [1.0.0]
 

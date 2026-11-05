@@ -78,9 +78,6 @@ final readonly class AdminPersonPostType {
 			'_orbis_title'                 => \_x( 'Title', 'person', 'orbis-persons' ),
 			'_orbis_organization'          => \_x( 'Organization', 'person', 'orbis-persons' ),
 			'_orbis_department'            => \_x( 'Department', 'person', 'orbis-persons' ),
-			'_orbis_email'                 => \__( 'Email Address', 'orbis-persons' ),
-			'_orbis_phone_number'          => \__( 'Phone Number', 'orbis-persons' ),
-			'_orbis_mobile_number'         => \__( 'Mobile Number', 'orbis-persons' ),
 			'_orbis_address'               => \__( 'Address', 'orbis-persons' ),
 			'_orbis_postcode'              => \__( 'Postcode', 'orbis-persons' ),
 			'_orbis_city'                  => \__( 'City', 'orbis-persons' ),
@@ -184,34 +181,46 @@ final readonly class AdminPersonPostType {
 
 				break;
 			case 'orbis_person_contact':
+				$person = $this->plugin->persons->get( $post_id );
+
 				$links = [];
 
-				$email = $this->get_meta( $post_id, '_orbis_email' );
-
-				if ( '' !== $email ) {
+				foreach ( $person->email_addresses ?? [] as $item ) {
 					$links[] = \sprintf(
-						'<a href="%s">%s</a>',
-						\esc_url( 'mailto:' . $email ),
-						\esc_html( $email )
+						'<a href="%s">%s</a>%s',
+						\esc_url( 'mailto:' . $item['email'] ),
+						\esc_html( $item['email'] ),
+						$this->format_label( $item['label'] )
 					);
 				}
 
-				foreach ( [ '_orbis_phone_number', '_orbis_mobile_number' ] as $key ) {
-					$number = $this->get_meta( $post_id, $key );
-
-					if ( '' !== $number ) {
-						$links[] = \sprintf(
-							'<a href="%s">%s</a>',
-							\esc_url( 'tel:' . $number, [ 'tel' ] ),
-							\esc_html( $number )
-						);
-					}
+				foreach ( $person->phone_numbers ?? [] as $item ) {
+					$links[] = \sprintf(
+						'<a href="%s">%s</a>%s',
+						\esc_url( 'tel:' . ( $item['e164'] ?? $item['input'] ), [ 'tel' ] ),
+						\esc_html( $item['input'] ),
+						$this->format_label( $item['label'] )
+					);
 				}
 
 				echo \wp_kses_post( \implode( '<br />', $links ) );
 
 				break;
 		}
+	}
+
+	/**
+	 * Format the label of a contact email address or phone number.
+	 *
+	 * @param string $label Label.
+	 * @return string HTML, empty when there is no label.
+	 */
+	private function format_label( string $label ): string {
+		if ( '' === $label ) {
+			return '';
+		}
+
+		return \sprintf( ' <span class="description">(%s)</span>', \esc_html( $label ) );
 	}
 
 	/**

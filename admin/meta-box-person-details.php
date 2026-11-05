@@ -39,10 +39,6 @@ $person = Person::from_post( $post );
 $father_post_id = $person->father_post_id;
 $mother_post_id = $person->mother_post_id;
 
-$email         = $get_meta( '_orbis_email' );
-$phone_number  = $get_meta( '_orbis_phone_number' );
-$mobile_number = $get_meta( '_orbis_mobile_number' );
-
 $address  = $get_meta( '_orbis_address' );
 $postcode = $get_meta( '_orbis_postcode' );
 $city     = $get_meta( '_orbis_city' );
@@ -143,30 +139,6 @@ $linkedin = $get_meta( '_orbis_linkedin' );
 				<input type="text" id="orbis_person_mother" value="<?php echo \esc_attr( null === $mother_post_id ? '' : \get_the_title( $mother_post_id ) ); ?>" class="regular-text orbis-person-parent-control" data-target="orbis_person_mother_post_id" data-exclude-gender="male" data-exclude="<?php echo \esc_attr( (string) $post->ID ); ?>" placeholder="<?php \esc_attr_e( 'Search a person…', 'orbis-persons' ); ?>" autocomplete="off" />
 
 				<p class="description"><?php \esc_html_e( 'Type at least 2 characters of the name and choose a person. Empty the field to remove the father or mother.', 'orbis-persons' ); ?></p>
-			</td>
-		</tr>
-		<tr valign="top">
-			<th scope="row">
-				<label for="orbis_person_email"><?php \esc_html_e( 'Email Address', 'orbis-persons' ); ?></label>
-			</th>
-			<td>
-				<input type="email" id="orbis_person_email" name="_orbis_email" value="<?php echo \esc_attr( $email ); ?>" class="regular-text" />
-			</td>
-		</tr>
-		<tr valign="top">
-			<th scope="row">
-				<label for="orbis_person_phone_number"><?php \esc_html_e( 'Phone Number', 'orbis-persons' ); ?></label>
-			</th>
-			<td>
-				<input type="tel" id="orbis_person_phone_number" name="_orbis_phone_number" value="<?php echo \esc_attr( $phone_number ); ?>" class="regular-text" />
-			</td>
-		</tr>
-		<tr valign="top">
-			<th scope="row">
-				<label for="orbis_person_mobile_number"><?php \esc_html_e( 'Mobile Number', 'orbis-persons' ); ?></label>
-			</th>
-			<td>
-				<input type="tel" id="orbis_person_mobile_number" name="_orbis_mobile_number" value="<?php echo \esc_attr( $mobile_number ); ?>" class="regular-text" />
 			</td>
 		</tr>
 		<tr>

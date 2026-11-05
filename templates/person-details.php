@@ -37,10 +37,6 @@ $organization = \implode(
 	)
 );
 
-$email         = $get_meta( '_orbis_email' );
-$phone_number  = $get_meta( '_orbis_phone_number' );
-$mobile_number = $get_meta( '_orbis_mobile_number' );
-
 $address  = $get_meta( '_orbis_address' );
 $postcode = $get_meta( '_orbis_postcode' );
 $city     = $get_meta( '_orbis_city' );
@@ -108,32 +104,35 @@ $linkedin = $get_meta( '_orbis_linkedin' );
 
 	<?php endif; ?>
 
-	<?php if ( '' !== $phone_number ) : ?>
+	<?php foreach ( $person->phone_numbers ?? [] as $phone_number ) : ?>
 
 		<dt><?php \esc_html_e( 'Phone Number', 'orbis-persons' ); ?></dt>
 		<dd>
-			<a href="<?php echo \esc_url( 'tel:' . $phone_number ); ?>" class="anchor-tooltip" title="<?php \esc_attr_e( 'Call this number', 'orbis-persons' ); ?>"><?php echo \esc_html( $phone_number ); ?></a>
+			<a href="<?php echo \esc_url( 'tel:' . ( $phone_number['e164'] ?? $phone_number['input'] ), [ 'tel' ] ); ?>" class="anchor-tooltip" title="<?php \esc_attr_e( 'Call this number', 'orbis-persons' ); ?>"><?php echo \esc_html( $phone_number['input'] ); ?></a>
+
+			<?php if ( '' !== $phone_number['label'] ) : ?>
+
+				<small class="text-muted">(<?php echo \esc_html( $phone_number['label'] ); ?>)</small>
+
+			<?php endif; ?>
 		</dd>
 
-	<?php endif; ?>
+	<?php endforeach; ?>
 
-	<?php if ( '' !== $mobile_number ) : ?>
-
-		<dt><?php \esc_html_e( 'Mobile Number', 'orbis-persons' ); ?></dt>
-		<dd>
-			<a href="<?php echo \esc_url( 'tel:' . $mobile_number ); ?>" class="anchor-tooltip" title="<?php \esc_attr_e( 'Call this number', 'orbis-persons' ); ?>"><?php echo \esc_html( $mobile_number ); ?></a>
-		</dd>
-
-	<?php endif; ?>
-
-	<?php if ( '' !== $email ) : ?>
+	<?php foreach ( $person->email_addresses ?? [] as $email_address ) : ?>
 
 		<dt><?php \esc_html_e( 'Email Address', 'orbis-persons' ); ?></dt>
 		<dd>
-			<a href="<?php echo \esc_url( 'mailto:' . $email ); ?>"><?php echo \esc_html( $email ); ?></a>
+			<a href="<?php echo \esc_url( 'mailto:' . $email_address['email'] ); ?>"><?php echo \esc_html( $email_address['email'] ); ?></a>
+
+			<?php if ( '' !== $email_address['label'] ) : ?>
+
+				<small class="text-muted">(<?php echo \esc_html( $email_address['label'] ); ?>)</small>
+
+			<?php endif; ?>
 		</dd>
 
-	<?php endif; ?>
+	<?php endforeach; ?>
 
 	<?php if ( null !== $person?->gender ) : ?>
 

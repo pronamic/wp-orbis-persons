@@ -27,36 +27,34 @@ final class Person {
 	 * `new Person()` and filled afterwards. A `null` value means the field
 	 * is unknown or not set.
 	 *
-	 * @param int|null                                        $post_id         Post ID, `null` for a person that is not saved yet.
-	 * @param int|null                                        $orbis_id        ID in the `{prefix}orbis_persons` table.
-	 * @param int|null                                        $contact_id      ID in the `{prefix}orbis_contacts` table.
-	 * @param string|null                                     $display_name    Display name, the post title.
-	 * @param string|null                                     $first_name      First names.
-	 * @param string|null                                     $last_name       Last names.
-	 * @param string|null                                     $maiden_name     Last name at birth.
-	 * @param string|null                                     $content         Description, the post content.
-	 * @param string|null                                     $job_title       Job title.
-	 * @param string|null                                     $organization    Organization.
-	 * @param string|null                                     $department      Department.
-	 * @param string|null                                     $email           Email address.
-	 * @param array<array{email: string, label: string}>|null $email_addresses Email addresses from Orbis Contacts.
-	 * @param string|null                                     $phone_number    Phone number.
-	 * @param string|null                                     $mobile_number   Mobile number.
-	 * @param string|null                                     $address         Address.
-	 * @param string|null                                     $postcode        Postcode.
-	 * @param string|null                                     $city            City.
-	 * @param string|null                                     $country         Country.
-	 * @param Gender|null                                     $gender          Gender.
-	 * @param BirthDate|null                                  $birth_date      Birth date.
-	 * @param int|null                                        $father_post_id       Post ID of the father.
-	 * @param int|null                                        $mother_post_id       Post ID of the mother.
-	 * @param string|null                                     $iban            IBAN.
-	 * @param string|null                                     $twitter         Twitter username.
-	 * @param string|null                                     $facebook        Facebook URL.
-	 * @param string|null                                     $linkedin        LinkedIn URL.
-	 * @param string|null                                     $created         Created date, the post date.
-	 * @param string|null                                     $modified        Modified date, the post modified date.
-	 * @param int|null                                        $comment_count   Number of comments.
+	 * @param int|null                                                           $post_id         Post ID, `null` for a person that is not saved yet.
+	 * @param int|null                                                           $orbis_id        ID in the `{prefix}orbis_persons` table.
+	 * @param int|null                                                           $contact_id      ID in the `{prefix}orbis_contacts` table.
+	 * @param string|null                                                        $display_name    Display name, the post title.
+	 * @param string|null                                                        $first_name      First names.
+	 * @param string|null                                                        $last_name       Last names.
+	 * @param string|null                                                        $maiden_name     Last name at birth.
+	 * @param string|null                                                        $content         Description, the post content.
+	 * @param string|null                                                        $job_title       Job title.
+	 * @param string|null                                                        $organization    Organization.
+	 * @param string|null                                                        $department      Department.
+	 * @param array<array{email: string, label: string}>|null                    $email_addresses Email addresses from Orbis Contacts.
+	 * @param array<array{input: string, label: string, e164: string|null}>|null $phone_numbers Phone numbers from Orbis Contacts.
+	 * @param string|null                                                        $address         Address.
+	 * @param string|null                                                        $postcode        Postcode.
+	 * @param string|null                                                        $city            City.
+	 * @param string|null                                                        $country         Country.
+	 * @param Gender|null                                                        $gender          Gender.
+	 * @param BirthDate|null                                                     $birth_date      Birth date.
+	 * @param int|null                                                           $father_post_id       Post ID of the father.
+	 * @param int|null                                                           $mother_post_id       Post ID of the mother.
+	 * @param string|null                                                        $iban            IBAN.
+	 * @param string|null                                                        $twitter         Twitter username.
+	 * @param string|null                                                        $facebook        Facebook URL.
+	 * @param string|null                                                        $linkedin        LinkedIn URL.
+	 * @param string|null                                                        $created         Created date, the post date.
+	 * @param string|null                                                        $modified        Modified date, the post modified date.
+	 * @param int|null                                                           $comment_count   Number of comments.
 	 */
 	public function __construct(
 		public ?int $post_id = null,
@@ -70,10 +68,8 @@ final class Person {
 		public ?string $job_title = null,
 		public ?string $organization = null,
 		public ?string $department = null,
-		public ?string $email = null,
 		public ?array $email_addresses = null,
-		public ?string $phone_number = null,
-		public ?string $mobile_number = null,
+		public ?array $phone_numbers = null,
 		public ?string $address = null,
 		public ?string $postcode = null,
 		public ?string $city = null,
@@ -118,9 +114,6 @@ final class Person {
 		$person->job_title     = $get_meta( '_orbis_title' );
 		$person->organization  = $get_meta( '_orbis_organization' );
 		$person->department    = $get_meta( '_orbis_department' );
-		$person->email         = $get_meta( '_orbis_email' );
-		$person->phone_number  = $get_meta( '_orbis_phone_number' );
-		$person->mobile_number = $get_meta( '_orbis_mobile_number' );
 		$person->address       = $get_meta( '_orbis_address' );
 		$person->postcode      = $get_meta( '_orbis_postcode' );
 		$person->city          = $get_meta( '_orbis_city' );
@@ -157,25 +150,58 @@ final class Person {
 
 			$person->contact_id = \is_array( $contact ) && \is_int( $contact['contact_id'] ?? null ) ? $contact['contact_id'] : null;
 
-			$items = ContactJson::get_email_addresses( $post->ID );
-
-			$email_addresses = [];
-
-			foreach ( \is_array( $items ) ? $items : [] as $item ) {
-				if ( ! \is_array( $item ) || ! \is_string( $item['email'] ?? null ) ) {
-					continue;
-				}
-
-				$email_addresses[] = [
-					'email' => $item['email'],
-					'label' => \is_string( $item['label'] ?? null ) ? $item['label'] : '',
-				];
-			}
-
-			$person->email_addresses = $email_addresses;
+			$person->email_addresses = self::get_email_addresses( ContactJson::get_email_addresses( $post->ID ) );
+			$person->phone_numbers   = self::get_phone_numbers( ContactJson::get_phone_numbers( $post->ID ) );
 		}
 
 		return $person;
+	}
+
+	/**
+	 * Get the email addresses from the Orbis Contacts data.
+	 *
+	 * @param mixed $items Email addresses from `ContactJson::get_email_addresses()`.
+	 * @return array<array{email: string, label: string}>
+	 */
+	private static function get_email_addresses( mixed $items ): array {
+		$email_addresses = [];
+
+		foreach ( \is_array( $items ) ? $items : [] as $item ) {
+			if ( ! \is_array( $item ) || ! \is_string( $item['email'] ?? null ) ) {
+				continue;
+			}
+
+			$email_addresses[] = [
+				'email' => $item['email'],
+				'label' => \is_string( $item['label'] ?? null ) ? $item['label'] : '',
+			];
+		}
+
+		return $email_addresses;
+	}
+
+	/**
+	 * Get the phone numbers from the Orbis Contacts data.
+	 *
+	 * @param mixed $items Phone numbers from `ContactJson::get_phone_numbers()`.
+	 * @return array<array{input: string, label: string, e164: string|null}>
+	 */
+	private static function get_phone_numbers( mixed $items ): array {
+		$phone_numbers = [];
+
+		foreach ( \is_array( $items ) ? $items : [] as $item ) {
+			if ( ! \is_array( $item ) || ! \is_string( $item['input'] ?? null ) ) {
+				continue;
+			}
+
+			$phone_numbers[] = [
+				'input' => $item['input'],
+				'label' => \is_string( $item['label'] ?? null ) ? $item['label'] : '',
+				'e164'  => \is_string( $item['e164'] ?? null ) ? $item['e164'] : null,
+			];
+		}
+
+		return $phone_numbers;
 	}
 
 	/**
@@ -232,10 +258,8 @@ final class Person {
 			'job_title'       => $this->job_title,
 			'organization'    => $this->organization,
 			'department'      => $this->department,
-			'email'           => $this->email,
 			'email_addresses' => $this->email_addresses,
-			'phone_number'    => $this->phone_number,
-			'mobile_number'   => $this->mobile_number,
+			'phone_numbers'   => $this->phone_numbers,
 			'address'         => $this->address,
 			'postcode'        => $this->postcode,
 			'city'            => $this->city,

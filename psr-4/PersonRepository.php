@@ -14,6 +14,7 @@ namespace Pronamic\Orbis\Persons;
 
 use DateTimeImmutable;
 use Pronamic\Orbis\Contacts\ContactsTable;
+use Pronamic\Orbis\Contacts\PhoneNumbers;
 use WP_Error;
 use WP_Post;
 
@@ -38,9 +39,6 @@ use WP_Post;
  *     job_title?: string,
  *     organization?: string,
  *     department?: string,
- *     email?: string,
- *     phone_number?: string,
- *     mobile_number?: string,
  *     address?: string,
  *     postcode?: string,
  *     city?: string,
@@ -59,23 +57,20 @@ final readonly class PersonRepository {
 	 */
 	public function get_meta_keys(): array {
 		return [
-			'first_name'    => '_orbis_first_name',
-			'last_name'     => '_orbis_last_name',
-			'maiden_name'   => '_orbis_maiden_name',
-			'job_title'     => '_orbis_title',
-			'organization'  => '_orbis_organization',
-			'department'    => '_orbis_department',
-			'email'         => '_orbis_email',
-			'phone_number'  => '_orbis_phone_number',
-			'mobile_number' => '_orbis_mobile_number',
-			'address'       => '_orbis_address',
-			'postcode'      => '_orbis_postcode',
-			'city'          => '_orbis_city',
-			'country'       => '_orbis_country',
-			'iban'          => '_orbis_iban',
-			'twitter'       => '_orbis_twitter',
-			'facebook'      => '_orbis_facebook',
-			'linkedin'      => '_orbis_linkedin',
+			'first_name'   => '_orbis_first_name',
+			'last_name'    => '_orbis_last_name',
+			'maiden_name'  => '_orbis_maiden_name',
+			'job_title'    => '_orbis_title',
+			'organization' => '_orbis_organization',
+			'department'   => '_orbis_department',
+			'address'      => '_orbis_address',
+			'postcode'     => '_orbis_postcode',
+			'city'         => '_orbis_city',
+			'country'      => '_orbis_country',
+			'iban'         => '_orbis_iban',
+			'twitter'      => '_orbis_twitter',
+			'facebook'     => '_orbis_facebook',
+			'linkedin'     => '_orbis_linkedin',
 		];
 	}
 
@@ -129,6 +124,12 @@ final readonly class PersonRepository {
 		if ( '' !== $search ) {
 			$like = '%' . $wpdb->esc_like( $search ) . '%';
 
+			/*
+			 * Phone numbers are stored in E.164, so a search term like
+			 * `06 12345678` is standardized to find `+31612345678`.
+			 */
+			$e164 = \class_exists( PhoneNumbers::class ) ? PhoneNumbers::to_e164( $search ) : null;
+
 			$conditions[] = (string) $wpdb->prepare(
 				<<<'SQL'
 					(
@@ -140,15 +141,24 @@ final readonly class PersonRepository {
 							FROM
 								%i
 							WHERE
-								meta_key IN ( '_orbis_first_name', '_orbis_last_name', '_orbis_maiden_name', '_orbis_email','_orbis_contact_email', '_orbis_organization', '_orbis_phone_number', '_orbis_mobile_number' )
-									AND
-								meta_value LIKE %s
+								(
+									meta_key IN ( '_orbis_first_name', '_orbis_last_name', '_orbis_maiden_name', '_orbis_contact_email', '_orbis_organization', '_orbis_contact_phone' )
+										AND
+									meta_value LIKE %s
+								)
+									OR
+								(
+									meta_key = '_orbis_contact_phone'
+										AND
+									meta_value = %s
+								)
 						)
 					)
 					SQL,
 				$like,
 				$wpdb->postmeta,
-				$like
+				$like,
+				$e164 ?? ''
 			);
 		}
 
@@ -323,7 +333,6 @@ final readonly class PersonRepository {
 
 			$sanitized[ $key ] = match ( $key ) {
 				'content' => \wp_kses_post( $value ),
-				'email'   => \sanitize_email( $value ),
 				default   => \sanitize_text_field( $value ),
 			};
 		}
@@ -546,11 +555,15 @@ final readonly class PersonRepository {
 			return;
 		}
 
-		$email = \get_post_meta( $post_id, '_orbis_email', true );
+		/*
+		 * Until Orbis Contacts has a "primary" email address, the first
+		 * email address is used.
+		 */
+		$email = Person::from_post( $post )->email_addresses[0]['email'] ?? null;
 
 		$data = [
 			'name'       => $post->post_title,
-			'email'      => \is_string( $email ) && '' !== $email ? $email : null,
+			'email'      => $email,
 			'updated_at' => \current_time( 'mysql', true ),
 		];
 
@@ -626,17 +639,6 @@ final readonly class PersonRepository {
 
 		if ( \array_key_exists( 'content', $sanitized ) ) {
 			$prepared['post']['post_content'] = $sanitized['content'];
-		}
-
-		$email = $data['email'] ?? '';
-
-		if ( \is_string( $email ) && '' !== \trim( $email ) && ! \is_email( $sanitized['email'] ?? '' ) ) {
-			return new WP_Error(
-				'orbis_persons_invalid_email',
-				/* translators: %s: email address */
-				\sprintf( \__( 'The email address "%s" is invalid.', 'orbis-persons' ), $email ),
-				[ 'status' => 400 ]
-			);
 		}
 
 		if ( \array_key_exists( 'gender', $sanitized ) ) {
