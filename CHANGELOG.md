@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Person details are kept in revisions, shown in the revisions screen and restored with a revision.
 - Separate fields for the first names, last names and last name at birth. The post title is the display name, composed of the first names and last names when left empty.
 - Father and mother of a person, stored on the child as the post ID of the parent (`_orbis_person_father_post_id` and `_orbis_person_mother_post_id`). The person page and the abilities show the father, mother and children.
+- Persons can be archived with Orbis Archiver (`orbis-archiving` post type support).
 
 ### Changed
 

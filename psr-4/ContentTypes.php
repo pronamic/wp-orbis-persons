@@ -86,6 +86,7 @@ final class ContentTypes {
 					'custom-fields',
 					'revisions',
 					'orbis-contact',
+					'orbis-archiving',
 				],
 				'has_archive'      => true,
 				'delete_with_user' => false,
