@@ -953,3 +953,11 @@ msgstr "Geplaatst door"
 #: templates/single-orbis_person.php:74
 msgid "Edit"
 msgstr "Bewerken"
+
+#: templates/archive-orbis_person.php:44
+msgid "Email Addresses"
+msgstr "E-mailadressen"
+
+#: templates/archive-orbis_person.php:45
+msgid "Phone Numbers"
+msgstr "Telefoonnummers"

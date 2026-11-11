@@ -953,3 +953,11 @@ msgstr ""
 #: templates/single-orbis_person.php:74
 msgid "Edit"
 msgstr ""
+
+#: templates/archive-orbis_person.php:44
+msgid "Email Addresses"
+msgstr ""
+
+#: templates/archive-orbis_person.php:45
+msgid "Phone Numbers"
+msgstr ""

@@ -24,8 +24,6 @@ $get_meta = static function ( string $key ): string {
 
 $today = new DateTimeImmutable( 'today', \wp_timezone() );
 
-$persons = new PersonRepository();
-
 \get_header();
 
 ?>
@@ -43,6 +41,8 @@ $persons = new PersonRepository();
 						<th><span class="visually-hidden"><?php \esc_html_e( 'Photo', 'orbis-persons' ); ?></span></th>
 						<th><?php \esc_html_e( 'Name', 'orbis-persons' ); ?></th>
 						<th><?php \esc_html_e( 'Organization', 'orbis-persons' ); ?></th>
+						<th><?php \esc_html_e( 'Email Addresses', 'orbis-persons' ); ?></th>
+						<th><?php \esc_html_e( 'Phone Numbers', 'orbis-persons' ); ?></th>
 						<th><?php \esc_html_e( 'Address', 'orbis-persons' ); ?></th>
 						<th><?php \esc_html_e( 'Birth Date', 'orbis-persons' ); ?></th>
 						<th><?php \esc_html_e( 'Author', 'orbis-persons' ); ?></th>
@@ -54,8 +54,6 @@ $persons = new PersonRepository();
 
 					while ( \have_posts() ) :
 						\the_post();
-
-						$person = $persons->get( (int) \get_the_ID() );
 
 						$organization = \implode(
 							', ',
@@ -98,35 +96,33 @@ $persons = new PersonRepository();
 								<a href="<?php \the_permalink(); ?>"><?php \the_title(); ?></a>
 
 								<?php \get_template_part( 'templates/table-cell-comments' ); ?>
-
-								<span class="orbis-person-meta">
-									<?php foreach ( $person->email_addresses ?? [] as $email_address ) : ?>
-
-										<br /><a href="<?php echo \esc_url( 'mailto:' . $email_address['email'] ); ?>"><?php echo \esc_html( $email_address['email'] ); ?></a>
-
-										<?php if ( '' !== $email_address['label'] ) : ?>
-
-											<small class="text-muted">(<?php echo \esc_html( $email_address['label'] ); ?>)</small>
-
-										<?php endif; ?>
-
-									<?php endforeach; ?>
-
-									<?php foreach ( $person->phone_numbers ?? [] as $phone_number ) : ?>
-
-										<br /><a href="<?php echo \esc_url( 'tel:' . ( $phone_number['e164'] ?? $phone_number['input'] ), [ 'tel' ] ); ?>"><?php echo \esc_html( $phone_number['input'] ); ?></a>
-
-										<?php if ( '' !== $phone_number['label'] ) : ?>
-
-											<small class="text-muted">(<?php echo \esc_html( $phone_number['label'] ); ?>)</small>
-
-										<?php endif; ?>
-
-									<?php endforeach; ?>
-								</span>
 							</td>
 							<td>
 								<?php echo \esc_html( $organization ); ?>
+							</td>
+							<td>
+								<?php
+
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Block output is escaped in the render callback.
+								echo \render_block(
+									[
+										'blockName' => 'orbis-contacts/email-addresses',
+									]
+								);
+
+								?>
+							</td>
+							<td>
+								<?php
+
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Block output is escaped in the render callback.
+								echo \render_block(
+									[
+										'blockName' => 'orbis-contacts/phone-numbers',
+									]
+								);
+
+								?>
 							</td>
 							<td>
 								<?php
