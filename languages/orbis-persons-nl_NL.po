@@ -593,8 +593,12 @@ msgid "%d persons found. Use up and down arrow keys to navigate."
 msgstr "%d personen gevonden. Gebruik de pijltjestoetsen omhoog en omlaag om te navigeren."
 
 #: psr-4/AdminPersonPostType.php:275
-msgid "Person Details"
-msgstr "Persoonsgegevens"
+msgid "Basic Details"
+msgstr "Basisgegevens"
+
+#: psr-4/AdminPersonPostType.php:293
+msgid "Personal Details"
+msgstr "Persoonlijke gegevens"
 
 #: psr-4/AdminPersonPostType.php:434
 msgid "The birth date is invalid and has not been saved."
@@ -961,3 +965,33 @@ msgstr "E-mailadressen"
 #: templates/archive-orbis_person.php:45
 msgid "Phone Numbers"
 msgstr "Telefoonnummers"
+
+msgid "Death Date"
+msgstr "Sterfdatum"
+
+msgid "Age at Death"
+msgstr "Leeftijd bij overlijden"
+
+msgid "† %s"
+msgstr "† %s"
+
+msgctxt "death day placeholder"
+msgid "dd"
+msgstr "dd"
+
+msgctxt "death month placeholder"
+msgid "mm"
+msgstr "mm"
+
+msgctxt "death year placeholder"
+msgid "yyyy"
+msgstr "jjjj"
+
+msgid "The death date is invalid and has not been saved. The death date cannot be in the future or before the birth date."
+msgstr "De sterfdatum is ongeldig en is niet opgeslagen. De sterfdatum kan niet in de toekomst of vóór de geboortedatum liggen."
+
+msgid "The death date (day \"%1$s\", month \"%2$s\", year \"%3$s\") is invalid. Each part is optional, but a day requires a month and the date cannot be in the future."
+msgstr "De sterfdatum (dag \"%1$s\", maand \"%2$s\", jaar \"%3$s\") is ongeldig. Elk onderdeel is optioneel, maar een dag vereist een maand en de datum kan niet in de toekomst liggen."
+
+msgid "The death date (%1$s) cannot be before the birth date (%2$s)."
+msgstr "De sterfdatum (%1$s) kan niet vóór de geboortedatum (%2$s) liggen."

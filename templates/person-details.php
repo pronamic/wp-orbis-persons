@@ -48,14 +48,21 @@ $birth_date = BirthDate::from_post( (int) \get_the_ID() );
 
 $today = new DateTimeImmutable( 'today', \wp_timezone() );
 
-$next_birthday = $birth_date->get_next_birthday( $today );
+$death_date = DeathDate::from_post( (int) \get_the_ID() );
 
-$age_range = $birth_date->get_age_range( $today );
+$is_deceased = ! $death_date->is_empty();
+
+/**
+ * A deceased person has no next birthday, the age is the age at death.
+ */
+$next_birthday = $is_deceased ? null : $birth_date->get_next_birthday( $today );
+
+$age_range = $is_deceased ? $birth_date->get_age_range_at_death( $death_date ) : $birth_date->get_age_range( $today );
 
 /**
  * For historical persons an age is not meaningful.
  */
-if ( null !== $age_range && $age_range[1] > 150 ) {
+if ( ! $is_deceased && null !== $age_range && $age_range[1] > 150 ) {
 	$age_range = null;
 }
 
@@ -166,6 +173,13 @@ $linkedin = $get_meta( '_orbis_linkedin' );
 
 	<?php endif; ?>
 
+	<?php if ( $is_deceased ) : ?>
+
+		<dt><?php \esc_html_e( 'Death Date', 'orbis-persons' ); ?></dt>
+		<dd><?php echo \esc_html( $death_date->format() ); ?></dd>
+
+	<?php endif; ?>
+
 	<?php if ( null !== $next_birthday ) : ?>
 
 		<?php
@@ -195,7 +209,7 @@ $linkedin = $get_meta( '_orbis_linkedin' );
 
 	<?php if ( null !== $age_range ) : ?>
 
-		<dt><?php \esc_html_e( 'Age', 'orbis-persons' ); ?></dt>
+		<dt><?php $is_deceased ? \esc_html_e( 'Age at Death', 'orbis-persons' ) : \esc_html_e( 'Age', 'orbis-persons' ); ?></dt>
 		<dd>
 			<?php
 

@@ -203,6 +203,23 @@ final readonly class AbilitiesController {
 				'description' => \__( 'Year of the birth date. Null removes the year.', 'orbis-persons' ),
 				'minimum'     => 1,
 			],
+			'death_day'      => [
+				'type'        => [ 'integer', 'null' ],
+				'description' => \__( 'Day of the month of the death date. Each part of the death date is optional, but a day requires a month. A person with a death date is deceased. Null removes the day.', 'orbis-persons' ),
+				'minimum'     => 1,
+				'maximum'     => 31,
+			],
+			'death_month'    => [
+				'type'        => [ 'integer', 'null' ],
+				'description' => \__( 'Month (1-12) of the death date. Null removes the month.', 'orbis-persons' ),
+				'minimum'     => 1,
+				'maximum'     => 12,
+			],
+			'death_year'     => [
+				'type'        => [ 'integer', 'null' ],
+				'description' => \__( 'Year of the death date. Null removes the year.', 'orbis-persons' ),
+				'minimum'     => 1,
+			],
 			'father_post_id' => [
 				'type'        => [ 'integer', 'null' ],
 				'description' => \__( 'Post ID of the father, a person (post_id of the orbis-persons/search output) who is not female. Null removes the father.', 'orbis-persons' ),
@@ -305,7 +322,7 @@ final readonly class AbilitiesController {
 				],
 				'birth_date'      => [
 					'type'        => [ 'object', 'null' ],
-					'description' => \__( 'Birth date, null when nothing of it is known. Each part can be unknown: when only the year (and month) is known, the age is a range from age_min to age_max. The next birthday is today or later.', 'orbis-persons' ),
+					'description' => \__( 'Birth date, null when nothing of it is known. Each part can be unknown: when only the year (and month) is known, the age is a range from age_min to age_max. The next birthday is today or later. A deceased person (death_date is not null) has no age and next birthday.', 'orbis-persons' ),
 					'properties'  => [
 						'day'           => $nullable_integer,
 						'month'         => $nullable_integer,
@@ -314,6 +331,18 @@ final readonly class AbilitiesController {
 						'age_min'       => $nullable_integer,
 						'age_max'       => $nullable_integer,
 						'next_birthday' => $nullable_string,
+					],
+				],
+				'death_date'      => [
+					'type'        => [ 'object', 'null' ],
+					'description' => \__( 'Death date, null when the person is alive or nothing of the death date is known. Each part can be unknown. The age at death is a range from age_min to age_max, null when the birth year or death year is unknown.', 'orbis-persons' ),
+					'properties'  => [
+						'day'       => $nullable_integer,
+						'month'     => $nullable_integer,
+						'year'      => $nullable_integer,
+						'formatted' => [ 'type' => 'string' ],
+						'age_min'   => $nullable_integer,
+						'age_max'   => $nullable_integer,
 					],
 				],
 				'father_post_id'  => $nullable_integer,
@@ -373,7 +402,7 @@ final readonly class AbilitiesController {
 			'orbis-persons/search',
 			[
 				'label'               => \__( 'Search persons', 'orbis-persons' ),
-				'description'         => \__( 'Searches Orbis persons and returns their contact details, organization, gender and birth date. Without a search term all persons are returned, ordered by name. Upcoming birthdays are persons ordered by "birthday": the person whose birthday is next comes first. The output contains the current date of the site. Use orbis-persons/get for the full description of a person and orbis/search-comments for the comments of a person.', 'orbis-persons' ),
+				'description'         => \__( 'Searches Orbis persons and returns their contact details, organization, gender, birth date and death date. Without a search term all persons are returned, ordered by name. Upcoming birthdays are persons ordered by "birthday": the person whose birthday is next comes first. The output contains the current date of the site. Use orbis-persons/get for the full description of a person and orbis/search-comments for the comments of a person.', 'orbis-persons' ),
 				'category'            => 'orbis-persons',
 				'input_schema'        => [
 					'type'                 => 'object',
@@ -390,7 +419,7 @@ final readonly class AbilitiesController {
 						],
 						'orderby'  => [
 							'type'        => 'string',
-							'description' => \__( 'Sort the persons by name, creation date, modification date or upcoming birthday. Persons without a known birthday come last when sorting by birthday.', 'orbis-persons' ),
+							'description' => \__( 'Sort the persons by name, creation date, modification date or upcoming birthday. Persons without a known birthday and deceased persons come last when sorting by birthday.', 'orbis-persons' ),
 							'enum'        => [ 'name', 'created', 'modified', 'birthday' ],
 							'default'     => 'name',
 						],
@@ -512,7 +541,7 @@ final readonly class AbilitiesController {
 			'orbis-persons/update',
 			[
 				'label'               => \__( 'Update person', 'orbis-persons' ),
-				'description'         => \__( 'Updates an Orbis person. Only the fields in the input are changed: an empty string clears a field and null clears a part of the birth date. Only change the fields the user asked for. A comment listing the changed fields is added to the person, with the AI provider and model. AI assistants must always pass their AI provider and model in the ai input. Use orbis-persons/search to find the post ID of the person.', 'orbis-persons' ),
+				'description'         => \__( 'Updates an Orbis person. Only the fields in the input are changed: an empty string clears a field and null clears a part of the birth date or death date. Only change the fields the user asked for. A comment listing the changed fields is added to the person, with the AI provider and model. AI assistants must always pass their AI provider and model in the ai input. Use orbis-persons/search to find the post ID of the person.', 'orbis-persons' ),
 				'category'            => 'orbis-persons',
 				'input_schema'        => [
 					'type'                 => 'object',
@@ -885,7 +914,7 @@ final readonly class AbilitiesController {
 	 */
 	private function get_person_data( array $input ): array {
 		$keys = \array_merge(
-			[ 'display_name', 'content', 'gender', 'birth_day', 'birth_month', 'birth_year', 'father_post_id', 'mother_post_id' ],
+			[ 'display_name', 'content', 'gender', 'birth_day', 'birth_month', 'birth_year', 'death_day', 'death_month', 'death_year', 'father_post_id', 'mother_post_id' ],
 			\array_keys( $this->plugin->persons->get_meta_keys() )
 		);
 
@@ -923,6 +952,7 @@ final readonly class AbilitiesController {
 			'city'           => \__( 'City', 'orbis-persons' ),
 			'country'        => \__( 'Country', 'orbis-persons' ),
 			'birth_date'     => \__( 'Birth Date', 'orbis-persons' ),
+			'death_date'     => \__( 'Death Date', 'orbis-persons' ),
 			'father_post_id' => \__( 'Father', 'orbis-persons' ),
 			'mother_post_id' => \__( 'Mother', 'orbis-persons' ),
 			'iban'           => \__( 'IBAN', 'orbis-persons' ),

@@ -101,7 +101,7 @@ final class ContentTypes {
 		/*
 		 * Register the person details meta with revisions enabled, so changes
 		 * are kept in the person revisions and restored with them. The derived
-		 * birth date meta is revisioned as well, so it stays consistent with
+		 * birth and death date meta is revisioned as well, so it stays consistent with
 		 * the day, month and year after restoring a revision.
 		 */
 		$meta_keys = [
@@ -126,6 +126,10 @@ final class ContentTypes {
 			'_orbis_birthday',
 			'_orbis_birth_date',
 			'_orbis_birth_date_timestamp',
+			'_orbis_death_day',
+			'_orbis_death_month',
+			'_orbis_death_year',
+			'_orbis_death_date',
 		];
 
 		foreach ( $meta_keys as $meta_key ) {

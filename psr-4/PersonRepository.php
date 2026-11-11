@@ -34,6 +34,9 @@ use WP_Post;
  *     birth_day?: int|string|null,
  *     birth_month?: int|string|null,
  *     birth_year?: int|string|null,
+ *     death_day?: int|string|null,
+ *     death_month?: int|string|null,
+ *     death_year?: int|string|null,
  *     father_post_id?: int|string|null,
  *     mother_post_id?: int|string|null,
  *     job_title?: string,
@@ -98,7 +101,7 @@ final readonly class PersonRepository {
 	 *
 	 *     @type string $search   Search term, matched against the display name, the first names, the last names, the email addresses, the organization and the phone numbers.
 	 *     @type string $gender   Gender, `male` or `female`.
-	 *     @type string $orderby  Order by `name`, `created`, `modified` or `birthday` (upcoming birthdays first).
+	 *     @type string $orderby  Order by `name`, `created`, `modified` or `birthday` (upcoming birthdays first, deceased persons last).
 	 *     @type string $order    Order, `asc` or `desc`, not used for `birthday`.
 	 *     @type int    $per_page Number of persons per page.
 	 *     @type int    $page     Page.
@@ -201,7 +204,22 @@ final readonly class PersonRepository {
 			$wpdb->posts AS post
 				LEFT JOIN
 			$wpdb->postmeta AS birthday
-					ON birthday.post_id = post.ID AND birthday.meta_key = '_orbis_birthday'
+					ON (
+						birthday.post_id = post.ID
+							AND
+						birthday.meta_key = '_orbis_birthday'
+							AND
+						NOT EXISTS (
+							SELECT
+								1
+							FROM
+								$wpdb->postmeta AS death
+							WHERE
+								death.post_id = post.ID
+									AND
+								death.meta_key IN ( '_orbis_death_day', '_orbis_death_month', '_orbis_death_year' )
+						)
+					)
 			SQL;
 
 		$where = \implode( ' AND ', $conditions );
@@ -610,7 +628,7 @@ final readonly class PersonRepository {
 	 *
 	 * @param array<string, mixed> $data   Data.
 	 * @param Person|null          $person Current person, `null` when creating a person.
-	 * @return array{post: array{post_title?: string, post_content?: string}, meta: array<string, string>, gender?: Gender|null, birth_date?: BirthDate, parents?: array{father_post_id: int, mother_post_id: int}}|WP_Error
+	 * @return array{post: array{post_title?: string, post_content?: string}, meta: array<string, string>, gender?: Gender|null, birth_date?: BirthDate, death_date?: DeathDate, parents?: array{father_post_id: int, mother_post_id: int}}|WP_Error
 	 */
 	private function prepare( array $data, ?Person $person ): array|WP_Error {
 		$sanitized = $this->sanitize( $data );
@@ -684,6 +702,49 @@ final readonly class PersonRepository {
 			$prepared['birth_date'] = $birth_date;
 		}
 
+		$death_keys = [
+			'death_day'   => $person?->death_date?->day,
+			'death_month' => $person?->death_date?->month,
+			'death_year'  => $person?->death_date?->year,
+		];
+
+		if ( [] !== \array_intersect_key( $data, $death_keys ) ) {
+			$parts = [];
+
+			foreach ( $death_keys as $key => $current ) {
+				$value = \array_key_exists( $key, $data ) ? $data[ $key ] : $current;
+
+				$parts[] = \is_int( $value ) || \is_string( $value ) ? (string) $value : '';
+			}
+
+			$death_date = DeathDate::from_input( ...$parts );
+
+			if ( null === $death_date ) {
+				return new WP_Error(
+					'orbis_persons_invalid_death_date',
+					/* translators: 1: day, 2: month, 3: year */
+					\sprintf( \__( 'The death date (day "%1$s", month "%2$s", year "%3$s") is invalid. Each part is optional, but a day requires a month and the date cannot be in the future.', 'orbis-persons' ), ...$parts ),
+					[ 'status' => 400 ]
+				);
+			}
+
+			$prepared['death_date'] = $death_date;
+		}
+
+		if ( \array_key_exists( 'birth_date', $prepared ) || \array_key_exists( 'death_date', $prepared ) ) {
+			$birth_date = $prepared['birth_date'] ?? $person?->birth_date;
+			$death_date = $prepared['death_date'] ?? $person?->death_date;
+
+			if ( null !== $birth_date && null !== $death_date && $death_date->is_before( $birth_date ) ) {
+				return new WP_Error(
+					'orbis_persons_death_date_before_birth_date',
+					/* translators: 1: death date, 2: birth date */
+					\sprintf( \__( 'The death date (%1$s) cannot be before the birth date (%2$s).', 'orbis-persons' ), $death_date->format(), $birth_date->format() ),
+					[ 'status' => 400 ]
+				);
+			}
+		}
+
 		if ( \array_key_exists( 'father_post_id', $data ) || \array_key_exists( 'mother_post_id', $data ) ) {
 			$parents = $this->validate_parents(
 				\array_key_exists( 'father_post_id', $data ) ? $data['father_post_id'] : $person?->father_post_id,
@@ -704,8 +765,8 @@ final readonly class PersonRepository {
 	/**
 	 * Save prepared person data, except for the post fields.
 	 *
-	 * @param int                                                                                                                                                                                                  $post_id  Post ID.
-	 * @param array{post: array{post_title?: string, post_content?: string}, meta: array<string, string>, gender?: Gender|null, birth_date?: BirthDate, parents?: array{father_post_id: int, mother_post_id: int}} $prepared Prepared data.
+	 * @param int                                                                                                                                                                                                                          $post_id  Post ID.
+	 * @param array{post: array{post_title?: string, post_content?: string}, meta: array<string, string>, gender?: Gender|null, birth_date?: BirthDate, death_date?: DeathDate, parents?: array{father_post_id: int, mother_post_id: int}} $prepared Prepared data.
 	 * @return void
 	 */
 	private function save( int $post_id, array $prepared ): void {
@@ -717,6 +778,10 @@ final readonly class PersonRepository {
 
 		if ( \array_key_exists( 'birth_date', $prepared ) ) {
 			$prepared['birth_date']->save( $post_id );
+		}
+
+		if ( \array_key_exists( 'death_date', $prepared ) ) {
+			$prepared['death_date']->save( $post_id );
 		}
 
 		if ( \array_key_exists( 'parents', $prepared ) ) {

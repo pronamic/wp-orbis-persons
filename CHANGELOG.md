@@ -15,10 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Person details are kept in revisions, shown in the revisions screen and restored with a revision.
 - Separate fields for the first names, last names and last name at birth. The post title is the display name, composed of the first names and last names when left empty.
 - Father and mother of a person, stored on the child as the post ID of the parent (`_orbis_person_father_post_id` and `_orbis_person_mother_post_id`). The person page and the abilities show the father, mother and children.
+- Death date of a person, of which the day, month and year are each optional (`_orbis_death_day`, `_orbis_death_month` and `_orbis_death_year`). A person with a death date is deceased: the person page and archive show the age at death instead of the age and next birthday, and deceased persons come last in the upcoming birthdays. The abilities accept `death_day`, `death_month` and `death_year` and return `death_date`.
 - Persons can be archived with Orbis Archiver (`orbis-archiving` post type support).
 
 ### Changed
 
+- The gender, birth date, death date, father and mother are edited in a separate "Personal Details" meta box, the "Person Details" meta box is renamed to "Basic Details".
 - The birth day, month and year can now be set separately, each part is optional.
 - The person details show the next birthday and the (possible) age.
 - Existing birth dates are migrated to the separate day, month and year fields.

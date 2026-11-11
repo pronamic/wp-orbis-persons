@@ -71,12 +71,19 @@ $today = new DateTimeImmutable( 'today', \wp_timezone() );
 
 						$birth_date = BirthDate::from_post( (int) \get_the_ID() );
 
-						$age_range = $birth_date->get_age_range( $today );
+						$death_date = DeathDate::from_post( (int) \get_the_ID() );
+
+						$is_deceased = ! $death_date->is_empty();
+
+						/**
+						 * For a deceased person the age is the age at death.
+						 */
+						$age_range = $is_deceased ? $birth_date->get_age_range_at_death( $death_date ) : $birth_date->get_age_range( $today );
 
 						/**
 						 * For historical persons an age is not meaningful.
 						 */
-						if ( null !== $age_range && $age_range[1] > 150 ) {
+						if ( ! $is_deceased && null !== $age_range && $age_range[1] > 150 ) {
 							$age_range = null;
 						}
 
@@ -133,6 +140,18 @@ $today = new DateTimeImmutable( 'today', \wp_timezone() );
 							</td>
 							<td>
 								<?php echo \esc_html( $birth_date->format() ); ?>
+
+								<?php if ( $is_deceased ) : ?>
+
+									<br />
+									<?php
+
+									/* translators: %s: death date */
+									echo \esc_html( \sprintf( \__( '† %s', 'orbis-persons' ), $death_date->format() ) );
+
+									?>
+
+								<?php endif; ?>
 
 								<?php if ( null !== $age_range ) : ?>
 

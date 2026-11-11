@@ -46,6 +46,7 @@ final class Person {
 	 * @param string|null                                                        $country         Country.
 	 * @param Gender|null                                                        $gender          Gender.
 	 * @param BirthDate|null                                                     $birth_date      Birth date.
+	 * @param DeathDate|null                                                     $death_date      Death date, a person with a death date is deceased.
 	 * @param int|null                                                           $father_post_id       Post ID of the father.
 	 * @param int|null                                                           $mother_post_id       Post ID of the mother.
 	 * @param string|null                                                        $iban            IBAN.
@@ -76,6 +77,7 @@ final class Person {
 		public ?string $country = null,
 		public ?Gender $gender = null,
 		public ?BirthDate $birth_date = null,
+		public ?DeathDate $death_date = null,
 		public ?int $father_post_id = null,
 		public ?int $mother_post_id = null,
 		public ?string $iban = null,
@@ -135,6 +137,10 @@ final class Person {
 		$birth_date = BirthDate::from_post( $post->ID );
 
 		$person->birth_date = $birth_date->is_empty() ? null : $birth_date;
+
+		$death_date = DeathDate::from_post( $post->ID );
+
+		$person->death_date = $death_date->is_empty() ? null : $death_date;
 
 		$get_post_id = static function ( string $key ) use ( $post ): ?int {
 			$value = \get_post_meta( $post->ID, $key, true );
@@ -223,7 +229,8 @@ final class Person {
 	 * To array.
 	 *
 	 * The age and next birthday are calculated for today in the timezone
-	 * of the site.
+	 * of the site. A deceased person has no age and next birthday, the death
+	 * date then contains the age at death.
 	 *
 	 * @return array<string, mixed>
 	 */
@@ -233,7 +240,7 @@ final class Person {
 		if ( null !== $this->birth_date ) {
 			$today = new DateTimeImmutable( 'today', \wp_timezone() );
 
-			$age_range = $this->birth_date->get_age_range( $today );
+			$age_range = null === $this->death_date ? $this->birth_date->get_age_range( $today ) : null;
 
 			$birth_date = [
 				'day'           => $this->birth_date->day,
@@ -242,7 +249,22 @@ final class Person {
 				'formatted'     => $this->birth_date->format(),
 				'age_min'       => null === $age_range ? null : $age_range[0],
 				'age_max'       => null === $age_range ? null : $age_range[1],
-				'next_birthday' => $this->birth_date->get_next_birthday( $today )?->format( 'Y-m-d' ),
+				'next_birthday' => null === $this->death_date ? $this->birth_date->get_next_birthday( $today )?->format( 'Y-m-d' ) : null,
+			];
+		}
+
+		$death_date = null;
+
+		if ( null !== $this->death_date ) {
+			$age_range = $this->birth_date?->get_age_range_at_death( $this->death_date );
+
+			$death_date = [
+				'day'       => $this->death_date->day,
+				'month'     => $this->death_date->month,
+				'year'      => $this->death_date->year,
+				'formatted' => $this->death_date->format(),
+				'age_min'   => null === $age_range ? null : $age_range[0],
+				'age_max'   => null === $age_range ? null : $age_range[1],
 			];
 		}
 
@@ -266,6 +288,7 @@ final class Person {
 			'country'         => $this->country,
 			'gender'          => $this->gender?->value,
 			'birth_date'      => $birth_date,
+			'death_date'      => $death_date,
 			'father_post_id'  => $this->father_post_id,
 			'mother_post_id'  => $this->mother_post_id,
 			'iban'            => $this->iban,

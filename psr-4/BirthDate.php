@@ -282,26 +282,47 @@ final readonly class BirthDate {
 	 * @return array{0: int, 1: int}|null
 	 */
 	public function get_age_range( DateTimeImmutable $today ): ?array {
+		return $this->get_age_range_on( (int) $today->format( 'Y' ), (int) $today->format( 'n' ), (int) $today->format( 'j' ) );
+	}
+
+	/**
+	 * Get the age range at death.
+	 *
+	 * @param DeathDate $death_date Death date.
+	 * @return array{0: int, 1: int}|null Age range, `null` when the birth year or death year is unknown.
+	 */
+	public function get_age_range_at_death( DeathDate $death_date ): ?array {
+		if ( null === $death_date->year ) {
+			return null;
+		}
+
+		return $this->get_age_range_on( $death_date->year, $death_date->month, $death_date->day );
+	}
+
+	/**
+	 * Get the age range on a date of which the month and day can be unknown.
+	 *
+	 * The minimum age applies when the date can be before the birthday in
+	 * that year, the maximum age when the date can be on or after it.
+	 *
+	 * @param int      $year  Year.
+	 * @param int|null $month Month.
+	 * @param int|null $day   Day.
+	 * @return array{0: int, 1: int}|null
+	 */
+	private function get_age_range_on( int $year, ?int $month, ?int $day ): ?array {
 		if ( null === $this->year ) {
 			return null;
 		}
 
-		$age = (int) $today->format( 'Y' ) - $this->year;
+		$age = $year - $this->year;
 
-		$current = [ (int) $today->format( 'n' ), (int) $today->format( 'j' ) ];
+		$can_be_before_birthday = [ $month ?? 1, $day ?? 1 ] < [ $this->month ?? 12, $this->day ?? 31 ];
+		$can_be_after_birthday  = [ $month ?? 12, $day ?? 31 ] >= [ $this->month ?? 1, $this->day ?? 1 ];
 
-		if ( null !== $this->month && null !== $this->day ) {
-			$age = $current < [ $this->month, $this->day ] ? $age - 1 : $age;
-
-			return [ $age, $age ];
-		}
-
-		if ( null !== $this->month && $current[0] !== $this->month ) {
-			$age = $current[0] < $this->month ? $age - 1 : $age;
-
-			return [ $age, $age ];
-		}
-
-		return [ \max( 0, $age - 1 ), $age ];
+		return [
+			\max( 0, $can_be_before_birthday ? $age - 1 : $age ),
+			\max( 0, $can_be_after_birthday ? $age : $age - 1 ),
+		];
 	}
 }

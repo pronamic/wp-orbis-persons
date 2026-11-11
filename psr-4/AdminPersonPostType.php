@@ -50,6 +50,8 @@ final readonly class AdminPersonPostType {
 
 		\add_filter( '_wp_post_revision_field__orbis_birth_date', $this->revision_field_birth_date( ... ), 10, 3 );
 
+		\add_filter( '_wp_post_revision_field__orbis_death_date', $this->revision_field_death_date( ... ), 10, 3 );
+
 		\add_filter( '_wp_post_revision_field__orbis_gender', $this->revision_field_gender( ... ) );
 
 		\add_filter( '_wp_post_revision_field__orbis_person_father_post_id', $this->revision_field_parent( ... ) );
@@ -84,6 +86,7 @@ final readonly class AdminPersonPostType {
 			'_orbis_country'               => \__( 'Country', 'orbis-persons' ),
 			'_orbis_gender'                => \__( 'Gender', 'orbis-persons' ),
 			'_orbis_birth_date'            => \__( 'Birth Date', 'orbis-persons' ),
+			'_orbis_death_date'            => \__( 'Death Date', 'orbis-persons' ),
 			'_orbis_person_father_post_id' => \__( 'Father', 'orbis-persons' ),
 			'_orbis_person_mother_post_id' => \__( 'Mother', 'orbis-persons' ),
 			'_orbis_iban'                  => \__( 'IBAN', 'orbis-persons' ),
@@ -114,6 +117,21 @@ final readonly class AdminPersonPostType {
 	 */
 	private function revision_field_birth_date( mixed $value, string $field, WP_Post $revision ): string {
 		return BirthDate::from_post( $revision->ID )->format();
+	}
+
+	/**
+	 * Revision field death date.
+	 *
+	 * Shows the known parts of the death date instead of the derived full
+	 * date meta, which is only stored when the day, month and year are known.
+	 *
+	 * @param mixed   $value    Value.
+	 * @param string  $field    Field.
+	 * @param WP_Post $revision Revision.
+	 * @return string
+	 */
+	private function revision_field_death_date( mixed $value, string $field, WP_Post $revision ): string {
+		return DeathDate::from_post( $revision->ID )->format();
 	}
 
 	/**
@@ -281,8 +299,17 @@ final readonly class AdminPersonPostType {
 	private function add_meta_boxes(): void {
 		\add_meta_box(
 			'orbis_person_details',
-			\__( 'Person Details', 'orbis-persons' ),
-			$this->meta_box( ... ),
+			\__( 'Basic Details', 'orbis-persons' ),
+			$this->meta_box_basic_details( ... ),
+			'orbis_person',
+			'normal',
+			'high'
+		);
+
+		\add_meta_box(
+			'orbis_person_personal_details',
+			\__( 'Personal Details', 'orbis-persons' ),
+			$this->meta_box_personal_details( ... ),
 			'orbis_person',
 			'normal',
 			'high'
@@ -290,13 +317,26 @@ final readonly class AdminPersonPostType {
 	}
 
 	/**
-	 * Meta box.
+	 * Meta box basic details.
 	 *
 	 * @param WP_Post $post Post.
 	 * @return void
 	 */
-	private function meta_box( WP_Post $post ): void {
-		include __DIR__ . '/../admin/meta-box-person-details.php';
+	private function meta_box_basic_details( WP_Post $post ): void {
+		include __DIR__ . '/../admin/meta-box-person-basic-details.php';
+	}
+
+	/**
+	 * Meta box personal details.
+	 *
+	 * The gender, birth date, death date, father and mother. The fields are saved with
+	 * the nonce of the basic details meta box.
+	 *
+	 * @param WP_Post $post Post.
+	 * @return void
+	 */
+	private function meta_box_personal_details( WP_Post $post ): void {
+		include __DIR__ . '/../admin/meta-box-person-personal-details.php';
 	}
 
 	/**
@@ -318,7 +358,7 @@ final readonly class AdminPersonPostType {
 	 * Insert post data.
 	 *
 	 * Composes the display name (post title) from the first names and last
-	 * names when it is left empty in the person details meta box.
+	 * names when it is left empty in the basic details meta box.
 	 *
 	 * @param array<string, mixed> $data Slashed, sanitized and processed post data.
 	 * @return array<string, mixed>
@@ -397,21 +437,31 @@ final readonly class AdminPersonPostType {
 			$this->plugin->persons->save_parents( $post_id, $parents );
 		}
 
-		$birth_date_input = [];
+		$date_input = [];
 
-		foreach ( [ '_orbis_birth_day', '_orbis_birth_month', '_orbis_birth_year' ] as $key ) {
-			$birth_date_input[] = \array_key_exists( $key, $_POST ) && \is_string( $_POST[ $key ] ) ? \sanitize_text_field( \wp_unslash( $_POST[ $key ] ) ) : '';
+		foreach ( [ 'birth', 'death' ] as $date ) {
+			foreach ( [ 'day', 'month', 'year' ] as $part ) {
+				$key = '_orbis_' . $date . '_' . $part;
+
+				$date_input[ $date ][] = \array_key_exists( $key, $_POST ) && \is_string( $_POST[ $key ] ) ? \sanitize_text_field( \wp_unslash( $_POST[ $key ] ) ) : '';
+			}
 		}
 
-		$birth_date = BirthDate::from_input( ...$birth_date_input );
+		$birth_date = BirthDate::from_input( ...$date_input['birth'] );
 
 		if ( null === $birth_date ) {
 			$this->add_redirect_notice( 'orbis_persons_invalid_birth_date' );
-
-			return;
+		} else {
+			$birth_date->save( $post_id );
 		}
 
-		$birth_date->save( $post_id );
+		$death_date = DeathDate::from_input( ...$date_input['death'] );
+
+		if ( null === $death_date || $death_date->is_before( $birth_date ?? BirthDate::from_post( $post_id ) ) ) {
+			$this->add_redirect_notice( 'orbis_persons_invalid_death_date' );
+		} else {
+			$death_date->save( $post_id );
+		}
 	}
 
 	/**
@@ -441,6 +491,7 @@ final readonly class AdminPersonPostType {
 
 		$notices = [
 			'orbis_persons_invalid_birth_date' => \__( 'The birth date is invalid and has not been saved.', 'orbis-persons' ),
+			'orbis_persons_invalid_death_date' => \__( 'The death date is invalid and has not been saved. The death date cannot be in the future or before the birth date.', 'orbis-persons' ),
 			'orbis_persons_invalid_parent'     => \__( 'The father or mother is invalid and has not been saved. A person cannot be their own father or mother, the father and mother cannot be the same person, the father cannot be a woman and the mother cannot be a man.', 'orbis-persons' ),
 		];
 

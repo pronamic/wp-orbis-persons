@@ -68,7 +68,7 @@ composer run qa
 |---|---|
 | Post type | `orbis_person` (supports `orbis_contact`) |
 | Taxonomies | `orbis_gender` |
-| Post meta | `_orbis_title`, `_orbis_organization`, `_orbis_department`, `_orbis_address`, `_orbis_postcode`, `_orbis_city`, `_orbis_country`, `_orbis_birth_date_string`, `_orbis_birth_date`, `_orbis_birth_date_timestamp`, `_orbis_iban`, `_orbis_twitter`, `_orbis_facebook`, `_orbis_linkedin` |
+| Post meta | `_orbis_title`, `_orbis_organization`, `_orbis_department`, `_orbis_address`, `_orbis_postcode`, `_orbis_city`, `_orbis_country`, `_orbis_birth_date_string`, `_orbis_birth_date`, `_orbis_birth_date_timestamp`, `_orbis_death_day`, `_orbis_death_month`, `_orbis_death_year`, `_orbis_death_date`, `_orbis_iban`, `_orbis_twitter`, `_orbis_facebook`, `_orbis_linkedin` |
 
 Email addresses and phone numbers are managed by [Orbis Contacts](https://github.com/pronamic/wp-orbis-contacts) in the `_orbis_contact_email`, `_orbis_contact_phone` (E.164) and `_orbis_contact_json` post meta. The old `_orbis_email`, `_orbis_phone_number` and `_orbis_mobile_number` post meta is no longer read or written.
 
@@ -84,7 +84,7 @@ The plugin ships a single and an archive person template, modelled after `single
 |---|---|---|
 | `templates/archive-orbis_person.php` | Persons archive | Table with photo, name, e-mail, phone number, organization, address and author |
 | `templates/single-orbis_person.php` | Single person | Layout with photo, description, details, comments and additional information |
-| `templates/person-details.php` | Single person | Organization, phone numbers, e-mail, gender, address, IBAN, birth date, age, vCard and social media |
+| `templates/person-details.php` | Single person | Organization, phone numbers, e-mail, gender, address, IBAN, birth date, death date, age, vCard and social media |
 
 Other plugins can add content to the single template with the `orbis_before_main_content`, `orbis_after_main_content`, `orbis_before_side_content` and `orbis_after_side_content` actions, for example the connected organizations of [Orbis Organizations](https://github.com/pronamic/wp-orbis-organizations).
 
